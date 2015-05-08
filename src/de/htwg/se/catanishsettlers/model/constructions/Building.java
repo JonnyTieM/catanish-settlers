@@ -14,10 +14,9 @@ public abstract class Building extends Construction{
     protected int yield;    // how many resources gathered?
     private ResourceCollection collectedResources;    // temporal storage for resources from fields
 
-    public Building(Player player, Vertex vertex) {
-        super(player, vertex);
+    public Building(Player player) {
+        super(player);
         collectedResources = new ResourceCollection();
-        vertex.placeBuilding(this);
     }
 
     public int getScore() {
@@ -26,14 +25,14 @@ public abstract class Building extends Construction{
 
     public int getYield() { return yield; }
 
-    public ResourceCollection yieldResources() {
-        ResourceCollection collectedResources = new ResourceCollection();
-
-        Vertex vertex = (Vertex)getPosition();
-        for(Field surroundingField : vertex.getSurroundingFields()) {
-            EResource resource = surroundingField.getType();
-            collectedResources.add(resource, yield);
-        }
-        return collectedResources;
-    }
+//    public ResourceCollection yieldResources() {
+//        ResourceCollection collectedResources = new ResourceCollection();
+//
+//        Vertex vertex = (Vertex)getPosition();
+//        for(Field surroundingField : vertex.getSurroundingFields()) {
+//            EResource resource = surroundingField.getType();
+//            collectedResources.add(resource, yield);
+//        }
+//        return collectedResources;
+//    }
 }

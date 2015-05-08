@@ -100,7 +100,7 @@ public final class Game {
         }
 
         for(Field field : productiveFields) {
-            for (Building building : field.getSurroundingBuildings()) {
+            for (Building building : map.getBuildings(field)) {
                 ResourceCollection yield = new ResourceCollection();
                 yield.add(field.getType(), building.getYield());
                 building.getPlayer().addResources(yield);
