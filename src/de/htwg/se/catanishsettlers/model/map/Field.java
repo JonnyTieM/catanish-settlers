@@ -36,16 +36,12 @@ public class Field extends MapObject {
         return triggerNumber;
     }
 
-    public List<Vertex> getSurroundingVertices() {
-        throw new NotImplementedException();    // TODO: implement getVertices(field)
-    }
-
-    public List<Building> getSurroundingBuildings() {
-        List<Building> surroundingBuildings = new LinkedList<Building>();
-        for(Vertex vertex : getSurroundingVertices()) {
-            Building building = vertex.getBuilding();
-            if (building != null) surroundingBuildings.add(building);
-        }
-        return surroundingBuildings;
-    }
+//    public List<Building> getSurroundingBuildings() {
+//        List<Building> surroundingBuildings = new LinkedList<Building>();
+//        for(Vertex vertex : getSurroundingVertices()) {
+//            Building building = vertex.getBuilding();
+//            if (building != null) surroundingBuildings.add(building);
+//        }
+//        return surroundingBuildings;
+//    }
 }

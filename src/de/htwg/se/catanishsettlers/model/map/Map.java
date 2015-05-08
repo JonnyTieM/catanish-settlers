@@ -1,5 +1,7 @@
 package de.htwg.se.catanishsettlers.model.map;
 
+import de.htwg.se.catanishsettlers.model.constructions.Building;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -173,6 +175,15 @@ public final class Map implements IMap {
             };
         }
         return yEdge;
+    }
+
+    public List<Building> getBuildings(Field field) {
+        List<Building> returnBuildings = new LinkedList<Building>();
+        Vertex[] vertices = getVertices(field);
+        for(Vertex vertex : vertices) {
+            if (vertex.hasBuilding()) returnBuildings.add(vertex.getBuilding());
+        }
+        return returnBuildings;
     }
 
     @Override

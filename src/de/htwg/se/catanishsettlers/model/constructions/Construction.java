@@ -13,19 +13,15 @@ import java.util.ArrayList;
  */
 public abstract class Construction extends Investment implements IGenerateMessages{
     protected Player owner;
-    private MapObject position;
 
-    public Construction(Player player, MapObject position) {
+    public Construction(Player player) {
         categories.add(Message.Category.CONSTRUCTION);
         owner = player;
-        this.position = position;
     }
 
     public Player getPlayer() {
         return owner;
     }
-
-    public MapObject getPosition() {return position;}
 
     public Message[] getMessages() {
         ArrayList<Message> messages = new ArrayList<Message>();

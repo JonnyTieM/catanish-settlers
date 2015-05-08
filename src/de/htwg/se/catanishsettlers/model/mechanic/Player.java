@@ -123,7 +123,7 @@ public class Player implements IGenerateMessages {
     private boolean buildSettlement(Vertex vertex) {
         if (hasSettlementAvailable() && tryToPay(Settlement.cost)) {
             //TODO: Check if vertex is empty
-            Settlement settlement = new Settlement(this, vertex);
+            Settlement settlement = new Settlement(this); // TODO: add position
             settlements.add(settlement);
             return true;
         }
@@ -133,7 +133,7 @@ public class Player implements IGenerateMessages {
     public boolean buildCity(Vertex vertex) {
         if (hasCityAvailable() && tryToPay(City.cost)) {
             //TODO: Check if vertex has settlement owned by this player
-            City city = new City(this, vertex);
+            City city = new City(this); // TODO: add position
             cities.add(city);
             return true;
         }
@@ -143,7 +143,7 @@ public class Player implements IGenerateMessages {
     public boolean buildRoad(Edge edge) {
         if (hasRoadAvailable() && tryToPay(Road.cost)) {
             //TODO: Check if edge is empty and adjacent to settlement, city or road owned by player
-            Road road = new Road(this, edge);
+            Road road = new Road(this); // TODO: add position
             roads.add(road);
             return true;
         }
