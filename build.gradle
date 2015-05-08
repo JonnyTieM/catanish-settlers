@@ -11,3 +11,15 @@ repositories {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }
+
+sonar {
+    server {
+        url = "http://lenny2.in.htwg-konstanz.de:9000/"
+    }
+    database {
+        url = "jdbc:mysql://lenny2.in.htwg-konstanz.de:9000/sonar"
+        driverClassName = "com.mysql.jdbc.Driver"
+        username = "SE2013SS"
+        password = "htwg"
+    }
+}
