@@ -1,5 +1,6 @@
 package de.htwg.se.catanishsettlers.controller;
 
+import de.htwg.se.catanishsettlers.model.constructions.Building;
 import de.htwg.se.catanishsettlers.model.constructions.Road;
 import de.htwg.se.catanishsettlers.model.map.Edge;
 import de.htwg.se.catanishsettlers.model.map.Map;
@@ -65,10 +66,15 @@ public final class ConstructionInspector {
     }
 
     public static boolean canBuildCity(Player player, Vertex vertex, Map map) {
+        //to be able to build a city, there needs to be a settlement on this vertex owned by the player
+        if (vertex.hasSettlement() && vertex.getBuilding().getPlayer() == player) {
+            return true;
+        }
         return false;
     }
 
     public static boolean canBuildRoad(Player player, Edge edge, Map map) {
+        //to be able to build a road, there needs to be an adjacent settlement or road owned by the player
         return false;
     }
 }
