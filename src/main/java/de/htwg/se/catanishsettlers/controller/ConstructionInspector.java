@@ -1,5 +1,6 @@
 package de.htwg.se.catanishsettlers.controller;
 
+import de.htwg.se.catanishsettlers.model.constructions.Road;
 import de.htwg.se.catanishsettlers.model.map.Edge;
 import de.htwg.se.catanishsettlers.model.map.Map;
 import de.htwg.se.catanishsettlers.model.map.Vertex;
@@ -30,6 +31,36 @@ public final class ConstructionInspector {
     }
 
     public static boolean canBuildSettlement(Player player, Vertex vertex, Map map) {
+        Vertex[] vertices = map.getNeighbouringVertices(vertex);
+        //TODO: check adjacent vertices for buildings and adjacent edges for roads owned by player.
+        if (!hasBuilding(vertices) && hasAdjacentStreetOwnedByPlayer(player, vertex, map)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * this returns true if any of the given vertices has a building. One of the vertices having a building is enough that it will return true.
+     * @param vertices these will be checked for buildings
+     * @return true if on one of the vertices a building is found. false if there is no building on any given vertex.
+     */
+    private static boolean hasBuilding(Vertex[] vertices) {
+        for (int i = 0; i < vertices.length; i++) {
+            if (vertices[i].hasBuilding()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean hasAdjacentStreetOwnedByPlayer(Player player, Vertex vertex, Map map) {
+        Edge[] edges = map.getNeighbouringEdges(vertex);
+        for (int i = 0; i < edges.length; i++) {
+            Road road = edges[i].getRoad();
+            if (road != null && road.getPlayer() == player) {
+                return true;
+            }
+        }
         return false;
     }
 
