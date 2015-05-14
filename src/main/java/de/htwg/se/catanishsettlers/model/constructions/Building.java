@@ -1,9 +1,6 @@
 package de.htwg.se.catanishsettlers.model.constructions;
 
-import de.htwg.se.catanishsettlers.model.map.Field;
-import de.htwg.se.catanishsettlers.model.map.Vertex;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
-import de.htwg.se.catanishsettlers.model.resources.EResource;
 import de.htwg.se.catanishsettlers.model.resources.ResourceCollection;
 
 /**
