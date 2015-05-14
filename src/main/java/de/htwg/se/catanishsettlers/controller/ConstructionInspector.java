@@ -1,6 +1,5 @@
 package de.htwg.se.catanishsettlers.controller;
 
-import de.htwg.se.catanishsettlers.model.constructions.Building;
 import de.htwg.se.catanishsettlers.model.constructions.Road;
 import de.htwg.se.catanishsettlers.model.map.Edge;
 import de.htwg.se.catanishsettlers.model.map.Map;
@@ -34,7 +33,7 @@ public final class ConstructionInspector {
     public static boolean canBuildSettlement(Player player, Vertex vertex, Map map) {
         Vertex[] vertices = map.getNeighbouringVertices(vertex);
         //check adjacent vertices for buildings and adjacent edges for roads owned by player.
-        if (!hasBuilding(vertices) && hasAdjacentStreetOwnedByPlayer(player, vertex, map)) {
+        if (!hasABuilding(vertices) && hasAdjacentStreetOwnedByPlayer(player, vertex, map) && !vertex.hasBuilding()) {
             return true;
         }
         return false;
@@ -45,7 +44,7 @@ public final class ConstructionInspector {
      * @param vertices these will be checked for buildings
      * @return true if on one of the vertices a building is found. false if there is no building on any given vertex.
      */
-    private static boolean hasBuilding(Vertex[] vertices) {
+    private static boolean hasABuilding(Vertex[] vertices) {
         for (int i = 0; i < vertices.length; i++) {
             if (vertices[i].hasBuilding()) {
                 return true;
