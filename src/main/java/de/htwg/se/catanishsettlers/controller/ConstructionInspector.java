@@ -32,7 +32,7 @@ public final class ConstructionInspector {
 
     public static boolean canBuildSettlement(Player player, Vertex vertex, Map map) {
         Vertex[] vertices = map.getNeighbouringVertices(vertex);
-        //TODO: check adjacent vertices for buildings and adjacent edges for roads owned by player.
+        //check adjacent vertices for buildings and adjacent edges for roads owned by player.
         if (!hasBuilding(vertices) && hasAdjacentStreetOwnedByPlayer(player, vertex, map)) {
             return true;
         }
