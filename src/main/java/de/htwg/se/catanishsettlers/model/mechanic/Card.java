@@ -19,7 +19,7 @@ public class Card extends Investment {
 
     public Card(Types type) {
         this.type = type;
-        cost = new ResourceCollection(0, 0, 1, 1, 1);
+        COST = new ResourceCollection(0, 0, 1, 1, 1);
     }
 
     public Types getType() {

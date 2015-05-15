@@ -10,6 +10,6 @@ public final class Road extends Construction {
 
     public Road(Player player) {
         super(player);
-        cost = new ResourceCollection(2, 1, 0, 0, 0);
+        COST = new ResourceCollection(2, 1, 0, 0, 0);
     }
 }

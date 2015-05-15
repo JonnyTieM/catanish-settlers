@@ -16,7 +16,7 @@ public class SettlementTest {
         testSettlement = new Settlement(testPlayer);
 
         ResourceCollection settlementCosts = new ResourceCollection(new Brick(1), new Lumber(1), new Wool(1), new Grain(1));
-        assertEquals(testSettlement.getCost().compareTo(settlementCosts), 0);
+        assertEquals(testSettlement.getCOST().compareTo(settlementCosts), 0);
         assertEquals(testSettlement.getScore(), 1);
     }
 }

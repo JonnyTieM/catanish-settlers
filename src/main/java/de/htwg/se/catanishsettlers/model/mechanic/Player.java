@@ -2,14 +2,11 @@ package de.htwg.se.catanishsettlers.model.mechanic;
 
 import de.htwg.se.catanishsettlers.controller.Game;
 import de.htwg.se.catanishsettlers.model.constructions.*;
-import de.htwg.se.catanishsettlers.model.map.Edge;
-import de.htwg.se.catanishsettlers.model.map.Vertex;
 import de.htwg.se.catanishsettlers.model.resources.ResourceCollection;
 import de.htwg.se.catanishsettlers.view.IGenerateMessages;
 import de.htwg.se.catanishsettlers.view.Message;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -25,9 +22,8 @@ public class Player implements IGenerateMessages {
     private final static int MAX_CITIES = 4;
     private final static int MAX_ROADS = 15;
 
-    private List<Settlement> settlements;
-    private List<City> cities;
-    private List<Road> roads;
+    public int settlements, cities, roads;
+
     private Game game;
 
     private boolean hasLargestKnightArmy, hasLongestTradeRoute;
@@ -35,9 +31,9 @@ public class Player implements IGenerateMessages {
     public Player(String name, Game game) {     // creates new Player and registers the game for him
         this(name);
         this.game = game;
-        settlements = new LinkedList<Settlement>();
-        cities = new LinkedList<City>();
-        roads = new LinkedList<Road>();
+        settlements = MAX_SETTLEMENTS;
+        cities = MAX_CITIES;
+        roads = MAX_ROADS;
     }
 
     public Player(String name) {
@@ -73,7 +69,7 @@ public class Player implements IGenerateMessages {
                 break;
             case PROGRESS_MONOPOLY:             //TODO: get all resources from other players of one requested type
                 break;
-            case PROGRESS_ROAD_CONSTRUCTION:    //TODO: immediately legally place 2 roads without paying cost
+            case PROGRESS_ROAD_CONSTRUCTION:    //TODO: immediately legally place 2 roads without paying COST
                 break;
             default: throw new IllegalStateException();   // this should never happen as there are only 3 card types
         }
@@ -81,8 +77,7 @@ public class Player implements IGenerateMessages {
     }
 
     public int getScore() {
-        int score = scoreBuildings(cities);
-        score += scoreBuildings(settlements);
+        int score = scoreBuildings();
         if (hasLargestKnightArmy) score += 2;
         if (hasLongestTradeRoute) score += 2;
         for (Card card : cards) {
@@ -92,11 +87,10 @@ public class Player implements IGenerateMessages {
         return score;
     }
 
-    private int scoreBuildings(List<? extends Building> buildings) {
+    private int scoreBuildings() {
         int score = 0;
-        for (Building building : buildings) {
-            score += building.getScore();
-        }
+        score += (MAX_CITIES - cities) * City.SCORE;
+        score += (MAX_SETTLEMENTS - settlements) * Settlement.SCORE;
         return score;
     }
 
@@ -112,7 +106,7 @@ public class Player implements IGenerateMessages {
     }
 
     public boolean buyCard() {
-        if (tryToPay(Card.cost)) {
+        if (tryToPay(Card.COST)) {
             Card card = game.getTopCard();
             cards.add(card);
             return true;
@@ -120,50 +114,16 @@ public class Player implements IGenerateMessages {
         return false;
     }
 
-    private boolean buildSettlement(Vertex vertex) {
-        if (hasSettlementAvailable() && tryToPay(Settlement.cost)) {
-            //TODO: Check if vertex is empty
-            Settlement settlement = new Settlement(this); // TODO: add position
-            settlements.add(settlement);
-            return true;
-        }
-        return false;
-    }
-
-    public boolean buildCity(Vertex vertex) {
-        if (hasCityAvailable() && tryToPay(City.cost)) {
-            //TODO: Check if vertex has settlement owned by this player
-            City city = new City(this); // TODO: add position
-            cities.add(city);
-            return true;
-        }
-        return false;
-    }
-
-    public boolean buildRoad(Edge edge) {
-        if (hasRoadAvailable() && tryToPay(Road.cost)) {
-            //TODO: Check if edge is empty and adjacent to settlement, city or road owned by player
-            Road road = new Road(this); // TODO: add position
-            roads.add(road);
-            return true;
-        }
-        return false;
-    }
-
-    private boolean hasSettlementAvailable() {
-        return settlements.size() < MAX_SETTLEMENTS;
-    }
-
-    private boolean hasCityAvailable() {
-        return cities.size() < MAX_CITIES;
-    }
-
-    private boolean hasRoadAvailable() {
-        return roads.size() < MAX_ROADS;
-    }
-
-    private boolean hasEnoughResources(ResourceCollection cost) {
+    public boolean hasEnoughResources(ResourceCollection cost) {
         return resources.compareTo(cost) > 0;
+    }
+
+    public boolean payCost(ResourceCollection cost) {
+        if (hasEnoughResources(cost)) {
+            resources.subtract(cost);
+            return true;
+        }
+        return false;
     }
 
     private boolean tryToPay(ResourceCollection cost) {

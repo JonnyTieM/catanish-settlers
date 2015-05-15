@@ -51,7 +51,7 @@ public class PlayerTest {
         assertEquals(testPlayer.getScore(), 0);
 
         while (!testPlayer.playCard(Card.Types.VICTORYPOINT)) {             // draw until 1 victory card has been drawn & played
-            testPlayer.addResources(new Card(null).getCost());    // compensate
+            testPlayer.addResources(new Card(null).getCOST());    // compensate
             Game game = new Game();                             // replenish card stack
             testPlayer.makeInvestment(Card.class);
         }
@@ -74,7 +74,7 @@ public class PlayerTest {
     public void testGetKnightCount() throws Exception {
         setUp();
         while (!testPlayer.playCard(Card.Types.KNIGHT)) {             // draw until 1 victory card has been drawn & played
-            testPlayer.addResources(new Card(null).getCost());   // compensate
+            testPlayer.addResources(new Card(null).getCOST());   // compensate
             testPlayer.makeInvestment(Card.class);
         }
 
@@ -103,28 +103,28 @@ public class PlayerTest {
 
         //  road
         testPlayer.makeInvestment(Road.class);
-        ResourceCollection roadCost = (new Road(null)).getCost();
+        ResourceCollection roadCost = (new Road(null)).getCOST();
         ResourceCollection afterInvestment = initialResources;
         afterInvestment.subtract(roadCost);
         assertEquals(testPlayer.getResources().compareTo(afterInvestment), 0);
 
         // settlement
         testPlayer.makeInvestment(Settlement.class);
-        ResourceCollection settlementCost = (new Settlement(null)).getCost();
+        ResourceCollection settlementCost = (new Settlement(null)).getCOST();
         afterInvestment = initialResources;
         afterInvestment.subtract(settlementCost);
         assertEquals(testPlayer.getResources().compareTo(afterInvestment), 0);
 
         // city
         testPlayer.makeInvestment(City.class);
-        ResourceCollection cityCost = (new City(null)).getCost();
+        ResourceCollection cityCost = (new City(null)).getCOST();
         afterInvestment = initialResources;
         afterInvestment.subtract(cityCost);
         assertEquals(testPlayer.getResources().compareTo(afterInvestment), 0);
 
         // card
         testPlayer.makeInvestment(Card.class);
-        ResourceCollection cardCost = (new Card(null)).getCost();
+        ResourceCollection cardCost = (new Card(null)).getCOST();
         afterInvestment = initialResources;
         afterInvestment.subtract(cardCost);
         assertEquals(testPlayer.getResources().compareTo(afterInvestment), 0);

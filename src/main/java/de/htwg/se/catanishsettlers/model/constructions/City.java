@@ -9,9 +9,9 @@ import de.htwg.se.catanishsettlers.model.resources.ResourceCollection;
 public final class City extends Building{
     public City(Player player) {
         super(player);
-        cost = new ResourceCollection(0, 0, 0, 3, 2);
+        COST = new ResourceCollection(0, 0, 0, 3, 2);
         owner = player;
-        score = 2;
+        SCORE = 2;
         yield = 2;
     }
 }
