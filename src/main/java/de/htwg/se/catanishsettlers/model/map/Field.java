@@ -1,11 +1,6 @@
 package de.htwg.se.catanishsettlers.model.map;
 
-import de.htwg.se.catanishsettlers.model.constructions.Building;
-import de.htwg.se.catanishsettlers.model.resources.*;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
-import java.util.LinkedList;
-import java.util.List;
+import de.htwg.se.catanishsettlers.model.resources.EResource;
 
 /**
  * Created by JonnyTieM on 29.03.2015.
