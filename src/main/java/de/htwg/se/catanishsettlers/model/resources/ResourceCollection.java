@@ -170,7 +170,7 @@ public class ResourceCollection {
     /**
      * returns 0 if equal in all resources
      * returns 1 if this > other in all resources
-     * returns -1 if any one resource of this < other (which for example means, a cost cannot be payed)
+     * returns -1 if any one resource of this < other (which for example means, a COST cannot be payed)
      */
     public int compareTo(ResourceCollection other) {
         if (this.brick == other.getBrick() &&

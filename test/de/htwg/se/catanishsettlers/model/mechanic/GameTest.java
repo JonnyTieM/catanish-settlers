@@ -73,6 +73,6 @@ public class GameTest {
 
     @Test
     public void testGetTopCard() throws Exception {
-        assertEquals(testGame.getTopCard().getClass(), Card.class);
+        assertEquals(testGame.popTopCard().getClass(), Card.class);
     }
 }

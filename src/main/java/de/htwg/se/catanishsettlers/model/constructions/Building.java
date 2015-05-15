@@ -7,17 +7,13 @@ import de.htwg.se.catanishsettlers.model.resources.ResourceCollection;
  * Created by Stephan on 02.04.2015.
  */
 public abstract class Building extends Construction{
-    protected int score;    // how many victory points?
+    public static int SCORE;    // how many victory points?
     protected int yield;    // how many resources gathered?
     private ResourceCollection collectedResources;    // temporal storage for resources from fields
 
     public Building(Player player) {
         super(player);
         collectedResources = new ResourceCollection();
-    }
-
-    public int getScore() {
-        return score;
     }
 
     public int getYield() { return yield; }

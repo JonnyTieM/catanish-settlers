@@ -19,6 +19,6 @@ public class InvestmentTest {
 
     @Test
     public void testGetCost() throws Exception {
-        assertEquals(testInvestment.getCost().compareTo(new ResourceCollection(new Brick(2), new Lumber(1))), 0);
+        assertEquals(testInvestment.getCOST().compareTo(new ResourceCollection(new Brick(2), new Lumber(1))), 0);
     }
 }

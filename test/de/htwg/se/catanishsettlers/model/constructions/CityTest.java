@@ -17,7 +17,7 @@ public class CityTest {
     public void setUp() throws Exception {
         testCity = new City(testPlayer);
 
-        assertEquals(testCity.getCost().compareTo(new ResourceCollection(new Grain(3), new Ore(2))), 0);
+        assertEquals(testCity.getCOST().compareTo(new ResourceCollection(new Grain(3), new Ore(2))), 0);
         assertEquals(testCity.getScore(), 2);
     }
 }

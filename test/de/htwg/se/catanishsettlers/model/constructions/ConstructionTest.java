@@ -32,9 +32,9 @@ public class ConstructionTest {
         roadPrice = new ResourceCollection(new Brick(2), new Lumber(1));
         settlementPrice = new ResourceCollection(new Brick(1), new Lumber(1), new Wool(1), new Grain(1));
         cityPrice = new ResourceCollection(new Grain(3), new Ore(2));
-        assertEquals(testRoad.getCost().compareTo(roadPrice), 0);
-        assertEquals(testSettlement.getCost().compareTo(settlementPrice), 0);
-        assertEquals(testCity.getCost().compareTo(cityPrice), 0);
+        assertEquals(testRoad.getCOST().compareTo(roadPrice), 0);
+        assertEquals(testSettlement.getCOST().compareTo(settlementPrice), 0);
+        assertEquals(testCity.getCOST().compareTo(cityPrice), 0);
     }
 
     @Test

@@ -18,6 +18,6 @@ public class RoadTest {
         testRoad = new Road(testPlayer);
 
         ResourceCollection roadCost = new ResourceCollection(new Brick(2), new Lumber(1));
-        assertEquals(testRoad.getCost().compareTo(roadCost), 0);
+        assertEquals(testRoad.getCOST().compareTo(roadCost), 0);
     }
 }

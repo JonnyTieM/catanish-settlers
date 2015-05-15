@@ -14,5 +14,6 @@ public class Edge extends MapObject {
     }
 
     public Road getRoad() { return road; }
+    public boolean hasRoad() { return road != null; }
     public void buildRoad(Road newRoad) { road = newRoad; }
 }

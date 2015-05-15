@@ -1,5 +1,6 @@
 package de.htwg.se.catanishsettlers.model.constructions;
 
+import de.htwg.se.catanishsettlers.model.Config;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
 import de.htwg.se.catanishsettlers.model.resources.ResourceCollection;
 
@@ -10,6 +11,7 @@ public final class Road extends Construction {
 
     public Road(Player player) {
         super(player);
-        cost = new ResourceCollection(2, 1, 0, 0, 0);
+        COST = Config.ROAD_COST;
+        owner = player;
     }
 }

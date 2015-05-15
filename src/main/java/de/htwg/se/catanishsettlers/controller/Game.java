@@ -1,5 +1,6 @@
 package de.htwg.se.catanishsettlers.controller;
 
+import de.htwg.se.catanishsettlers.model.Config;
 import de.htwg.se.catanishsettlers.model.constructions.Building;
 import de.htwg.se.catanishsettlers.model.mechanic.Card;
 import de.htwg.se.catanishsettlers.model.map.Field;
@@ -13,14 +14,6 @@ import java.util.*;
  * Created by Stephan on 31.03.2015.
  */
 public final class Game {
-    // config variables - alter these to set up different kinds of games
-    private int winScore = 10;
-    private int knightCards = 14;
-    private int progressCardsMonopoly = 2;
-    private int progressCardsDevelopment = 2;
-    private int progressCardsRoadConstruction = 2;
-    private int victoryCards = 5;
-
     private List<Player> players;
     private int activePlayerIndex;
     private Random rnd;
@@ -45,26 +38,26 @@ public final class Game {
     }
 
     private void prepareStack() {
-        for (int k = 0; k < knightCards; k++) {
+        for (int k = 0; k < Config.KNIGHTS_AMOUNT; k++) {
             cardStack.push(new Card(Card.Types.KNIGHT));
         }
-        for (int m = 0; m < progressCardsMonopoly; m++) {
+        for (int m = 0; m < Config.MONOPOLY_AMOUNT; m++) {
             cardStack.push(new Card(Card.Types.PROGRESS_MONOPOLY));
         }
-        for (int d = 0; d < progressCardsDevelopment; d++) {
+        for (int d = 0; d < Config.DEVELOPMENT_AMOUNT; d++) {
             cardStack.push(new Card(Card.Types.PROGRESS_DEVELOPMENT));
         }
-        for (int r = 0; r < progressCardsRoadConstruction; r++) {
+        for (int r = 0; r < Config.CONSTRUCTION_AMOUNT; r++) {
             cardStack.push(new Card(Card.Types.PROGRESS_ROAD_CONSTRUCTION));
         }
-        for (int v = 0; v < victoryCards; v++) {
+        for (int v = 0; v < Config.VICTORY_CARD_AMOUNT; v++) {
             cardStack.push(new Card(Card.Types.VICTORYPOINT));
         }
         Collections.shuffle(cardStack);
     }
 
     public Player createPlayer(String name) {
-        Player newPlayer = new Player(name, this);
+        Player newPlayer = new Player(name);
         players.add(newPlayer);
         return newPlayer;
     }
@@ -111,14 +104,14 @@ public final class Game {
     private void checkVictory() {
         List<Player> winners = new ArrayList<Player>();
         for (Player player : players) {
-            if (player.getScore() >= winScore) winners.add(player);
+            if (player.getScore() >= Config.SCORE_TO_VICTORY) winners.add(player);
         }
         if (winners.size() > 0) {
             //TODO: game ends, one (or more) players won the game
         }
     }
 
-    public Card getTopCard() {
+    public Card popTopCard() {
         if (cardStack.size() > 0) {
             return cardStack.pop();
         } else {
