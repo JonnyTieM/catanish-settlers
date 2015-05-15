@@ -18,7 +18,7 @@ sonarRunner {
         property "sonar.jdbc.url", "jdbc:h2:tcp://lenny2.in.htwg-konstanz.de:9092/sonar"
         //property "sonar.host.url", "http://localhost:9000/"
         //property "sonar.jdbc.url", "jdbc:h2:tcp://localhost:9092/sonar"
-        property "sonar.jdbc.driverClassName", "com.mysql.jdbc.Driver"//org.h2.Driver"
+        property "sonar.jdbc.driverClassName", "org.h2.Driver"
         property "sonar.jdbc.username", "SE2015SS"
         property "sonar.jdbc.password", "htwg"
     }
