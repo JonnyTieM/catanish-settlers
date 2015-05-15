@@ -1,5 +1,6 @@
 package de.htwg.se.catanishsettlers.model.mechanic;
 
+import de.htwg.se.catanishsettlers.model.Config;
 import de.htwg.se.catanishsettlers.model.resources.ResourceCollection;
 
 /**
@@ -19,7 +20,7 @@ public class Card extends Investment {
 
     public Card(Types type) {
         this.type = type;
-        COST = new ResourceCollection(0, 0, 1, 1, 1);
+        COST = Config.CARD_COST;
     }
 
     public Types getType() {

@@ -1,5 +1,6 @@
 package de.htwg.se.catanishsettlers.model.map;
 
+import de.htwg.se.catanishsettlers.model.Config;
 import de.htwg.se.catanishsettlers.model.constructions.Building;
 
 import java.util.LinkedList;
@@ -28,9 +29,9 @@ public final class Map implements IMap {
      * standard Map for catanish Settlers
      */
     private void initStandardMap() {
-        fields = new Field[5][5];
-        edges = new Edge[6][17];
-        vertices = new Vertex[6][12];
+        fields = new Field[Config.FIELDS_HEIGHT][Config.FIELDS_WIDTH];
+        edges = new Edge[Config.EDGES_HEIGHT][Config.EDGES_WIDTH];
+        vertices = new Vertex[Config.VERTICES_HEIGHT][Config.VERTICES_WIDTH];
 
         createField(2, 0);
         createField(1, 0);

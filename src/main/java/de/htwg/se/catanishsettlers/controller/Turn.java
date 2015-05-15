@@ -10,7 +10,6 @@ import de.htwg.se.catanishsettlers.model.map.Field;
  */
 public class Turn {
     private Player activePlayer;
-    private Game game;
 
     public Turn(Player player) {
         if (player == null) return;
@@ -28,9 +27,9 @@ public class Turn {
             Field chosenField = null;
             // TODO: Make player choose field
             // TODO: resolve Field conflict
-            Robber.getInstance().moveToField(chosenField);
+            // Robber.getInstance().moveToField(chosenField); TODO: add logic to move robber
         } else {
-            game.distributeResources(roll.getValue());
+            //game.distributeResources(roll.getValue());
         }
     }
 }

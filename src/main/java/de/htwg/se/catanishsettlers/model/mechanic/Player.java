@@ -1,6 +1,7 @@
 package de.htwg.se.catanishsettlers.model.mechanic;
 
 import de.htwg.se.catanishsettlers.controller.Game;
+import de.htwg.se.catanishsettlers.model.Config;
 import de.htwg.se.catanishsettlers.model.constructions.*;
 import de.htwg.se.catanishsettlers.model.resources.ResourceCollection;
 import de.htwg.se.catanishsettlers.view.IGenerateMessages;
@@ -18,26 +19,15 @@ public class Player implements IGenerateMessages {
     private int knightCount, victoryCardsCount;
     private ResourceCollection resources;
 
-    private final static int MAX_SETTLEMENTS = 5;
-    private final static int MAX_CITIES = 4;
-    private final static int MAX_ROADS = 15;
-
     public int settlements, cities, roads;
-
-    private Game game;
 
     private boolean hasLargestKnightArmy, hasLongestTradeRoute;
 
-    public Player(String name, Game game) {     // creates new Player and registers the game for him
-        this(name);
-        this.game = game;
-        settlements = MAX_SETTLEMENTS;
-        cities = MAX_CITIES;
-        roads = MAX_ROADS;
-    }
-
     public Player(String name) {
         this.name = name;
+        settlements = Config.MAX_SETTLEMENTS;
+        cities = Config.MAX_CITIES;
+        roads = Config.MAX_ROADS;
         cards = new ArrayList<Card>();
         resources = new ResourceCollection();
     }
@@ -78,8 +68,8 @@ public class Player implements IGenerateMessages {
 
     public int getScore() {
         int score = scoreBuildings();
-        if (hasLargestKnightArmy) score += 2;
-        if (hasLongestTradeRoute) score += 2;
+        if (hasLargestKnightArmy) score += Config.LARGEST_KNIGHT_ARMY;
+        if (hasLongestTradeRoute) score += Config.LONGEST_TRADE_ROUTE;
         for (Card card : cards) {
             if (card.getType() == Card.Types.VICTORYPOINT) score++;     // victory cards count in hand ...
         }
@@ -89,8 +79,8 @@ public class Player implements IGenerateMessages {
 
     private int scoreBuildings() {
         int score = 0;
-        score += (MAX_CITIES - cities) * City.SCORE;
-        score += (MAX_SETTLEMENTS - settlements) * Settlement.SCORE;
+        score += (Config.MAX_CITIES - cities) * Config.CITY_SCORE;
+        score += (Config.MAX_SETTLEMENTS - settlements) * Config.SETTLEMENT_SCORE;
         return score;
     }
 
@@ -105,13 +95,8 @@ public class Player implements IGenerateMessages {
         return resources;
     }
 
-    public boolean buyCard() {
-        if (tryToPay(Card.COST)) {
-            Card card = game.getTopCard();
-            cards.add(card);
-            return true;
-        }
-        return false;
+    public void addCard(Card card) {
+        cards.add(card);
     }
 
     public boolean hasEnoughResources(ResourceCollection cost) {

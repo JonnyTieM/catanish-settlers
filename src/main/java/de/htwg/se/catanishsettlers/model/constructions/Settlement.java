@@ -1,5 +1,6 @@
 package de.htwg.se.catanishsettlers.model.constructions;
 
+import de.htwg.se.catanishsettlers.model.Config;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
 import de.htwg.se.catanishsettlers.model.resources.ResourceCollection;
 
@@ -9,8 +10,9 @@ import de.htwg.se.catanishsettlers.model.resources.ResourceCollection;
 public final class Settlement extends Building{
     public Settlement(Player player) {
         super(player);
-        COST = new ResourceCollection(1, 1, 1, 1, 0);
-        SCORE = 1;
-        yield = 1;
+        COST = Config.SETTLEMENT_COST;
+        SCORE = Config.SETTLEMENT_SCORE;
+        yield = Config.SETTLEMENT_YIELD;
+        owner = player;
     }
 }
