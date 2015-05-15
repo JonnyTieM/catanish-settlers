@@ -81,6 +81,7 @@ public final class Map implements IMap {
      * @return Field at given position
      */
     public Field getField(int x, int y) {
+        //TODO: make sure that there happens no out of bounds!
         if (x < 0 || y < 0) {
             return null;
         }
@@ -180,7 +181,7 @@ public final class Map implements IMap {
     public List<Building> getBuildings(Field field) {
         List<Building> returnBuildings = new LinkedList<Building>();
         Vertex[] vertices = getVertices(field);
-        for(Vertex vertex : vertices) {
+        for (Vertex vertex : vertices) {
             if (vertex.hasBuilding()) returnBuildings.add(vertex.getBuilding());
         }
         return returnBuildings;
@@ -276,7 +277,7 @@ public final class Map implements IMap {
         fields[1] = getField(x[1], y[1]);
         fields[2] = getField(x[2], y[2]);
 
-        return new Field[0];
+        return fields;
     }
 
     public List<Field> getFields() {
@@ -377,7 +378,7 @@ public final class Map implements IMap {
         vertices[1] = getVertex(x[1], y[1]);
         vertices[2] = getVertex(x[2], y[2]);
 
-        return new Vertex[0];
+        return vertices;
     }
 
     /**
@@ -436,5 +437,92 @@ public final class Map implements IMap {
         }
 
         return yVertices;
+    }
+
+    public Edge[] getNeighbouringEdges(Vertex vertex) {
+        if (vertex == null) {
+            return null;
+        }
+
+        Edge[] edges = new Edge[3];
+
+        int[] x = getNeighbouringEdgesCoordinateX(vertex);
+        int[] y = getNeighbouringEdgesCoordinateY(vertex);
+
+        edges[0] = getEdge(x[0], y[0]);
+        edges[1] = getEdge(x[1], y[1]);
+        edges[2] = getEdge(x[2], y[2]);
+
+        return edges;
+    }
+
+    /**
+     * This returns the x Coordinates of the neighbouring edges in following order: top left and then clockwise.
+     * WARNING!!! This method might return negative values!!!
+     *
+     * @param vertex The Vertex you want to know the neighbouring edges of.
+     * @return x Coordinates of the neighbouring edges
+     */
+    private int[] getNeighbouringEdgesCoordinateX(Vertex vertex) {
+        int x = vertex.getX();
+        int y = vertex.getY();
+
+        int[] xEdges = new int[3];
+
+        //There are two different cases possible.
+        //two edges on left and one on right: x and y is even or both are uneven
+        //one edge on left and two on right: x or y is uneven and the other is even
+        if ((x % 2 == 0 && y % 2 == 0) || (x % 2 != 0 && y % 2 != 0)) {
+            xEdges[0] = x;
+            xEdges[1] = x;
+            xEdges[2] = x;
+        } else {
+            xEdges[0] = x - 1;
+            xEdges[1] = x;
+            xEdges[2] = x;
+        }
+
+        return xEdges;
+    }
+
+    /**
+     * This returns the y Coordinates of the neighbouring edges in following order: top left and then clockwise.
+     * WARNING!!! This method might return negative values!!!
+     *
+     * @param vertex The Vertex you want to know the neighbouring edges of.
+     * @return y Coordinates of the neighbouring edges
+     */
+    private int[] getNeighbouringEdgesCoordinateY(Vertex vertex) {
+        int x = vertex.getX();
+        int y = vertex.getY();
+
+        int[] yEdges = new int[3];
+
+        //There are two different cases possible.
+        //two edges on left and one on right: x and y is even or both are uneven
+        //one edge on left and two on right: x or y is uneven and the other is even
+        if ((x % 2 == 0 && y % 2 == 0) || (x % 2 != 0 && y % 2 != 0)) {
+            if (y % 2 == 0) {
+                yEdges[0] = y + (y / 2) - 1;
+                yEdges[1] = y + (y / 2);
+                yEdges[2] = y + (y / 2) + 1;
+            } else {
+                yEdges[0] = y + ((y - 1) / 2);
+                yEdges[1] = y + ((y - 1) / 2) - 1;
+                yEdges[2] = y + ((y - 1) / 2) + 1;
+            }
+        } else {
+            if (y % 2 == 0) {
+                yEdges[0] = y + (y / 2);
+                yEdges[1] = y + (y / 2) - 1;
+                yEdges[2] = y + (y / 2) + 1;
+            } else {
+                yEdges[0] = y + ((y - 1) / 2) - 1;
+                yEdges[1] = y + ((y - 1) / 2);
+                yEdges[2] = y + ((y - 1) / 2) + 1;
+            }
+        }
+
+        return yEdges;
     }
 }
