@@ -23,7 +23,8 @@ public class Message {
         VICTORY,
         ROBBER,
         ROUTE_AND_KNIGHT,
-        DEBUG
+        DEBUG,
+        MAP
     }
     public List<Category> categories;
 

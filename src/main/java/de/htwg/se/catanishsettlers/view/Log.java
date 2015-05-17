@@ -12,6 +12,8 @@ public class Log {
 
     public static void display(Message ...messages) {
 
+        System.out.println("display");
+
         // set default levels if no level was set yet
         if (detailLevel == null) detailLevel = Message.Detail.HIGH;
 

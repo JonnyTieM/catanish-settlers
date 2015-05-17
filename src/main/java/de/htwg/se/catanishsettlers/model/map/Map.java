@@ -2,7 +2,10 @@ package de.htwg.se.catanishsettlers.model.map;
 
 import de.htwg.se.catanishsettlers.model.Config;
 import de.htwg.se.catanishsettlers.model.constructions.Building;
+import de.htwg.se.catanishsettlers.view.IGenerateMessages;
+import de.htwg.se.catanishsettlers.view.Message;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -16,7 +19,7 @@ import java.util.List;
  * http://stackoverflow.com/questions/5040295/data-structure-for-settlers-of-catan-map
  * Created by JonnyTieM on 29.03.2015.
  */
-public final class Map implements IMap {
+public final class Map implements IMap, IGenerateMessages {
     private Field[][] fields;
     private Edge[][] edges;
     private Vertex[][] vertices;
@@ -115,12 +118,20 @@ public final class Map implements IMap {
         int[] x = getEdgesCoordinateX(field);
         int[] y = getEdgesCoordinateY(field);
 
-        edges[1] = this.edges[x[0]][y[0]]; // top
-        edges[2] = this.edges[x[1]][y[1]]; // top right
-        edges[3] = this.edges[x[2]][y[2]]; // bottom right
-        edges[4] = this.edges[x[3]][y[3]]; // bottom
-        edges[5] = this.edges[x[4]][y[4]]; // bottom left
-        edges[6] = this.edges[x[5]][y[5]]; // top left
+        // TODO: remove the following debug lines
+        System.out.println("field: " + field.getX() + ", " + field.getY());
+        for(int i = 0; i < x.length; i++) {
+            System.out.println(" " + x[i] + ", " + y[i]);
+        }
+        // TODO: fix ArrayIndexOutOfBoundsException: 6
+        // hint: Field(x = 0, y = 1) gets Edge #4 (0, 6) ... 6 is out of bounds?
+
+        edges[0] = this.edges[x[0]][y[0]]; // top
+        edges[1] = this.edges[x[1]][y[1]]; // top right
+        edges[2] = this.edges[x[2]][y[2]]; // bottom right
+        edges[3] = this.edges[x[3]][y[3]]; // bottom
+        edges[4] = this.edges[x[4]][y[4]]; // bottom left
+        edges[5] = this.edges[x[5]][y[5]]; // top left
 
         return edges;
     }
@@ -526,4 +537,45 @@ public final class Map implements IMap {
 
         return yEdges;
     }
+
+    public Message[] getMessages() {
+        List<Message> messages = new ArrayList<Message>();
+        System.out.println("test");
+        String text;
+        Message.Detail detail;
+
+        int width = fields.length;
+        int height = fields[0].length;
+
+
+
+        detail = Message.Detail.LOW;
+        for(int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                text = fields[x][y].getType().toString();
+                messages.add(new Message(text, detail, categories));
+                System.out.println("" + x + ", " + y);
+            }
+        }
+
+        /*
+        detail = Message.Detail.MEDIUM;
+        text = getClass().getSimpleName();
+        messages.add(new Message(text, detail, categories));
+
+        detail = Message.Detail.LOW;
+        text = name;
+        messages.add(new Message(text, detail, categories));
+
+        detail = Message.Detail.MEDIUM;
+        text = "(" + getScore() + " points)";
+        messages.add(new Message(text, detail, categories));
+
+        detail = Message.Detail.HIGH;
+        text = System.lineSeparator() + getResources().toString();
+        messages.add(new Message(text, detail, categories));
+*/
+        return messages.toArray(new Message[messages.size()]);
+    }
+
 }

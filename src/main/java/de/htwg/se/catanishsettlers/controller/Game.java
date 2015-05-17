@@ -20,22 +20,24 @@ public final class Game {
     private Stack<Card> cardStack;
     private List<Card> discardPile;
     private Map map;
-    //private List<Field> fields;
 
     private Turn turn;
 
-    public Game() {
-        players = new ArrayList<Player>();
-        //fields = new ArrayList<Field>();
+    public Game(List<Player> players) {
         rnd = new Random();
         cardStack = new Stack<Card>();
         discardPile = new ArrayList<Card>();
         prepareStack();
+        turn = new Turn(players.get(activePlayerIndex));
+        map = new Map();
     }
 
     public Turn getTurn() {
         return turn;
     }
+    public Map getMap() {return map;}
+    public List<Player> getPlayers() {return players;}
+    public Player getActivePlayer() {return players.get(activePlayerIndex);}
 
     private void prepareStack() {
         for (int k = 0; k < Config.KNIGHTS_AMOUNT; k++) {
@@ -71,10 +73,6 @@ public final class Game {
             if (p.getName().equals((name))) return p;
         }
         return null;
-    }
-
-    public Player getActivePlayer() {
-        return players.get(activePlayerIndex);
     }
 
     public Player switchPlayer() {
