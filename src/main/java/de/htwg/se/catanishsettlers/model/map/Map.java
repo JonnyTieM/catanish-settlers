@@ -32,9 +32,9 @@ public final class Map implements IMap, IGenerateMessages {
      * standard Map for catanish Settlers
      */
     private void initStandardMap() {
-        fields = new Field[Config.FIELDS_HEIGHT][Config.FIELDS_WIDTH];
-        edges = new Edge[Config.EDGES_HEIGHT][Config.EDGES_WIDTH];
-        vertices = new Vertex[Config.VERTICES_HEIGHT][Config.VERTICES_WIDTH];
+        fields = new Field[Config.FIELDS_WIDTH][Config.FIELDS_HEIGHT];
+        edges = new Edge[Config.EDGES_WIDTH][Config.EDGES_HEIGHT];
+        vertices = new Vertex[Config.VERTICES_WIDTH][Config.VERTICES_HEIGHT];
 
         createField(2, 0);
         createField(1, 0);
