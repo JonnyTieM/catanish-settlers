@@ -552,8 +552,8 @@ public final class Map implements IMap, IGenerateMessages {
         String text;
         Message.Detail detail;
 
-        int width = fields.length;
-        int height = fields[0].length;
+        int width = Config.FIELDS_WIDTH;
+        int height = Config.FIELDS_HEIGHT;
 
 
 
