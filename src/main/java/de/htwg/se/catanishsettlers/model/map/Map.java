@@ -4,10 +4,7 @@ import de.htwg.se.catanishsettlers.model.Config;
 import de.htwg.se.catanishsettlers.model.constructions.Building;
 import de.htwg.se.catanishsettlers.model.mechanic.Utility;
 import de.htwg.se.catanishsettlers.model.resources.EResource;
-import de.htwg.se.catanishsettlers.view.IGenerateMessages;
-import de.htwg.se.catanishsettlers.view.Message;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -21,7 +18,7 @@ import java.util.List;
  * http://stackoverflow.com/questions/5040295/data-structure-for-settlers-of-catan-map
  * Created by JonnyTieM on 29.03.2015.
  */
-public final class Map implements IMap, IGenerateMessages {
+public final class Map implements IMap {
     private Field[][] fields;
     private Edge[][] edges;
     private Vertex[][] vertices;
@@ -545,50 +542,4 @@ public final class Map implements IMap, IGenerateMessages {
 
         return yEdges;
     }
-
-    public Message[] getMessages() {
-        List<Message> messages = new ArrayList<Message>();
-
-        String text;
-        Message.Detail detail;
-
-        categories.add(Message.Category.MAP);
-
-        int width = Config.FIELDS_WIDTH;
-        int height = Config.FIELDS_HEIGHT;
-
-        detail = Message.Detail.LOW;
-
-        text = "Listing all tiles with types: " + "\n";
-        messages.add(new Message(text, detail, categories));
-
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                if (getField(x, y) != null && getField(x, y).getType() != null) {
-                    text = "(" + x + ", " + y + "): " + getField(x, y).getType().toString() + "\n";
-                    messages.add(new Message(text, detail, categories));
-                }
-            }
-        }
-
-        /*
-        detail = Message.Detail.MEDIUM;
-        text = getClass().getSimpleName();
-        messages.add(new Message(text, detail, categories));
-
-        detail = Message.Detail.LOW;
-        text = name;
-        messages.add(new Message(text, detail, categories));
-
-        detail = Message.Detail.MEDIUM;
-        text = "(" + getScore() + " points)";
-        messages.add(new Message(text, detail, categories));
-
-        detail = Message.Detail.HIGH;
-        text = System.lineSeparator() + getResources().toString();
-        messages.add(new Message(text, detail, categories));
-*/
-        return messages.toArray(new Message[messages.size()]);
-    }
-
 }

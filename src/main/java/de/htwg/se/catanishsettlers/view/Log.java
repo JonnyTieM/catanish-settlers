@@ -57,5 +57,6 @@ public class Log {
             }
             System.out.println(candidates.get(max - 1).text);
         }
+        System.out.println();
     }
 }

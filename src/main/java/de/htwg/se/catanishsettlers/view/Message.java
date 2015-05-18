@@ -24,7 +24,9 @@ public class Message {
         ROBBER,
         ROUTE_AND_KNIGHT,
         DEBUG,
-        MAP
+        MAP,
+        DICE_ROLL,
+        PLAYER
     }
     public List<Category> categories;
 
