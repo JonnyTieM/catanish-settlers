@@ -3,6 +3,7 @@ package de.htwg.se.catanishsettlers;
 import de.htwg.se.catanishsettlers.controller.Game;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
 import de.htwg.se.catanishsettlers.view.Log;
+import de.htwg.se.catanishsettlers.view.Message;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,7 @@ public class CatanishSettlers {
         players.add(new Player("John"));
 
         Game game = new Game(players);
-        System.out.println("main");
+        Log.categories.add(Message.Category.MAP);
         Log.display(game.getMap().getMessages());
     }
 }

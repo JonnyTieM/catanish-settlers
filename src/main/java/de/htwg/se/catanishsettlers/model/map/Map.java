@@ -2,6 +2,8 @@ package de.htwg.se.catanishsettlers.model.map;
 
 import de.htwg.se.catanishsettlers.model.Config;
 import de.htwg.se.catanishsettlers.model.constructions.Building;
+import de.htwg.se.catanishsettlers.model.mechanic.Utility;
+import de.htwg.se.catanishsettlers.model.resources.EResource;
 import de.htwg.se.catanishsettlers.view.IGenerateMessages;
 import de.htwg.se.catanishsettlers.view.Message;
 
@@ -13,7 +15,7 @@ import java.util.List;
  * Map manages the fields, edges and vertices of the board. It knows to which field each vetix or edge belongs.
  * x coordinates start on the left with zero and go up towards the right.
  * y coordinates start on the top with zero and to up towards the bottom.
- * <p>
+ * <p/>
  * Some inspiration for this class is taken from following links:
  * http://www.redblobgames.com/grids/hexagons/
  * http://stackoverflow.com/questions/5040295/data-structure-for-settlers-of-catan-map
@@ -59,8 +61,10 @@ public final class Map implements IMap, IGenerateMessages {
         if (x < 0 || y < 0 || x >= Config.FIELDS_WIDTH || y >= Config.FIELDS_HEIGHT) {
             return;
         }
-        fields[x][y] = new Field(x, y);
-        Field field = fields[x][y];
+        int resourceTypeIndex = Utility.getRandom().nextInt(EResource.values().length);
+        // TODO: replace the last line (random assignment of resource type) with proper assignment.
+        Field field = new Field(EResource.values()[resourceTypeIndex], x, y);
+        fields[x][y] = field;
 
         Edge[] fieldEdges = getEdges(field);
         Vertex[] fieldVertices = getVertices(field);
@@ -122,7 +126,6 @@ public final class Map implements IMap, IGenerateMessages {
         return vertices[x][y];
     }
 
-    @Override
     public Edge[] getEdges(Field field) {
         if (field == null) {
             return null;
@@ -207,7 +210,6 @@ public final class Map implements IMap, IGenerateMessages {
         return returnBuildings;
     }
 
-    @Override
     public Vertex[] getVertices(Field field) {
         if (field == null) {
             return null;
@@ -282,7 +284,6 @@ public final class Map implements IMap, IGenerateMessages {
         return yVertex;
     }
 
-    @Override
     public Field[] getAdjacentFields(Vertex vertex) {
         if (vertex == null) {
             return null;
@@ -383,7 +384,6 @@ public final class Map implements IMap, IGenerateMessages {
         return yFields;
     }
 
-    @Override
     public Vertex[] getNeighbouringVertices(Vertex vertex) {
         if (vertex == null) {
             return null;
@@ -548,22 +548,26 @@ public final class Map implements IMap, IGenerateMessages {
 
     public Message[] getMessages() {
         List<Message> messages = new ArrayList<Message>();
-        System.out.println("test");
+
         String text;
         Message.Detail detail;
+
+        categories.add(Message.Category.MAP);
 
         int width = Config.FIELDS_WIDTH;
         int height = Config.FIELDS_HEIGHT;
 
-
-
         detail = Message.Detail.LOW;
-        for(int x = 0; x < width; x++) {
+
+        text = "Listing all tiles with types: " + "\n";
+        messages.add(new Message(text, detail, categories));
+
+        for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                //TODO: !!!!! Bitte nur mit getField(x, y) auf Felder zugreifen, da in der Funktion gewisse Sicherheitsabfragen vorhanden sind!!!!!!!!!
-                text = fields[x][y].getType().toString();
-                messages.add(new Message(text, detail, categories));
-                System.out.println("" + x + ", " + y);
+                if (getField(x, y) != null && getField(x, y).getType() != null) {
+                    text = "(" + x + ", " + y + "): " + getField(x, y).getType().toString() + "\n";
+                    messages.add(new Message(text, detail, categories));
+                }
             }
         }
 
