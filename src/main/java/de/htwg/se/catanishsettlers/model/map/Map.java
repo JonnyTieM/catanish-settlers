@@ -53,6 +53,9 @@ public final class Map implements IMap {
      * @param y y-Position
      */
     private void createField(int x, int y) {
+        if (x < 0 || y < 0 || x >= Config.FIELDS_WIDTH || y >= Config.FIELDS_HEIGHT) {
+            return;
+        }
         fields[x][y] = new Field(x, y);
         Field field = fields[x][y];
 
@@ -63,15 +66,29 @@ public final class Map implements IMap {
             if (fieldEdges[i] == null) {
                 int xEdge = getEdgesCoordinateX(field)[i];
                 int yEdge = getEdgesCoordinateY(field)[i];
-                edges[xEdge][yEdge] = new Edge(xEdge, yEdge);
+                createEdge(xEdge, yEdge);
             }
 
             if (fieldVertices[i] == null) {
                 int xVertex = getVerticesCoordinateX(field)[i];
                 int yVertex = getVerticesCoordinateY(field)[i];
-                vertices[xVertex][yVertex] = new Vertex(xVertex, yVertex);
+                createVertex(xVertex, yVertex);
             }
         }
+    }
+
+    private void createEdge(int x, int y) {
+        if (x < 0 || y < 0 || x >= Config.EDGES_WIDTH || y >= Config.EDGES_HEIGHT) {
+            return;
+        }
+        edges[x][y] = new Edge(x, y);
+    }
+
+    private void createVertex(int x, int y) {
+        if (x < 0 || y < 0 || x >= Config.VERTICES_WIDTH || y >= Config.VERTICES_HEIGHT) {
+            return;
+        }
+        vertices[x][y] = new Vertex(x, y);
     }
 
     /**
@@ -82,22 +99,21 @@ public final class Map implements IMap {
      * @return Field at given position
      */
     public Field getField(int x, int y) {
-        //TODO: make sure that there happens no out of bounds!
-        if (x < 0 || y < 0) {
+        if (x < 0 || y < 0 || x >= Config.FIELDS_WIDTH || y >= Config.FIELDS_HEIGHT) {
             return null;
         }
         return fields[x][y];
     }
 
     public Edge getEdge(int x, int y) {
-        if (x < 0 || y < 0) {
+        if (x < 0 || y < 0 || x >= Config.EDGES_WIDTH || y >= Config.EDGES_HEIGHT) {
             return null;
         }
         return edges[x][y];
     }
 
     public Vertex getVertex(int x, int y) {
-        if (x < 0 || y < 0) {
+        if (x < 0 || y < 0 || x >= Config.VERTICES_WIDTH || y >= Config.VERTICES_HEIGHT) {
             return null;
         }
         return vertices[x][y];
@@ -115,12 +131,12 @@ public final class Map implements IMap {
         int[] x = getEdgesCoordinateX(field);
         int[] y = getEdgesCoordinateY(field);
 
-        edges[1] = this.edges[x[0]][y[0]]; // top
-        edges[2] = this.edges[x[1]][y[1]]; // top right
-        edges[3] = this.edges[x[2]][y[2]]; // bottom right
-        edges[4] = this.edges[x[3]][y[3]]; // bottom
-        edges[5] = this.edges[x[4]][y[4]]; // bottom left
-        edges[6] = this.edges[x[5]][y[5]]; // top left
+        edges[1] = getEdge(x[0], y[0]); // top
+        edges[2] = getEdge(x[1], y[1]); // top right
+        edges[3] = getEdge(x[2], y[2]); // bottom right
+        edges[4] = getEdge(x[3], y[3]); // bottom
+        edges[5] = getEdge(x[4], y[4]); // bottom left
+        edges[6] = getEdge(x[5], y[5]); // top left
 
         return edges;
     }
@@ -200,12 +216,12 @@ public final class Map implements IMap {
         int[] x = getVerticesCoordinateX(field);
         int[] y = getVerticesCoordinateY(field);
 
-        vertices[0] = this.vertices[x[0]][y[0]]; // top left
-        vertices[1] = this.vertices[x[1]][y[1]]; // top right
-        vertices[2] = this.vertices[x[2]][y[2]]; // middle right
-        vertices[3] = this.vertices[x[3]][y[3]]; // bottom right
-        vertices[4] = this.vertices[x[4]][y[4]]; // bottom left
-        vertices[5] = this.vertices[x[5]][y[5]]; // middle left
+        vertices[0] = getVertex(x[0], y[0]); // top left
+        vertices[1] = getVertex(x[1], y[1]); // top right
+        vertices[2] = getVertex(x[2], y[2]); // middle right
+        vertices[3] = getVertex(x[3], y[3]); // bottom right
+        vertices[4] = getVertex(x[4], y[4]); // bottom left
+        vertices[5] = getVertex(x[5], y[5]); // middle left
 
         return vertices;
     }
