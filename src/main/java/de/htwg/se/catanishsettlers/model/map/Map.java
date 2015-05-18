@@ -552,6 +552,7 @@ public final class Map implements IMap, IGenerateMessages {
         detail = Message.Detail.LOW;
         for(int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
+                //TODO: !!!!! Bitte nur mit getField(x, y) auf Felder zugreifen, da in der Funktion gewisse Sicherheitsabfragen vorhanden sind!!!!!!!!!
                 text = fields[x][y].getType().toString();
                 messages.add(new Message(text, detail, categories));
                 System.out.println("" + x + ", " + y);
