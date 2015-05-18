@@ -131,12 +131,12 @@ public final class Map implements IMap {
         int[] x = getEdgesCoordinateX(field);
         int[] y = getEdgesCoordinateY(field);
 
-        edges[1] = getEdge(x[0], y[0]); // top
-        edges[2] = getEdge(x[1], y[1]); // top right
-        edges[3] = getEdge(x[2], y[2]); // bottom right
-        edges[4] = getEdge(x[3], y[3]); // bottom
-        edges[5] = getEdge(x[4], y[4]); // bottom left
-        edges[6] = getEdge(x[5], y[5]); // top left
+        edges[0] = getEdge(x[0], y[0]); // top
+        edges[1] = getEdge(x[1], y[1]); // top right
+        edges[2] = getEdge(x[2], y[2]); // bottom right
+        edges[3] = getEdge(x[3], y[3]); // bottom
+        edges[4] = getEdge(x[4], y[4]); // bottom left
+        edges[5] = getEdge(x[5], y[5]); // top left
 
         return edges;
     }
