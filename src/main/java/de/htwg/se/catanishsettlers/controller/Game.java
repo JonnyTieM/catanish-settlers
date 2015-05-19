@@ -85,10 +85,7 @@ public final class Game {
     }
 
     public void distributeResources(int dieRoll) {
-        List<Field> productiveFields = new ArrayList<Field>();
-        for (Field field : map.getFields()) {
-            if (field.getTriggerNumber() == dieRoll) productiveFields.add(field);
-        }
+        List<Field> productiveFields = map.getFieldsWithTriggerNumber(dieRoll);
 
         for(Field field : productiveFields) {
             for (Building building : map.getBuildings(field)) {

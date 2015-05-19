@@ -1,11 +1,13 @@
 package de.htwg.se.catanishsettlers.view;
 
 import de.htwg.se.catanishsettlers.model.constructions.Construction;
+import de.htwg.se.catanishsettlers.model.map.Field;
 import de.htwg.se.catanishsettlers.model.map.Map;
 import de.htwg.se.catanishsettlers.model.mechanic.DiceRoll;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -29,13 +31,27 @@ public class MessageFactory {
         switch(usecase) {
             case MAP_OVERVIEW:
                 Map map = (Map)object;
+                Field[][] fields = map.getFields();
+
                 categories.add(Message.Category.MAP);
 
-                text = "Map overview:\n";
+                text = "Map overview:";
                 messages.add(new Message(text, detail, categories));
 
-                text = map.getFields().size() + " tiles";
+                text = map.getFieldsCount() + " tiles\n\n";
                 messages.add(new Message(text, detail, categories));
+
+                for (int row = 0; row < fields.length; row++) {
+                    Field[] fieldRows = fields[row];
+                    if (row % 2 == 1) messages.add(new Message(" ", detail, categories));
+                    for (int col = 0; col < fieldRows.length; col++) {
+                        text =  fields[row][col] == null ? "   " : " " + fields[row][col].getType().toString().charAt(0) + " ";
+                        messages.add(new Message(text, detail, categories));
+                    }
+                    messages.add(new Message("\n\n", detail, categories));
+                }
+
+
                 break;
 
             case DICE_ROLL:

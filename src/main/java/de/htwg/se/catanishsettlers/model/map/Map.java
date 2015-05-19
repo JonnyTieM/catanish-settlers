@@ -298,14 +298,28 @@ public final class Map implements IMap {
         return fields;
     }
 
-    public List<Field> getFields() {
-        List<Field> returnFields = new LinkedList<Field>();
-        for (Field[] fieldRow : fields) {
-            for (Field field : fieldRow) {
-                if (field != null) returnFields.add(field);
+    public Field[][] getFields() {
+        return fields;
+    }
+
+    public List<Field> getFieldsWithTriggerNumber(int triggerNumber) {
+        List<Field> matches = new LinkedList<Field>();
+        for(int x = 0; x < fields.length; x++) {
+            for (int y = 0; y < fields[x].length; y++) {
+                if (fields[x][y] != null && fields[x][y].getTriggerNumber() == triggerNumber) matches.add(fields[x][y]);
             }
         }
-        return returnFields;
+        return matches;
+    }
+
+    public int getFieldsCount() {
+        int count = 0;
+        for(int x = 0; x < fields.length; x++) {
+            for (int y = 0; y < fields[x].length; y++) {
+                if (fields[x][y] != null) count++;
+            }
+        }
+        return count;
     }
 
     /**
