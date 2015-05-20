@@ -51,8 +51,19 @@ public final class ConstructionInspector {
         return possibleCities;
     }
 
-    public static void possibleStreets(Player player, Map map) {
+    public static LinkedList<Edge> possibleStreets(Player player, Map map) {
+        LinkedList<Edge> possibleStreets = new LinkedList<Edge>();
 
+        LinkedList<Edge> edges = map.getEdges();
+
+        while (!edges.isEmpty()) {
+            Edge edge = edges.pop();
+            if (canBuildRoad(player, edge, map)) {
+                possibleStreets.add(edge);
+            }
+        }
+
+        return possibleStreets;
     }
 
     public static boolean canBuildSettlement(Player player, Vertex vertex, Map map) {

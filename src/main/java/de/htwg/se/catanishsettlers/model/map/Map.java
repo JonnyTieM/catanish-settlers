@@ -119,12 +119,40 @@ public final class Map implements IMap {
         return vertices[x][y];
     }
 
+    public List<Field> getFields() {
+        List<Field> returnFields = new LinkedList<Field>();
+        for (Field[] fieldRow : fields) {
+            for (Field field : fieldRow) {
+                if (field != null) returnFields.add(field);
+            }
+        }
+        return returnFields;
+    }
+
+    public LinkedList<Edge> getEdges() {
+        LinkedList<Edge> edges = new LinkedList<Edge>();
+
+        for (int y = 0; y < Config.EDGES_HEIGHT; y++) {
+            for (int x = 0; x < Config.EDGES_WIDTH; x++) {
+                Edge edge = getEdge(x, y);
+                if (edge != null) {
+                    edges.add(edge);
+                }
+            }
+        }
+
+        return edges;
+    }
+
     public LinkedList<Vertex> getVertices() {
         LinkedList<Vertex> vertices = new LinkedList<Vertex>();
 
         for (int y = 0; y < Config.VERTICES_HEIGHT; y++) {
             for (int x = 0; x < Config.VERTICES_WIDTH; x++) {
-                vertices.add(getVertex(x, y));
+                Vertex vertex = getVertex(x, y);
+                if (vertex != null) {
+                    vertices.add(vertex);
+                }
             }
         }
 
@@ -307,16 +335,6 @@ public final class Map implements IMap {
         fields[2] = getField(x[2], y[2]);
 
         return fields;
-    }
-
-    public List<Field> getFields() {
-        List<Field> returnFields = new LinkedList<Field>();
-        for (Field[] fieldRow : fields) {
-            for (Field field : fieldRow) {
-                if (field != null) returnFields.add(field);
-            }
-        }
-        return returnFields;
     }
 
     /**
