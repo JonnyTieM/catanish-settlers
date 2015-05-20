@@ -119,6 +119,18 @@ public final class Map implements IMap {
         return vertices[x][y];
     }
 
+    public LinkedList<Vertex> getVertices() {
+        LinkedList<Vertex> vertices = new LinkedList<Vertex>();
+
+        for (int y = 0; y < Config.VERTICES_HEIGHT; y++) {
+            for (int x = 0; x < Config.VERTICES_WIDTH; x++) {
+                vertices.add(getVertex(x, y));
+            }
+        }
+
+        return vertices;
+    }
+
     @Override
     public Edge[] getEdges(Field field) {
         if (field == null) {

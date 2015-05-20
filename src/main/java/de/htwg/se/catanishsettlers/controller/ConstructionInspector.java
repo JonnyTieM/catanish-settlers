@@ -21,15 +21,34 @@ public final class ConstructionInspector {
     private ConstructionInspector() {
     }
 
-    public static List<Vertex> possibleHouses(Player player, Map map) {
-        List<Vertex> possibleHouses = new LinkedList<Vertex>();
+    public static LinkedList<Vertex> possibleHouses(Player player, Map map) {
+        LinkedList<Vertex> possibleHouses = new LinkedList<Vertex>();
 
+        LinkedList<Vertex> vertices = map.getVertices();
+
+        while (!vertices.isEmpty()) {
+            Vertex vertex = vertices.pop();
+            if (canBuildSettlement(player, vertex, map)) {
+                possibleHouses.add(vertex);
+            }
+        }
 
         return possibleHouses;
     }
 
-    public static void possibleCities(Player player, Map map) {
+    public static LinkedList<Vertex> possibleCities(Player player, Map map) {
+        LinkedList<Vertex> possibleCities = new LinkedList<Vertex>();
 
+        LinkedList<Vertex> vertices = map.getVertices();
+
+        while (!vertices.isEmpty()) {
+            Vertex vertex = vertices.pop();
+            if (canBuildCity(player, vertex, map)) {
+                possibleCities.add(vertex);
+            }
+        }
+
+        return possibleCities;
     }
 
     public static void possibleStreets(Player player, Map map) {
@@ -47,6 +66,7 @@ public final class ConstructionInspector {
 
     /**
      * this returns true if any of the given vertices has a building. One of the vertices having a building is enough that it will return true.
+     *
      * @param vertices these will be checked for buildings
      * @return true if on one of the vertices a building is found. false if there is no building on any given vertex.
      */
@@ -62,7 +82,7 @@ public final class ConstructionInspector {
     private static boolean hasAdjacentStreetOwnedByPlayer(Player player, Vertex vertex, Map map) {
         Edge[] edges = map.getNeighbouringEdges(vertex);
         for (int i = 0; i < edges.length; i++) {
-            if(edges[i] == null) {
+            if (edges[i] == null) {
                 continue;
             }
             Road road = edges[i].getRoad();
@@ -92,7 +112,7 @@ public final class ConstructionInspector {
 
     private static boolean hasVerticesArrayAdjacentStreetOwnedByPlayer(Player player, Vertex[] vertices, Map map) {
         for (int i = 0; i < vertices.length; i++) {
-            if(hasAdjacentStreetOwnedByPlayer(player, vertices[i], map)) {
+            if (hasAdjacentStreetOwnedByPlayer(player, vertices[i], map)) {
                 return true;
             }
         }
