@@ -119,6 +119,46 @@ public final class Map implements IMap {
         return vertices[x][y];
     }
 
+    public List<Field> getFields() {
+        List<Field> returnFields = new LinkedList<Field>();
+        for (Field[] fieldRow : fields) {
+            for (Field field : fieldRow) {
+                if (field != null) returnFields.add(field);
+            }
+        }
+        return returnFields;
+    }
+
+    public LinkedList<Edge> getEdges() {
+        LinkedList<Edge> edges = new LinkedList<Edge>();
+
+        for (int y = 0; y < Config.EDGES_HEIGHT; y++) {
+            for (int x = 0; x < Config.EDGES_WIDTH; x++) {
+                Edge edge = getEdge(x, y);
+                if (edge != null) {
+                    edges.add(edge);
+                }
+            }
+        }
+
+        return edges;
+    }
+
+    public LinkedList<Vertex> getVertices() {
+        LinkedList<Vertex> vertices = new LinkedList<Vertex>();
+
+        for (int y = 0; y < Config.VERTICES_HEIGHT; y++) {
+            for (int x = 0; x < Config.VERTICES_WIDTH; x++) {
+                Vertex vertex = getVertex(x, y);
+                if (vertex != null) {
+                    vertices.add(vertex);
+                }
+            }
+        }
+
+        return vertices;
+    }
+
     @Override
     public Edge[] getEdges(Field field) {
         if (field == null) {
@@ -295,16 +335,6 @@ public final class Map implements IMap {
         fields[2] = getField(x[2], y[2]);
 
         return fields;
-    }
-
-    public List<Field> getFields() {
-        List<Field> returnFields = new LinkedList<Field>();
-        for (Field[] fieldRow : fields) {
-            for (Field field : fieldRow) {
-                if (field != null) returnFields.add(field);
-            }
-        }
-        return returnFields;
     }
 
     /**
@@ -541,5 +571,77 @@ public final class Map implements IMap {
         }
 
         return yEdges;
+    }
+
+    /**
+     * This gives you the two Vertices of the given edge. First the left one and then the right one.
+     *
+     * @param edge The edge you want to know the vertices of
+     * @return Two Vertices, the first is the left one and the second the right one
+     */
+    public Vertex[] getVerticesOfEdge(Edge edge) {
+        if (edge == null) {
+            return null;
+        }
+
+        Vertex[] vertices = new Vertex[2];
+
+        int[] x = getVerticesOfEdgeCoordinateX(edge);
+        int[] y = getVerticesOfEdgeCoordinateY(edge);
+
+        vertices[0] = getVertex(x[0], y[0]);
+        vertices[1] = getVertex(x[0], y[0]);
+
+        return vertices;
+    }
+
+    private int[] getVerticesOfEdgeCoordinateX(Edge edge) {
+        int x = edge.getX();
+        int y = edge.getY();
+
+        int[] xVertices = new int[2];
+
+        xVertices[0] = x;
+
+        if (y % 3 == 0) {
+            xVertices[1] = x + 1;
+        } else {
+            xVertices[1] = x;
+        }
+
+        return xVertices;
+    }
+
+    private int[] getVerticesOfEdgeCoordinateY(Edge edge) {
+        int x = edge.getX();
+        int y = edge.getY();
+
+        int[] yVertices = new int[2];
+
+        if (x % 2 == 0) {
+            if (y % 3 == 0) {
+                yVertices[0] = (y / 3) * 2;
+                yVertices[1] = (y / 3) * 2;
+            } else if ((y - 1) % 3 == 0) {
+                yVertices[0] = (((y - 1) / 3) * 2) + 1;
+                yVertices[1] = (((y - 1) / 3) * 2);
+            } else {
+                yVertices[0] = (((y - 2) / 3) * 2) + 1;
+                yVertices[1] = (((y - 2) / 3) * 2) + 2;
+            }
+        } else {
+            if (y % 3 == 0) {
+                yVertices[0] = (y / 3) * 2 + 1;
+                yVertices[1] = (y / 3) * 2 + 1;
+            } else if ((y - 1) % 3 == 0) {
+                yVertices[0] = (((y - 1) / 3) * 2);
+                yVertices[1] = (((y - 1) / 3) * 2) + 1;
+            } else {
+                yVertices[0] = (((y - 2) / 3) * 2) + 2;
+                yVertices[1] = (((y - 2) / 3) * 2) + 1;
+            }
+        }
+
+        return yVertices;
     }
 }
