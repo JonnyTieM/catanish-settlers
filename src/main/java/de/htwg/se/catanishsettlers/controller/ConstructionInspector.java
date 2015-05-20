@@ -6,6 +6,9 @@ import de.htwg.se.catanishsettlers.model.map.Map;
 import de.htwg.se.catanishsettlers.model.map.Vertex;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * This class has different utility functions for checking whether a player can build certain constructions on
  * certain places and to find possible places where a player can place constructions.
@@ -18,8 +21,11 @@ public final class ConstructionInspector {
     private ConstructionInspector() {
     }
 
-    public static void possibleHouses(Player player, Map map) {
+    public static List<Vertex> possibleHouses(Player player, Map map) {
+        List<Vertex> possibleHouses = new LinkedList<Vertex>();
 
+
+        return possibleHouses;
     }
 
     public static void possibleCities(Player player, Map map) {
@@ -33,7 +39,7 @@ public final class ConstructionInspector {
     public static boolean canBuildSettlement(Player player, Vertex vertex, Map map) {
         Vertex[] vertices = map.getNeighbouringVertices(vertex);
         //check adjacent vertices for buildings and adjacent edges for roads owned by player.
-        if (!hasABuilding(vertices) && hasAdjacentStreetOwnedByPlayer(player, vertex, map) && !vertex.hasBuilding()) {
+        if (vertex != null && !hasABuilding(vertices) && hasAdjacentStreetOwnedByPlayer(player, vertex, map) && !vertex.hasBuilding()) {
             return true;
         }
         return false;
@@ -76,7 +82,20 @@ public final class ConstructionInspector {
     }
 
     public static boolean canBuildRoad(Player player, Edge edge, Map map) {
-        //to be able to build a road, there needs to be an adjacent settlement or road owned by the player
+        //to be able to build a road, there needs to be an adjacent road owned by the player
+        Vertex[] vertices = map.getVerticesOfEdge(edge);
+        if (edge != null && !edge.hasRoad() && hasVerticesArrayAdjacentStreetOwnedByPlayer(player, vertices, map)) {
+            return true;
+        }
+        return false;
+    }
+
+    private static boolean hasVerticesArrayAdjacentStreetOwnedByPlayer(Player player, Vertex[] vertices, Map map) {
+        for (int i = 0; i < vertices.length; i++) {
+            if(hasAdjacentStreetOwnedByPlayer(player, vertices[i], map)) {
+                return true;
+            }
+        }
         return false;
     }
 }
