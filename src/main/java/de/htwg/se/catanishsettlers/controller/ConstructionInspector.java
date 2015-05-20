@@ -46,7 +46,7 @@ public final class ConstructionInspector {
      */
     private static boolean hasABuilding(Vertex[] vertices) {
         for (int i = 0; i < vertices.length; i++) {
-            if (vertices[i].hasBuilding()) {
+            if (vertices[i] != null && vertices[i].hasBuilding()) {
                 return true;
             }
         }
@@ -56,6 +56,9 @@ public final class ConstructionInspector {
     private static boolean hasAdjacentStreetOwnedByPlayer(Player player, Vertex vertex, Map map) {
         Edge[] edges = map.getNeighbouringEdges(vertex);
         for (int i = 0; i < edges.length; i++) {
+            if(edges[i] == null) {
+                continue;
+            }
             Road road = edges[i].getRoad();
             if (road != null && road.getPlayer() == player) {
                 return true;
@@ -66,7 +69,7 @@ public final class ConstructionInspector {
 
     public static boolean canBuildCity(Player player, Vertex vertex, Map map) {
         //to be able to build a city, there needs to be a settlement on this vertex owned by the player
-        if (vertex.hasSettlement() && vertex.getBuilding().getPlayer() == player) {
+        if (vertex != null && vertex.hasSettlement() && vertex.getBuilding().getPlayer() == player) {
             return true;
         }
         return false;
