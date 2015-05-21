@@ -22,7 +22,8 @@ public interface IMap {
     public Vertex[] getVertices(Field field);
 
     /**
-     * This returns all adjacent fields to a vertex. No specific order. This is for example useful for finding out the resources a settlement gets.
+     * This returns all adjacent fields to a vertex. In following order: top left and then clockwise.
+     * This is for example useful for finding out the resources a settlement gets.
      *
      * @param vertex Vertex you want to know the adjacent fields of
      * @return adjacent fields to the vertex
@@ -30,7 +31,7 @@ public interface IMap {
     public Field[] getAdjacentFields(Vertex vertex);
 
     /**
-     * This returns all neighbouring vertices of the given vertex. No specific order.
+     * This returns all neighbouring vertices of the given vertex. In following order: top left and then clockwise.
      * This might be useful for example for checking whether you are allowed to build a settlement on this vertex.
      *
      * @param vertex Vertex you want to know the neighbouring vertices of
