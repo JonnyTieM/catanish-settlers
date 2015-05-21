@@ -590,7 +590,7 @@ public final class Map implements IMap {
         int[] y = getVerticesOfEdgeCoordinateY(edge);
 
         vertices[0] = getVertex(x[0], y[0]);
-        vertices[1] = getVertex(x[0], y[0]);
+        vertices[1] = getVertex(x[1], y[1]);
 
         return vertices;
     }
