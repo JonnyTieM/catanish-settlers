@@ -2,6 +2,7 @@ package de.htwg.se.catanishsettlers.model.map;
 
 import de.htwg.se.catanishsettlers.model.Config;
 import de.htwg.se.catanishsettlers.model.constructions.Building;
+import de.htwg.se.catanishsettlers.model.mechanic.Utility;
 import de.htwg.se.catanishsettlers.model.resources.EResource;
 
 import java.util.LinkedList;
@@ -163,7 +164,6 @@ public final class Map implements IMap {
         return vertices;
     }
 
-    @Override
     public Edge[] getEdges(Field field) {
         if (field == null) {
             return null;
@@ -248,7 +248,6 @@ public final class Map implements IMap {
         return returnBuildings;
     }
 
-    @Override
     public Vertex[] getVertices(Field field) {
         if (field == null) {
             return null;
@@ -323,7 +322,6 @@ public final class Map implements IMap {
         return yVertex;
     }
 
-    @Override
     public Field[] getAdjacentFields(Vertex vertex) {
         if (vertex == null) {
             return null;
@@ -339,6 +337,26 @@ public final class Map implements IMap {
         fields[2] = getField(x[2], y[2]);
 
         return fields;
+    }
+
+    public List<Field> getFieldsWithTriggerNumber(int triggerNumber) {
+        List<Field> matches = new LinkedList<Field>();
+        for(int x = 0; x < fields.length; x++) {
+            for (int y = 0; y < fields[x].length; y++) {
+                if (fields[x][y] != null && fields[x][y].getTriggerNumber() == triggerNumber) matches.add(fields[x][y]);
+            }
+        }
+        return matches;
+    }
+
+    public int getFieldsCount() {
+        int count = 0;
+        for(int x = 0; x < fields.length; x++) {
+            for (int y = 0; y < fields[x].length; y++) {
+                if (fields[x][y] != null) count++;
+            }
+        }
+        return count;
     }
 
     /**
@@ -414,7 +432,6 @@ public final class Map implements IMap {
         return yFields;
     }
 
-    @Override
     public Vertex[] getNeighbouringVertices(Vertex vertex) {
         if (vertex == null) {
             return null;

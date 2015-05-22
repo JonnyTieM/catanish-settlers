@@ -16,6 +16,8 @@ public final class Config {
 
 
     // map config
+    public final static int STANDARD_MAP_EDGE_LENGTH = 3;
+
     public final static int FIELDS_WIDTH = 5;
     public final static int FIELDS_HEIGHT = 5;
 

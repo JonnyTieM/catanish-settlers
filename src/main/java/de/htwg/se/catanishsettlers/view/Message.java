@@ -23,7 +23,10 @@ public class Message {
         VICTORY,
         ROBBER,
         ROUTE_AND_KNIGHT,
-        DEBUG
+        DEBUG,
+        MAP,
+        DICE_ROLL,
+        PLAYER
     }
     public List<Category> categories;
 

@@ -20,22 +20,24 @@ public final class Game {
     private Stack<Card> cardStack;
     private List<Card> discardPile;
     private Map map;
-    //private List<Field> fields;
 
     private Turn turn;
 
-    public Game() {
-        players = new ArrayList<Player>();
-        //fields = new ArrayList<Field>();
+    public Game(List<Player> players) {
         rnd = new Random();
         cardStack = new Stack<Card>();
         discardPile = new ArrayList<Card>();
         prepareStack();
+        turn = new Turn(players.get(activePlayerIndex));
+        map = new Map();
     }
 
     public Turn getTurn() {
         return turn;
     }
+    public Map getMap() {return map;}
+    public List<Player> getPlayers() {return players;}
+    public Player getActivePlayer() {return players.get(activePlayerIndex);}
 
     private void prepareStack() {
         for (int k = 0; k < Config.KNIGHTS_AMOUNT; k++) {
@@ -73,10 +75,6 @@ public final class Game {
         return null;
     }
 
-    public Player getActivePlayer() {
-        return players.get(activePlayerIndex);
-    }
-
     public Player switchPlayer() {
         checkVictory();
 
@@ -87,10 +85,7 @@ public final class Game {
     }
 
     public void distributeResources(int dieRoll) {
-        List<Field> productiveFields = new ArrayList<Field>();
-        for (Field field : map.getFields()) {
-            if (field.getTriggerNumber() == dieRoll) productiveFields.add(field);
-        }
+        List<Field> productiveFields = map.getFieldsWithTriggerNumber(dieRoll);
 
         for(Field field : productiveFields) {
             for (Building building : map.getBuildings(field)) {

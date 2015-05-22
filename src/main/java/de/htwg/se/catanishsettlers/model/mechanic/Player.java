@@ -1,10 +1,7 @@
 package de.htwg.se.catanishsettlers.model.mechanic;
 
-import de.htwg.se.catanishsettlers.controller.Game;
 import de.htwg.se.catanishsettlers.model.Config;
-import de.htwg.se.catanishsettlers.model.constructions.*;
 import de.htwg.se.catanishsettlers.model.resources.ResourceCollection;
-import de.htwg.se.catanishsettlers.view.IGenerateMessages;
 import de.htwg.se.catanishsettlers.view.Message;
 
 import java.util.ArrayList;
@@ -13,7 +10,7 @@ import java.util.List;
 /**
  * Created by Stephan on 31.03.2015.
  */
-public class Player implements IGenerateMessages {
+public class Player {
     private String name = "unnamed";
     private ArrayList<Card> cards;
     private int knightCount, victoryCardsCount;
@@ -117,30 +114,5 @@ public class Player implements IGenerateMessages {
             return true;
         }
         return false;
-    }
-
-    public Message[] getMessages() {
-        List<Message> messages = new ArrayList<Message>();
-
-        String text;
-        Message.Detail detail;
-
-        detail = Message.Detail.MEDIUM;
-        text = getClass().getSimpleName();
-        messages.add(new Message(text, detail, categories));
-
-        detail = Message.Detail.LOW;
-        text = name;
-        messages.add(new Message(text, detail, categories));
-
-        detail = Message.Detail.MEDIUM;
-        text = "(" + getScore() + " points)";
-        messages.add(new Message(text, detail, categories));
-
-        detail = Message.Detail.HIGH;
-        text = System.lineSeparator() + getResources().toString();
-        messages.add(new Message(text, detail, categories));
-
-        return messages.toArray(new Message[messages.size()]);
     }
 }
