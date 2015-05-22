@@ -12,14 +12,12 @@ import java.util.List;
  * Map manages the fields, edges and vertices of the board. It knows to which field each vetix or edge belongs.
  * x coordinates start on the left with zero and go up towards the right.
  * y coordinates start on the top with zero and to up towards the bottom.
- * <p/>
+ * <p>
  * Some inspiration for this class is taken from following links:
  * http://www.redblobgames.com/grids/hexagons/
  * http://stackoverflow.com/questions/5040295/data-structure-for-settlers-of-catan-map
  * Created by JonnyTieM on 29.03.2015.
  */
-// TODO: provide information which kind of hex map we are using. At least 4 styles are possible: http://www.redblobgames.com/grids/hexagons/#coordinates
-
 public final class Map implements IMap {
     private Field[][] fields;
     private Edge[][] edges;
@@ -37,15 +35,18 @@ public final class Map implements IMap {
         edges = new Edge[Config.EDGES_WIDTH][Config.EDGES_HEIGHT];
         vertices = new Vertex[Config.VERTICES_WIDTH][Config.VERTICES_HEIGHT];
 
-        createField(2, 0);
-        createField(1, 0);
-        createField(3, 0);
+        LinkedList<EResource> resources = EResource.getRandomResourceList(4,4,4,3,4);
+        LinkedList<Integer> triggers = TriggerNumberCreator.getRandomTriggerNumbers(2,2,2,2,2,2,2,2,2,1);
+
+        createField(2, 0, resources.pop(), triggers.pop());
+        createField(1, 0, resources.pop(), triggers.pop());
+        createField(3, 0, resources.pop(), triggers.pop());
         for (int x = 0; x <= 4; x++) {
             for (int y = 1; y <= 3; y++) {
-                createField(x, y);
+                createField(x, y, resources.pop(), triggers.pop());
             }
         }
-        createField(2, 4);
+        createField(2, 4, resources.pop(), triggers.pop());
     }
 
     /**
@@ -56,14 +57,12 @@ public final class Map implements IMap {
      * @param x x-Position
      * @param y y-Position
      */
-    private void createField(int x, int y) {
+    private void createField(int x, int y, EResource resource, int trigger) {
         if (x < 0 || y < 0 || x >= Config.FIELDS_WIDTH || y >= Config.FIELDS_HEIGHT) {
             return;
         }
-        int resourceTypeIndex = Utility.getRandom().nextInt(EResource.values().length);
-        // TODO: replace the last line (random assignment of resource type) with proper assignment.
-        Field field = new Field(EResource.values()[resourceTypeIndex], x, y);
-        fields[x][y] = field;
+        fields[x][y] = new Field(x, y, resource, trigger);
+        Field field = fields[x][y];
 
         Edge[] fieldEdges = getEdges(field);
         Vertex[] fieldVertices = getVertices(field);
@@ -125,6 +124,47 @@ public final class Map implements IMap {
         return vertices[x][y];
     }
 
+    public List<Field> getFields() {
+        List<Field> returnFields = new LinkedList<Field>();
+        for (Field[] fieldRow : fields) {
+            for (Field field : fieldRow) {
+                if (field != null) returnFields.add(field);
+            }
+        }
+        return returnFields;
+    }
+
+    public LinkedList<Edge> getEdges() {
+        LinkedList<Edge> edges = new LinkedList<Edge>();
+
+        for (int y = 0; y < Config.EDGES_HEIGHT; y++) {
+            for (int x = 0; x < Config.EDGES_WIDTH; x++) {
+                Edge edge = getEdge(x, y);
+                if (edge != null) {
+                    edges.add(edge);
+                }
+            }
+        }
+
+        return edges;
+    }
+
+    public LinkedList<Vertex> getVertices() {
+        LinkedList<Vertex> vertices = new LinkedList<Vertex>();
+
+        for (int y = 0; y < Config.VERTICES_HEIGHT; y++) {
+            for (int x = 0; x < Config.VERTICES_WIDTH; x++) {
+                Vertex vertex = getVertex(x, y);
+                if (vertex != null) {
+                    vertices.add(vertex);
+                }
+            }
+        }
+
+        return vertices;
+    }
+
+    @Override
     public Edge[] getEdges(Field field) {
         if (field == null) {
             return null;
@@ -209,6 +249,7 @@ public final class Map implements IMap {
         return returnBuildings;
     }
 
+    @Override
     public Vertex[] getVertices(Field field) {
         if (field == null) {
             return null;
@@ -283,6 +324,7 @@ public final class Map implements IMap {
         return yVertex;
     }
 
+    @Override
     public Field[] getAdjacentFields(Vertex vertex) {
         if (vertex == null) {
             return null;
@@ -297,10 +339,6 @@ public final class Map implements IMap {
         fields[1] = getField(x[1], y[1]);
         fields[2] = getField(x[2], y[2]);
 
-        return fields;
-    }
-
-    public Field[][] getFields() {
         return fields;
     }
 
@@ -397,6 +435,7 @@ public final class Map implements IMap {
         return yFields;
     }
 
+    @Override
     public Vertex[] getNeighbouringVertices(Vertex vertex) {
         if (vertex == null) {
             return null;
@@ -557,5 +596,77 @@ public final class Map implements IMap {
         }
 
         return yEdges;
+    }
+
+    /**
+     * This gives you the two Vertices of the given edge. First the left one and then the right one.
+     *
+     * @param edge The edge you want to know the vertices of
+     * @return Two Vertices, the first is the left one and the second the right one
+     */
+    public Vertex[] getVerticesOfEdge(Edge edge) {
+        if (edge == null) {
+            return null;
+        }
+
+        Vertex[] vertices = new Vertex[2];
+
+        int[] x = getVerticesOfEdgeCoordinateX(edge);
+        int[] y = getVerticesOfEdgeCoordinateY(edge);
+
+        vertices[0] = getVertex(x[0], y[0]);
+        vertices[1] = getVertex(x[1], y[1]);
+
+        return vertices;
+    }
+
+    private int[] getVerticesOfEdgeCoordinateX(Edge edge) {
+        int x = edge.getX();
+        int y = edge.getY();
+
+        int[] xVertices = new int[2];
+
+        xVertices[0] = x;
+
+        if (y % 3 == 0) {
+            xVertices[1] = x + 1;
+        } else {
+            xVertices[1] = x;
+        }
+
+        return xVertices;
+    }
+
+    private int[] getVerticesOfEdgeCoordinateY(Edge edge) {
+        int x = edge.getX();
+        int y = edge.getY();
+
+        int[] yVertices = new int[2];
+
+        if (x % 2 == 0) {
+            if (y % 3 == 0) {
+                yVertices[0] = (y / 3) * 2;
+                yVertices[1] = (y / 3) * 2;
+            } else if ((y - 1) % 3 == 0) {
+                yVertices[0] = (((y - 1) / 3) * 2) + 1;
+                yVertices[1] = (((y - 1) / 3) * 2);
+            } else {
+                yVertices[0] = (((y - 2) / 3) * 2) + 1;
+                yVertices[1] = (((y - 2) / 3) * 2) + 2;
+            }
+        } else {
+            if (y % 3 == 0) {
+                yVertices[0] = (y / 3) * 2 + 1;
+                yVertices[1] = (y / 3) * 2 + 1;
+            } else if ((y - 1) % 3 == 0) {
+                yVertices[0] = (((y - 1) / 3) * 2);
+                yVertices[1] = (((y - 1) / 3) * 2) + 1;
+            } else {
+                yVertices[0] = (((y - 2) / 3) * 2) + 2;
+                yVertices[1] = (((y - 2) / 3) * 2) + 1;
+            }
+        }
+
+        return yVertices;
     }
 }
