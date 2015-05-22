@@ -24,12 +24,12 @@ public class CatanishSettlers {
 
         Game game = new Game(players);
         Log.categories.add(Message.Category.MAP);
-        Log.display(MessageFactory.generate(MessageFactory.Usecase.MAP_OVERVIEW, game.getMap()));
-        /*Log.categories.add(Message.Category.DICE_ROLL);
-        Log.display(MessageFactory.generate(MessageFactory.Usecase.DICE_ROLL, new DiceRoll(3)));
+        Log.display(MessageFactory.map_overview(game.getMap()));
+        Log.categories.add(Message.Category.DICE_ROLL);
+        Log.display(MessageFactory.dice_roll(new DiceRoll(3)));
         Log.categories.add(Message.Category.PLAYER);
-        Log.display(MessageFactory.generate(MessageFactory.Usecase.PLAYER, players.get(0)));
+        Log.display(MessageFactory.player(players.get(0)));
         Log.categories.add(Message.Category.CONSTRUCTION);
-        Log.display(MessageFactory.generate(MessageFactory.Usecase.CONSTRUCTION, new Road(players.get(1))));*/
+        Log.display(MessageFactory.construction(new Road(players.get(1))));
     }
 }

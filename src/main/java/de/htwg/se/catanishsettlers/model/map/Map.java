@@ -18,6 +18,8 @@ import java.util.List;
  * http://stackoverflow.com/questions/5040295/data-structure-for-settlers-of-catan-map
  * Created by JonnyTieM on 29.03.2015.
  */
+// TODO: provide information which kind of hex map we are using. At least 4 styles are possible: http://www.redblobgames.com/grids/hexagons/#coordinates
+
 public final class Map implements IMap {
     private Field[][] fields;
     private Edge[][] edges;
