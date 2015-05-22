@@ -2,6 +2,7 @@ package de.htwg.se.catanishsettlers.model.map;
 
 import de.htwg.se.catanishsettlers.model.Config;
 import de.htwg.se.catanishsettlers.model.constructions.Building;
+import de.htwg.se.catanishsettlers.model.resources.EResource;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -33,15 +34,18 @@ public final class Map implements IMap {
         edges = new Edge[Config.EDGES_WIDTH][Config.EDGES_HEIGHT];
         vertices = new Vertex[Config.VERTICES_WIDTH][Config.VERTICES_HEIGHT];
 
-        createField(2, 0);
-        createField(1, 0);
-        createField(3, 0);
+        LinkedList<EResource> resources = EResource.getRandomResourceList(4,4,4,3,4);
+        LinkedList<Integer> triggers = TriggerNumberCreator.getRandomTriggerNumbers(2,2,2,2,2,2,2,2,2,1);
+
+        createField(2, 0, resources.pop(), triggers.pop());
+        createField(1, 0, resources.pop(), triggers.pop());
+        createField(3, 0, resources.pop(), triggers.pop());
         for (int x = 0; x <= 4; x++) {
             for (int y = 1; y <= 3; y++) {
-                createField(x, y);
+                createField(x, y, resources.pop(), triggers.pop());
             }
         }
-        createField(2, 4);
+        createField(2, 4, resources.pop(), triggers.pop());
     }
 
     /**
@@ -52,11 +56,11 @@ public final class Map implements IMap {
      * @param x x-Position
      * @param y y-Position
      */
-    private void createField(int x, int y) {
+    private void createField(int x, int y, EResource resource, int trigger) {
         if (x < 0 || y < 0 || x >= Config.FIELDS_WIDTH || y >= Config.FIELDS_HEIGHT) {
             return;
         }
-        fields[x][y] = new Field(x, y);
+        fields[x][y] = new Field(x, y, resource, trigger);
         Field field = fields[x][y];
 
         Edge[] fieldEdges = getEdges(field);
