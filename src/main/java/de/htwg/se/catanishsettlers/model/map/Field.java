@@ -16,7 +16,7 @@ public class Field extends MapObject {
         //TODO: remove this constructer. Ensure that every field has a proper resource type.
     }
 
-    public Field(EResource sort, int x, int y) {
+    public Field(int x, int y, EResource sort) {
         this(x,y);
 
         if (sort == null) throw new IllegalArgumentException("Only Brick, Lumber, Wool, Grain or Ore allowed");
