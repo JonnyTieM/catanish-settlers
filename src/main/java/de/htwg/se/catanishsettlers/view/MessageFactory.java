@@ -36,7 +36,6 @@ public class MessageFactory {
 
     public static Message[] map_overview(Map map) {
         initialize();
-        Field[][] fields = map.getFields();
 
         categories.add(Message.Category.MAP);
 
@@ -46,27 +45,9 @@ public class MessageFactory {
         text = map.getFieldsCount() + " tiles\n\n";
         messages.add(new Message(text, detail, categories));
 
-        for (int row = 0; row < fields.length; row++) {
-            Field[] fieldRows = fields[row];
-            if (row % 2 == 1) messages.add(new Message(" ", detail, categories));
-            for (int col = 0; col < fieldRows.length; col++) {
-                Field field = fields[row][col];
-                if (field == null) {
-                    text = "   ";
-                } else {
-                    Edge[] edges = map.getEdges(field);
-                    Vertex[] vertices = map.getVertices(field);
+        MapTUI mapTUI = new MapTUI(map);
 
-                    for (int y = 0; y < 3; y++) {
-                        // TODO: build a string consisting of edges, vertices and fields to be shown as one single line
-                    }
-
-                    text = " " + field.getType().toString().charAt(0) + " ";
-                }
-                messages.add(new Message(text, detail, categories));
-            }
-            messages.add(new Message("\n\n", detail, categories));
-        }
+        messages.add(new Message(mapTUI.printMap(), detail, categories));
 
         return messages.toArray(new Message[messages.size()]);
     }

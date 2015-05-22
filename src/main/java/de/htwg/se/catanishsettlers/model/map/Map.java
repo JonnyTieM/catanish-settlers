@@ -164,7 +164,6 @@ public final class Map implements IMap {
         return vertices;
     }
 
-    @Override
     public Edge[] getEdges(Field field) {
         if (field == null) {
             return null;
@@ -249,7 +248,6 @@ public final class Map implements IMap {
         return returnBuildings;
     }
 
-    @Override
     public Vertex[] getVertices(Field field) {
         if (field == null) {
             return null;
@@ -324,7 +322,6 @@ public final class Map implements IMap {
         return yVertex;
     }
 
-    @Override
     public Field[] getAdjacentFields(Vertex vertex) {
         if (vertex == null) {
             return null;
@@ -435,7 +432,6 @@ public final class Map implements IMap {
         return yFields;
     }
 
-    @Override
     public Vertex[] getNeighbouringVertices(Vertex vertex) {
         if (vertex == null) {
             return null;
