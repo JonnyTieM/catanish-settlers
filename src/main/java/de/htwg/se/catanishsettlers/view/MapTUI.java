@@ -5,9 +5,9 @@ import de.htwg.se.catanishsettlers.model.map.Edge;
 import de.htwg.se.catanishsettlers.model.map.Field;
 import de.htwg.se.catanishsettlers.model.map.Map;
 import de.htwg.se.catanishsettlers.model.map.Vertex;
-import de.htwg.se.catanishsettlers.model.resources.EResource;
 
 /**
+ * This class can convert a map to a printable text output.
  * Created by Jonathan on 22.05.2015.
  */
 public class MapTUI {
