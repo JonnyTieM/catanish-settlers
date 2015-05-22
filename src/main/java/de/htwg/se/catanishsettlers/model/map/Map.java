@@ -35,17 +35,17 @@ public final class Map implements IMap {
         vertices = new Vertex[Config.VERTICES_WIDTH][Config.VERTICES_HEIGHT];
 
         LinkedList<EResource> resources = EResource.getRandomResourceList(4,4,4,3,4);
-        LinkedList<Integer> triggers;
+        LinkedList<Integer> triggers = TriggerNumberCreator.getRandomTriggerNumbers(2,2,2,2,2,2,2,2,2,1);
 
-        createField(2, 0, resources.pop());
-        createField(1, 0, resources.pop());
-        createField(3, 0, resources.pop());
+        createField(2, 0, resources.pop(), triggers.pop());
+        createField(1, 0, resources.pop(), triggers.pop());
+        createField(3, 0, resources.pop(), triggers.pop());
         for (int x = 0; x <= 4; x++) {
             for (int y = 1; y <= 3; y++) {
-                createField(x, y, resources.pop());
+                createField(x, y, resources.pop(), triggers.pop());
             }
         }
-        createField(2, 4, resources.pop());
+        createField(2, 4, resources.pop(), triggers.pop());
     }
 
     /**
@@ -56,11 +56,11 @@ public final class Map implements IMap {
      * @param x x-Position
      * @param y y-Position
      */
-    private void createField(int x, int y, EResource resource) {
+    private void createField(int x, int y, EResource resource, int trigger) {
         if (x < 0 || y < 0 || x >= Config.FIELDS_WIDTH || y >= Config.FIELDS_HEIGHT) {
             return;
         }
-        fields[x][y] = new Field(x, y, resource);
+        fields[x][y] = new Field(x, y, resource, trigger);
         Field field = fields[x][y];
 
         Edge[] fieldEdges = getEdges(field);

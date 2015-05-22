@@ -11,16 +11,12 @@ public class Field extends MapObject {
     private EResource sort;
     private int triggerNumber;
 
-    public Field(int x, int y) {
+    public Field(int x, int y, EResource sort, int trigger) {
         super(x, y);
-        //TODO: remove this constructer. Ensure that every field has a proper resource type.
-    }
-
-    public Field(int x, int y, EResource sort) {
-        this(x,y);
 
         if (sort == null) throw new IllegalArgumentException("Only Brick, Lumber, Wool, Grain or Ore allowed");
         this.sort = sort;
+        triggerNumber = trigger;
     }
 
     public EResource getType() {
