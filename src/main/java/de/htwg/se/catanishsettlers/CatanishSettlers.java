@@ -4,6 +4,7 @@ import de.htwg.se.catanishsettlers.controller.Game;
 import de.htwg.se.catanishsettlers.model.constructions.Road;
 import de.htwg.se.catanishsettlers.model.mechanic.DiceRoll;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
+import de.htwg.se.catanishsettlers.view.GUI;
 import de.htwg.se.catanishsettlers.view.Log;
 import de.htwg.se.catanishsettlers.view.Message;
 import de.htwg.se.catanishsettlers.view.MessageFactory;
@@ -31,5 +32,7 @@ public class CatanishSettlers {
         Log.display(MessageFactory.player(players.get(0)));
         Log.categories.add(Message.Category.CONSTRUCTION);
         Log.display(MessageFactory.construction(new Road(players.get(1))));
+
+        GUI.main(args);
     }
 }
