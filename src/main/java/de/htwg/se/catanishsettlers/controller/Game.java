@@ -1,5 +1,7 @@
 package de.htwg.se.catanishsettlers.controller;
 
+import de.htwg.se.catanishsettlers.controller.states.PreDiceRollState;
+import de.htwg.se.catanishsettlers.controller.states.PreparationState;
 import de.htwg.se.catanishsettlers.model.Config;
 import de.htwg.se.catanishsettlers.model.constructions.Building;
 import de.htwg.se.catanishsettlers.model.mechanic.Card;
@@ -21,20 +23,24 @@ public final class Game {
     private List<Card> discardPile;
     private Map map;
 
-    private Turn turn;
+    private IGameState state;
+    //private Turn turn;
 
     public Game(List<Player> players) {
         rnd = new Random();
         cardStack = new Stack<Card>();
         discardPile = new ArrayList<Card>();
         prepareStack();
-        turn = new Turn(players.get(activePlayerIndex));
+        //turn = new Turn(players.get(activePlayerIndex));
+        state = new PreparationState();
         map = new Map();
     }
 
-    public Turn getTurn() {
+/*    public Turn getTurn() {
         return turn;
-    }
+    } */
+
+    public void setState(IGameState state) { this.state = state; }
     public Map getMap() {return map;}
     public List<Player> getPlayers() {return players;}
     public Player getActivePlayer() {return players.get(activePlayerIndex);}
@@ -80,7 +86,8 @@ public final class Game {
 
         if (++activePlayerIndex >= players.size()) activePlayerIndex = 0;
 
-        turn = new Turn(getActivePlayer());
+        //turn = new Turn(getActivePlayer());
+        state = new PreDiceRollState();
         return getActivePlayer();
     }
 
