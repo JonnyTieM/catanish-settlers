@@ -4,10 +4,10 @@ import de.htwg.se.catanishsettlers.controller.Game;
 import de.htwg.se.catanishsettlers.model.constructions.Road;
 import de.htwg.se.catanishsettlers.model.mechanic.DiceRoll;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
-import de.htwg.se.catanishsettlers.view.GUI;
 import de.htwg.se.catanishsettlers.view.Log;
 import de.htwg.se.catanishsettlers.view.Message;
 import de.htwg.se.catanishsettlers.view.MessageFactory;
+import de.htwg.se.catanishsettlers.view.gui.GUIFrame;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +24,7 @@ public class CatanishSettlers {
         players.add(new Player("John"));
 
         Game game = new Game(players);
+
         Log.categories.add(Message.Category.MAP);
         Log.display(MessageFactory.map_overview(game.getMap()));
         Log.categories.add(Message.Category.DICE_ROLL);
@@ -33,6 +34,7 @@ public class CatanishSettlers {
         Log.categories.add(Message.Category.CONSTRUCTION);
         Log.display(MessageFactory.construction(new Road(players.get(1))));
 
-        GUI.main(args);
+        GUIFrame guiFrame = new GUIFrame();
+        guiFrame.drawMap(game.getMap());
     }
 }
