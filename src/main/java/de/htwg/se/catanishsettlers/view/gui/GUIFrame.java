@@ -36,6 +36,7 @@ public class GUIFrame extends JFrame {
         statusSplitPane.setRightComponent(statusPanel);
         add(statusSplitPane);
 
+        setSize(600, 400);
         setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Catanish Settlers");

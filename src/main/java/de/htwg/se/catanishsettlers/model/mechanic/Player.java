@@ -4,6 +4,7 @@ import de.htwg.se.catanishsettlers.model.Config;
 import de.htwg.se.catanishsettlers.model.resources.ResourceCollection;
 import de.htwg.se.catanishsettlers.view.Message;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +16,7 @@ public class Player {
     private ArrayList<Card> cards;
     private int knightCount, victoryCardsCount;
     private ResourceCollection resources;
+    public Color color;
 
     public int settlements, cities, roads;
 
