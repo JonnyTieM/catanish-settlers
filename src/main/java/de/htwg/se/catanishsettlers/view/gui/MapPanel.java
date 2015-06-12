@@ -1,9 +1,11 @@
 package de.htwg.se.catanishsettlers.view.gui;
 
+import com.sun.javafx.css.Size;
 import de.htwg.se.catanishsettlers.model.map.Edge;
 import de.htwg.se.catanishsettlers.model.map.Field;
 import de.htwg.se.catanishsettlers.model.map.Map;
 import de.htwg.se.catanishsettlers.model.map.Vertex;
+import de.htwg.se.catanishsettlers.model.resources.EResource;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,9 +16,11 @@ import java.util.List;
  */
 public class MapPanel extends JPanel {
 
-    private double scale = 20;
-    private int padding = 20;
-    private Map map;
+    //private final double scale = 20;
+    private final int padding = 200;
+    private final Map map;
+    private final int width = 21;
+    private final int height = 10;
 
     public MapPanel(Map map) {
         this.map = map;
@@ -24,18 +28,52 @@ public class MapPanel extends JPanel {
 
     public void paint(Graphics g){
         if (map == null) return;
-        List<Vertex> vertices = map.getVertices();
-        for (Vertex vertex : vertices) {
-            int x = padding + (int)(vertex.getX() * scale);
-            int y = padding + (int)(vertex.getY() * scale);
-            g.drawOval(x, y, 2, 2);
-        }
 
-        List<Edge> edges = map.getEdges();
-        for (Edge edge : edges) {
-            int x1 = padding + (int)(edge.getX() * scale);
-            int y1 = padding + (int)(edge.getY() * scale);
-            //TODO: get x2, y2
+        List<Field> fields = map.getFields();
+        int maxX = 0;
+        int maxY = 0;
+        for(Field field : fields) {
+            if (field.getX() > maxX) maxX = field.getX();
+            if (field.getY() > maxY) maxY = field.getY();
+        }
+        int scaleX = getWidth() / maxX;
+        int scaleY = getHeight() / maxY;
+        int scale = Math.min(scaleX, scaleY) / fields.size();
+
+        for(Field field : fields) {
+            int midX = padding + field.getX() * width * scale;
+            int midY = padding + field.getY() * height * scale;
+
+            int[] vx = new int[6];
+            int[] vy = new int[6];
+            Point[] vectors = {new Point(-width, 0), new Point(-height, -height), new Point(+height, -height),
+                               new Point(+width, 0), new Point(+height, +height), new Point(-height, +height)};
+            Point[] vertices = new Point[6];
+            for (int i = 0; i < 6; i++) {
+                int x = midX + vectors[i].x;
+                int y = midY + vectors[i].y;
+                vx[i] = x;
+                vy[i] = y;
+                vertices[i] = new Point(x, y);
+            }
+
+            Color color = Color.MAGENTA;
+            switch(field.getType()) {
+                case BRICK: color = Color.ORANGE;
+                    break;
+                case LUMBER: color = Color.GREEN;
+                    break;
+                case WOOL: color = Color.LIGHT_GRAY;
+                    break;
+                case GRAIN: color = Color.YELLOW;
+                    break;
+                case ORE: color = Color.BLACK;
+                    break;
+            }
+            g.setColor(color);
+            g.fillPolygon(vx, vy, 6);
+            g.setColor(Color.GRAY);
+            g.drawString(String.valueOf(field.getTriggerNumber()), midX, midY);
         }
     }
 
