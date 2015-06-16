@@ -1,6 +1,7 @@
 package de.htwg.se.catanishsettlers.model.map;
 
 import de.htwg.se.catanishsettlers.model.constructions.Building;
+import de.htwg.se.catanishsettlers.model.constructions.City;
 import de.htwg.se.catanishsettlers.model.constructions.Settlement;
 
 /**
@@ -19,6 +20,12 @@ public class Vertex extends MapObject {
     public boolean hasBuilding() { return building != null; }
     public boolean hasSettlement() {
         if (building != null && building instanceof Settlement) {
+            return true;
+        }
+        return false;
+    }
+    public boolean hasCity() {
+        if (building != null && building instanceof City) {
             return true;
         }
         return false;
