@@ -1,9 +1,13 @@
 package de.htwg.se.catanishsettlers.controller;
 
+import de.htwg.se.catanishsettlers.controller.states.PostDiceRollState;
 import de.htwg.se.catanishsettlers.controller.states.PreDiceRollState;
 import de.htwg.se.catanishsettlers.controller.states.PreparationState;
 import de.htwg.se.catanishsettlers.model.Config;
 import de.htwg.se.catanishsettlers.model.constructions.Building;
+import de.htwg.se.catanishsettlers.model.constructions.Construction;
+import de.htwg.se.catanishsettlers.model.map.Edge;
+import de.htwg.se.catanishsettlers.model.map.Vertex;
 import de.htwg.se.catanishsettlers.model.mechanic.Card;
 import de.htwg.se.catanishsettlers.model.map.Field;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
@@ -41,11 +45,25 @@ public final class Game {
         return turn;
     } */
 
-    public void setState(IGameState state) { this.state = state; }
-    public void nextPhase() {state.nextState(this);}
-    public Map getMap() {return map;}
-    public List<Player> getPlayers() {return players;}
-    public Player getActivePlayer() {return players.get(activePlayerIndex);}
+    public void setState(IGameState state) {
+        this.state = state;
+    }
+
+    public void nextPhase() {
+        state.nextState(this);
+    }
+
+    public Map getMap() {
+        return map;
+    }
+
+    public List<Player> getPlayers() {
+        return players;
+    }
+
+    public Player getActivePlayer() {
+        return players.get(activePlayerIndex);
+    }
 
     private void prepareStack() {
         for (int k = 0; k < Config.KNIGHTS_AMOUNT; k++) {
@@ -77,7 +95,7 @@ public final class Game {
     }
 
     public Player getPlayer(String name) {
-        for(Player p : players) {
+        for (Player p : players) {
             if (p.getName().equals((name))) return p;
         }
         return null;
@@ -93,10 +111,38 @@ public final class Game {
         return getActivePlayer();
     }
 
+    public boolean buildSettlement(int x, int y) {
+        if (!isBuildingPhase()) {
+            return false;
+        }
+        Vertex vertex = map.getVertex(x, y);
+        return ConstructionRealizer.buildSettlement(getActivePlayer(), vertex, map);
+    }
+
+    public boolean buildCity(int x, int y) {
+        if (!isBuildingPhase()) {
+            return false;
+        }
+        Vertex vertex = map.getVertex(x, y);
+        return ConstructionRealizer.buildCity(getActivePlayer(), vertex, map);
+    }
+
+    public boolean buildRoad(int x, int y) {
+        if (!isBuildingPhase()) {
+            return false;
+        }
+        Edge edge = map.getEdge(x, y);
+        return ConstructionRealizer.buildRoad(getActivePlayer(), edge, map);
+    }
+
+    private boolean isBuildingPhase() {
+        return state instanceof PostDiceRollState;
+    }
+
     public void distributeResources(int dieRoll) {
         List<Field> productiveFields = map.getFieldsWithTriggerNumber(dieRoll);
 
-        for(Field field : productiveFields) {
+        for (Field field : productiveFields) {
             for (Building building : map.getBuildings(field)) {
                 ResourceCollection yield = new ResourceCollection();
                 yield.add(field.getType(), building.getYield());
