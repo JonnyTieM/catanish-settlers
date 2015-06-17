@@ -8,6 +8,7 @@ import de.htwg.se.catanishsettlers.controller.IGameState;
  */
 public class PostDiceRollState implements IGameState {
     public void nextState(Game game) {
+        game.switchPlayer();
         game.setState(new PreDiceRollState());
     }
 }

@@ -23,6 +23,7 @@ public final class Game {
     private List<Card> discardPile;
     private Map map;
 
+    private int lastRolledDiceNumber;
     private IGameState state;
     //private Turn turn;
 
@@ -41,6 +42,7 @@ public final class Game {
     } */
 
     public void setState(IGameState state) { this.state = state; }
+    public void nextPhase() {state.nextState(this);}
     public Map getMap() {return map;}
     public List<Player> getPlayers() {return players;}
     public Player getActivePlayer() {return players.get(activePlayerIndex);}
@@ -87,7 +89,7 @@ public final class Game {
         if (++activePlayerIndex >= players.size()) activePlayerIndex = 0;
 
         //turn = new Turn(getActivePlayer());
-        state = new PreDiceRollState();
+
         return getActivePlayer();
     }
 
@@ -119,5 +121,13 @@ public final class Game {
         } else {
             throw new ArrayIndexOutOfBoundsException(); // attempt to draw a card from empty stack
         }
+    }
+
+    public int getLastRolledDiceNumber() {
+        return lastRolledDiceNumber;
+    }
+
+    public void setLastRolledDiceNumber(int lastRolledDiceNumber) {
+        this.lastRolledDiceNumber = lastRolledDiceNumber;
     }
 }
