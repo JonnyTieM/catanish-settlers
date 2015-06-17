@@ -1,11 +1,7 @@
 package de.htwg.se.catanishsettlers.controller;
 
-import de.htwg.se.catanishsettlers.controller.states.PostDiceRollState;
-import de.htwg.se.catanishsettlers.controller.states.PreDiceRollState;
-import de.htwg.se.catanishsettlers.controller.states.PreparationState;
 import de.htwg.se.catanishsettlers.model.Config;
 import de.htwg.se.catanishsettlers.model.constructions.Building;
-import de.htwg.se.catanishsettlers.model.constructions.Construction;
 import de.htwg.se.catanishsettlers.model.map.Edge;
 import de.htwg.se.catanishsettlers.model.map.Vertex;
 import de.htwg.se.catanishsettlers.model.mechanic.Card;
@@ -45,7 +41,7 @@ public final class Game {
         return turn;
     } */
 
-    public void setState(IGameState state) {
+    protected void setState(IGameState state) {
         this.state = state;
     }
 
@@ -101,7 +97,7 @@ public final class Game {
         return null;
     }
 
-    public Player switchPlayer() {
+    protected Player switchPlayer() {
         checkVictory();
 
         if (++activePlayerIndex >= players.size()) activePlayerIndex = 0;
@@ -139,7 +135,7 @@ public final class Game {
         return state instanceof PostDiceRollState;
     }
 
-    public void distributeResources(int dieRoll) {
+    protected void distributeResources(int dieRoll) {
         List<Field> productiveFields = map.getFieldsWithTriggerNumber(dieRoll);
 
         for (Field field : productiveFields) {

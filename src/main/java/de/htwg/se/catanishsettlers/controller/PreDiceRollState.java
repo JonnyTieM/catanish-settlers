@@ -1,7 +1,5 @@
-package de.htwg.se.catanishsettlers.controller.states;
+package de.htwg.se.catanishsettlers.controller;
 
-import de.htwg.se.catanishsettlers.controller.Game;
-import de.htwg.se.catanishsettlers.controller.IGameState;
 import de.htwg.se.catanishsettlers.model.mechanic.DiceRoll;
 
 /**
