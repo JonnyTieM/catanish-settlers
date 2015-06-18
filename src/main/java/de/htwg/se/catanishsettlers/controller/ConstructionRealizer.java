@@ -14,7 +14,8 @@ import de.htwg.se.catanishsettlers.model.resources.ResourceCollection;
  */
 public final class ConstructionRealizer {
 
-    private ConstructionRealizer() {}   // cannot be initialized
+    private ConstructionRealizer() {
+    }   // cannot be initialized
 
     public static boolean buildSettlement(Player player, Vertex vertex, Map map) {
         ResourceCollection cost = Settlement.COST;
@@ -48,6 +49,21 @@ public final class ConstructionRealizer {
             edge.buildRoad(road);
             player.payCost(cost);
             player.roads--;
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean buildFirstSettlementWithRoad(Player player, Vertex vertex, Edge edge, Map map) {
+        if (ConstructionInspector.canBuildFirstSettlementWithRoad(player, vertex, edge, map)) {
+            Settlement settlement = new Settlement(player);
+            vertex.placeBuilding(settlement);
+            player.settlements--;
+
+            Road road = new Road(player);
+            edge.buildRoad(road);
+            player.roads--;
+
             return true;
         }
         return false;

@@ -129,4 +129,20 @@ public final class ConstructionInspector {
         }
         return false;
     }
+
+    public static boolean canBuildFirstSettlementWithRoad(Player player, Vertex vertex, Edge edge, Map map) {
+        Vertex[] vertices = map.getNeighbouringVertices(vertex);
+        if (vertex != null && edge != null && !hasABuilding(vertices) && !vertex.hasBuilding() && !edge.hasRoad() && vertexAndEdgeAreNeighbours(vertex, edge, map)) {
+            return true;
+        }
+        return false;
+    }
+
+    private static boolean vertexAndEdgeAreNeighbours(Vertex vertex, Edge edge, Map map) {
+        Vertex[] vertices = map.getVerticesOfEdge(edge);
+        if (vertices[0].equals(vertex) || vertices[1].equals(vertex)) {
+            return true;
+        }
+        return false;
+    }
 }

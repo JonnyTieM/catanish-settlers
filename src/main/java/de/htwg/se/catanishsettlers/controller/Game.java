@@ -2,6 +2,8 @@ package de.htwg.se.catanishsettlers.controller;
 
 import de.htwg.se.catanishsettlers.model.Config;
 import de.htwg.se.catanishsettlers.model.constructions.Building;
+import de.htwg.se.catanishsettlers.model.map.Edge;
+import de.htwg.se.catanishsettlers.model.map.Vertex;
 import de.htwg.se.catanishsettlers.model.mechanic.Card;
 import de.htwg.se.catanishsettlers.model.map.Field;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
@@ -21,23 +23,44 @@ public final class Game {
     private List<Card> discardPile;
     private Map map;
 
-    private Turn turn;
+    private int lastRolledDiceNumber;
+    private IGameState state;
+    //private Turn turn;
 
     public Game(List<Player> players) {
         rnd = new Random();
         cardStack = new Stack<Card>();
         discardPile = new ArrayList<Card>();
         prepareStack();
-        turn = new Turn(players.get(activePlayerIndex));
+        //turn = new Turn(players.get(activePlayerIndex));
+        state = new PreparationState();
         map = new Map();
+        activePlayerIndex = 0;
     }
 
-    public Turn getTurn() {
+/*    public Turn getTurn() {
         return turn;
+    } */
+
+    protected void setState(IGameState state) {
+        this.state = state;
     }
-    public Map getMap() {return map;}
-    public List<Player> getPlayers() {return players;}
-    public Player getActivePlayer() {return players.get(activePlayerIndex);}
+
+    public void nextPhase() {
+        state.nextState(this);
+    }
+
+    public Map getMap() {
+        return map;
+    }
+
+    public List<Player> getPlayers() {
+        return players;
+    }
+
+    public Player getActivePlayer() {
+        return players.get(activePlayerIndex);
+    }
 
     private void prepareStack() {
         for (int k = 0; k < Config.KNIGHTS_AMOUNT; k++) {
@@ -59,6 +82,9 @@ public final class Game {
     }
 
     public Player createPlayer(String name) {
+        if (!isPreparationPhase()) {
+            return null;
+        }
         Player newPlayer = new Player(name);
         players.add(newPlayer);
         return newPlayer;
@@ -69,25 +95,67 @@ public final class Game {
     }
 
     public Player getPlayer(String name) {
-        for(Player p : players) {
+        for (Player p : players) {
             if (p.getName().equals((name))) return p;
         }
         return null;
     }
 
-    public Player switchPlayer() {
+    protected Player switchPlayer() {
         checkVictory();
 
         if (++activePlayerIndex >= players.size()) activePlayerIndex = 0;
 
-        turn = new Turn(getActivePlayer());
+        //turn = new Turn(getActivePlayer());
+
         return getActivePlayer();
     }
 
-    public void distributeResources(int dieRoll) {
-        List<Field> productiveFields = map.getFieldsWithTriggerNumber(dieRoll);
+    public boolean buildFirstSettlementWithRoad(Player player, int xVertex, int yVertex, int xEdge, int yEdge) {
+        if (!isPreparationPhase()) {
+            return false;
+        }
+        Vertex vertex = map.getVertex(xVertex, yVertex);
+        Edge edge = map.getEdge(xEdge, yEdge);
+        return ConstructionRealizer.buildFirstSettlementWithRoad(player, vertex, edge, map);
+    }
 
-        for(Field field : productiveFields) {
+    public boolean buildSettlement(int x, int y) {
+        if (!isBuildingPhase()) {
+            return false;
+        }
+        Vertex vertex = map.getVertex(x, y);
+        return ConstructionRealizer.buildSettlement(getActivePlayer(), vertex, map);
+    }
+
+    public boolean buildCity(int x, int y) {
+        if (!isBuildingPhase()) {
+            return false;
+        }
+        Vertex vertex = map.getVertex(x, y);
+        return ConstructionRealizer.buildCity(getActivePlayer(), vertex, map);
+    }
+
+    public boolean buildRoad(int x, int y) {
+        if (!isBuildingPhase()) {
+            return false;
+        }
+        Edge edge = map.getEdge(x, y);
+        return ConstructionRealizer.buildRoad(getActivePlayer(), edge, map);
+    }
+
+    private boolean isBuildingPhase() {
+        return state instanceof PostDiceRollState;
+    }
+
+    private boolean isPreparationPhase() {
+        return state instanceof PreparationState;
+    }
+
+    protected void distributeResources(int diceRoll) {
+        List<Field> productiveFields = map.getFieldsWithTriggerNumber(diceRoll);
+
+        for (Field field : productiveFields) {
             for (Building building : map.getBuildings(field)) {
                 ResourceCollection yield = new ResourceCollection();
                 yield.add(field.getType(), building.getYield());
@@ -112,5 +180,13 @@ public final class Game {
         } else {
             throw new ArrayIndexOutOfBoundsException(); // attempt to draw a card from empty stack
         }
+    }
+
+    public int getLastRolledDiceNumber() {
+        return lastRolledDiceNumber;
+    }
+
+    public void setLastRolledDiceNumber(int lastRolledDiceNumber) {
+        this.lastRolledDiceNumber = lastRolledDiceNumber;
     }
 }
