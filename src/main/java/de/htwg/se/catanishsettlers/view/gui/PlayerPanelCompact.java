@@ -12,5 +12,7 @@ public class PlayerPanelCompact extends PlayerPanelAbstract {
 
     public PlayerPanelCompact(Player player) {
         super(player);
+
+        add(new Label("Resources: " + player.getResources().getTotal()));
     }
 }

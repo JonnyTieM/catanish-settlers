@@ -148,6 +148,10 @@ public class ResourceCollection {
         return this;
     }
 
+    public int getTotal() {
+        return getBrick() + getLumber() + getWool() + getGrain() + getOre();
+    }
+
 //    public ResourceCollection add(ResourceCollection... additions) {        // add collection(s)
 //        for (ResourceCollection resources : additions) add(resources);
 //        return this;

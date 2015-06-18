@@ -13,16 +13,12 @@ import java.awt.event.ActionListener;
 public class StatusPanel extends JPanel {
 
     public StatusPanel() {
-        JButton switchButton = new JButton("Switch player (just a test)");
+        JButton switchButton = new JButton("End turn");
         switchButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
                 CatanishSettlers.game.switchPlayer();
             }
         });
         add(switchButton);
-    }
-
-    public void paint(Graphics g) {
-
     }
 }

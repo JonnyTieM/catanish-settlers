@@ -68,14 +68,8 @@ public class CatanishSettlers {
         List<Vertex> vertices = game.getMap().getVertices();
         List<Edge> edges = game.getMap().getEdges();
 
-        edges.get(15).buildRoad(new Road(hans));
-
-        //edges.get(11).buildRoad(new Road(hans));
-        //edges.get(27).buildRoad(new Road(susi));
-        //edges.get(38).buildRoad(new Road(john));
-
-
-        ConstructionRealizer.buildSettlement(players.get(0), vertices.get(0), game.getMap());
+        edges.get(16).buildRoad(new Road(hans));
+        ConstructionRealizer.buildSettlement(hans, vertices.get(20), game.getMap());
 
         if (mode == Mode.GUI) {
             PlayersPanel playersPanel = new PlayersPanel(game.getPlayers().getPlayers());
