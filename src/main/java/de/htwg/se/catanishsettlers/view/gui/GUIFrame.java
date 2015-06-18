@@ -3,44 +3,36 @@ package de.htwg.se.catanishsettlers.view.gui;
 import de.htwg.se.catanishsettlers.model.map.Map;
 
 import javax.swing.*;
-import java.awt.*;
-import java.nio.MappedByteBuffer;
+import java.util.Observable;
 
 /**
  * Created by Stephan on 11.06.2015.
  */
 public class GUIFrame extends JFrame {
 
-    private MapPanel mapPanel;
-    private PlayerPanel[] playerPanels;
-    private StatusPanel statusPanel;
-    private JSplitPane playersSplitPane, mapSplitPane, statusSplitPane;
+    private StatusPanel statusPanel = new StatusPanel();
+    private JSplitPane sPaneStatusAndMap, sPaneStatusMapAndPlayers;
 
-    public GUIFrame() {
-        mapPanel = new MapPanel(null);
-        playerPanels = new PlayerPanel[2];
-        for (int i = 0; i < 2; i++) playerPanels[i] = new PlayerPanel(null);
-        statusPanel = new StatusPanel();
+    public GUIFrame(PlayersPanel playersPanel, MapPanel mapPanel) {
+        //playersPanel = new PlayersPanel(null, null);
+        //statusPanel = new StatusPanel();
 
-        playersSplitPane = initSplitPaneDefaultSettings(JSplitPane.VERTICAL_SPLIT);
-        playersSplitPane.setResizeWeight(0.5);
-        playersSplitPane.setLeftComponent(playerPanels[0]);
-        playersSplitPane.setRightComponent(playerPanels[1]);
+        sPaneStatusAndMap = initSplitPaneDefaultSettings(JSplitPane.VERTICAL_SPLIT);
+        sPaneStatusAndMap.setLeftComponent(mapPanel);
+        sPaneStatusAndMap.setRightComponent(statusPanel);
 
-        mapSplitPane = initSplitPaneDefaultSettings(JSplitPane.HORIZONTAL_SPLIT);
-        mapSplitPane.setLeftComponent(mapPanel);
-        mapSplitPane.setRightComponent(playersSplitPane);
+        sPaneStatusMapAndPlayers = initSplitPaneDefaultSettings(JSplitPane.HORIZONTAL_SPLIT);
+        sPaneStatusMapAndPlayers.setLeftComponent(sPaneStatusAndMap);
+        sPaneStatusMapAndPlayers.setRightComponent(playersPanel);
 
-        statusSplitPane = initSplitPaneDefaultSettings(JSplitPane.VERTICAL_SPLIT);
-        statusSplitPane.setLeftComponent(mapSplitPane);
-        statusSplitPane.setRightComponent(statusPanel);
-        add(statusSplitPane);
+        add(sPaneStatusMapAndPlayers);
 
         setSize(600, 400);
         setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Catanish Settlers");
         setVisible(true);
+        repaint();
     }
 
     private JSplitPane initSplitPaneDefaultSettings(int orientation) {
@@ -49,9 +41,5 @@ public class GUIFrame extends JFrame {
         splitPane.setResizeWeight(0.9);
         splitPane.setDividerSize(0);
         return splitPane;
-    }
-
-    public void drawMap(Map map) {
-        mapSplitPane.setLeftComponent(new MapPanel(map));
     }
 }

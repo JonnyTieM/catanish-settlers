@@ -14,8 +14,7 @@ import java.util.*;
  * Created by Stephan on 31.03.2015.
  */
 public final class Game {
-    private List<Player> players;
-    private int activePlayerIndex;
+    private Players players;
     private Random rnd;
     private Stack<Card> cardStack;
     private List<Card> discardPile;
@@ -28,7 +27,8 @@ public final class Game {
         cardStack = new Stack<Card>();
         discardPile = new ArrayList<Card>();
         prepareStack();
-        turn = new Turn(players.get(activePlayerIndex));
+        this.players = new Players(players);
+        turn = new Turn(this.players.getActivePlayer());
         map = new Map();
     }
 
@@ -36,8 +36,8 @@ public final class Game {
         return turn;
     }
     public Map getMap() {return map;}
-    public List<Player> getPlayers() {return players;}
-    public Player getActivePlayer() {return players.get(activePlayerIndex);}
+    public Players getPlayers() {return players;}
+    public Player getActivePlayer() { return players.getActivePlayer(); }
 
     private void prepareStack() {
         for (int k = 0; k < Config.KNIGHTS_AMOUNT; k++) {
@@ -58,29 +58,13 @@ public final class Game {
         Collections.shuffle(cardStack);
     }
 
-    public Player createPlayer(String name) {
-        Player newPlayer = new Player(name);
-        players.add(newPlayer);
-        return newPlayer;
-    }
-
-    public Player getPlayer(int i) {
-        return players.get(i);
-    }
-
-    public Player getPlayer(String name) {
-        for(Player p : players) {
-            if (p.getName().equals((name))) return p;
-        }
-        return null;
-    }
-
     public Player switchPlayer() {
         checkVictory();
 
-        if (++activePlayerIndex >= players.size()) activePlayerIndex = 0;
+        players.next();
 
         turn = new Turn(getActivePlayer());
+
         return getActivePlayer();
     }
 
@@ -98,7 +82,7 @@ public final class Game {
 
     private void checkVictory() {
         List<Player> winners = new ArrayList<Player>();
-        for (Player player : players) {
+        for (Player player : players.getPlayers()) {
             if (player.getScore() >= Config.SCORE_TO_VICTORY) winners.add(player);
         }
         if (winners.size() > 0) {

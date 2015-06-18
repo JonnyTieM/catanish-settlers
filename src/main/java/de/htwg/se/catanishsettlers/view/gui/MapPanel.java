@@ -4,12 +4,14 @@ import de.htwg.se.catanishsettlers.model.map.Edge;
 import de.htwg.se.catanishsettlers.model.map.Field;
 import de.htwg.se.catanishsettlers.model.map.Map;
 import de.htwg.se.catanishsettlers.model.map.Vertex;
+import javafx.beans.Observable;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Observer;
 
 /**
  * Created by Stephan on 11.06.2015.
@@ -18,7 +20,7 @@ public class MapPanel extends JPanel {
 
     //private final double scale = 20;
     private final int padding = 190;
-    private final Map map;
+    private Map map;
     private final int width = 2;
     private final int height = 2;
     private final int side = 1;
@@ -47,9 +49,7 @@ public class MapPanel extends JPanel {
         }
     }
 
-    public MapPanel(Map map) {
-        this.map = map;
-    }
+    public MapPanel(Map map) {this.map = map;}
 
     public void paint(Graphics g) {
         if (map == null) return;
@@ -65,7 +65,7 @@ public class MapPanel extends JPanel {
         }
         int scaleX = getWidth() / maxX / (width + side);
         int scaleY = getHeight() / maxY / (3 * height / 2);
-        int scale = Math.min(scaleX, scaleY);// / fields.size();
+        int scale = Math.min(scaleX, scaleY);
 
         for (Field field : fields) {
             int midX = padding + field.getX() * (width + side) * scale;
@@ -88,14 +88,13 @@ public class MapPanel extends JPanel {
                 VertexWithCoordinates vertex = new VertexWithCoordinates(map.getVertices(field)[i], x, y);
                 vertices.add(vertex);
                 if (i > 0) {
-                    EdgeWithCoordinates edge = new EdgeWithCoordinates(map.getEdges(field)[i], x, y, lastVertex.x, lastVertex.y);
-                    edges.add(edge);
+                    edges.add(new EdgeWithCoordinates(map.getEdges(field)[i], x, y, lastVertex.x, lastVertex.y));
                 } else {
                     firstVertex = vertex;
                 }
                 lastVertex = vertex;
             }
-            edges.add(new EdgeWithCoordinates(map.getEdges(field)[0], firstVertex.x, firstVertex.y, lastVertex.x, lastVertex.y));
+            edges.add(new EdgeWithCoordinates(map.getEdges(field)[0], lastVertex.x, lastVertex.y, firstVertex.x, firstVertex.y));
 
             Color color = Color.MAGENTA;
             switch (field.getType()) {
@@ -114,6 +113,8 @@ public class MapPanel extends JPanel {
                 case ORE:
                     color = Color.BLACK;
                     break;
+                default:
+                    color = Color.WHITE;
             }
             g.setColor(color);
             g.fillPolygon(vx, vy, 6);

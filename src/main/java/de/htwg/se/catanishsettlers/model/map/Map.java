@@ -7,6 +7,7 @@ import de.htwg.se.catanishsettlers.model.resources.EResource;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Observable;
 
 /**
  * Map manages the fields, edges and vertices of the board. It knows to which field each vetix or edge belongs.
