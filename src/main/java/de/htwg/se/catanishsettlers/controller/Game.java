@@ -35,6 +35,7 @@ public final class Game {
         //turn = new Turn(players.get(activePlayerIndex));
         state = new PreparationState();
         map = new Map();
+        activePlayerIndex = 0;
     }
 
 /*    public Turn getTurn() {
@@ -81,6 +82,9 @@ public final class Game {
     }
 
     public Player createPlayer(String name) {
+        if (!isPreparationPhase()) {
+            return null;
+        }
         Player newPlayer = new Player(name);
         players.add(newPlayer);
         return newPlayer;
@@ -105,6 +109,15 @@ public final class Game {
         //turn = new Turn(getActivePlayer());
 
         return getActivePlayer();
+    }
+
+    public boolean buildFirstSettlementWithRoad(Player player, int xVertex, int yVertex, int xEdge, int yEdge) {
+        if (!isPreparationPhase()) {
+            return false;
+        }
+        Vertex vertex = map.getVertex(xVertex, yVertex);
+        Edge edge = map.getEdge(xEdge, yEdge);
+        return ConstructionRealizer.buildFirstSettlementWithRoad(player, vertex, edge, map);
     }
 
     public boolean buildSettlement(int x, int y) {
@@ -135,8 +148,12 @@ public final class Game {
         return state instanceof PostDiceRollState;
     }
 
-    protected void distributeResources(int dieRoll) {
-        List<Field> productiveFields = map.getFieldsWithTriggerNumber(dieRoll);
+    private boolean isPreparationPhase() {
+        return state instanceof PreparationState;
+    }
+
+    protected void distributeResources(int diceRoll) {
+        List<Field> productiveFields = map.getFieldsWithTriggerNumber(diceRoll);
 
         for (Field field : productiveFields) {
             for (Building building : map.getBuildings(field)) {

@@ -5,6 +5,11 @@ package de.htwg.se.catanishsettlers.controller;
  */
 public class PreparationState implements IGameState {
     public void nextState(Game game) {
+        for (int i = 2; i <= 12; i++) {
+            if (i != 7) {
+                game.distributeResources(i);
+            }
+        }
         game.setState(new PreDiceRollState());
     }
 }
