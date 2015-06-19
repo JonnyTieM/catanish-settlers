@@ -69,6 +69,9 @@ public class CatanishSettlers {
         List<Edge> edges = game.getMap().getEdges();
 
         edges.get(16).buildRoad(new Road(hans));
+        vertices.get(10).placeBuilding(new Settlement(susi));
+        vertices.get(20).placeBuilding(new City(john));
+
         ConstructionRealizer.buildSettlement(hans, vertices.get(20), game.getMap());
 
         if (mode == Mode.GUI) {
