@@ -38,10 +38,6 @@ public final class Game {
         activePlayerIndex = 0;
     }
 
-/*    public Turn getTurn() {
-        return turn;
-    } */
-
     protected void setState(IGameState state) {
         this.state = state;
     }
