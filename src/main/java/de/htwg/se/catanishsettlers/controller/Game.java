@@ -16,8 +16,7 @@ import java.util.*;
  * Created by Stephan on 31.03.2015.
  */
 public final class Game {
-    private List<Player> players;
-    private int activePlayerIndex;
+    private Players players;
     private Random rnd;
     private Stack<Card> cardStack;
     private List<Card> discardPile;
@@ -25,22 +24,23 @@ public final class Game {
 
     private int lastRolledDiceNumber;
     private IGameState state;
-    //private Turn turn;
 
     public Game(List<Player> players) {
         rnd = new Random();
         cardStack = new Stack<Card>();
         discardPile = new ArrayList<Card>();
         prepareStack();
-        //turn = new Turn(players.get(activePlayerIndex));
+        this.players = new Players(players);
         state = new PreparationState();
         map = new Map();
-        activePlayerIndex = 0;
     }
 
     protected void setState(IGameState state) {
         this.state = state;
     }
+    public Map getMap() {return map;}
+    public Players getPlayers() {return players;}
+    public Player getActivePlayer() { return players.getActivePlayer(); }
 
     public void nextPhase() {
         state.nextState(this);
@@ -77,32 +77,14 @@ public final class Game {
         Collections.shuffle(cardStack);
     }
 
-    public Player createPlayer(String name) {
-        if (!isPreparationPhase()) {
-            return null;
-        }
-        Player newPlayer = new Player(name);
-        players.add(newPlayer);
-        return newPlayer;
-    }
-
     public Player getPlayer(int i) {
         return players.get(i);
     }
 
-    public Player getPlayer(String name) {
-        for (Player p : players) {
-            if (p.getName().equals((name))) return p;
-        }
-        return null;
-    }
-
-    protected Player switchPlayer() {
+    public Player switchPlayer() {
         checkVictory();
 
-        if (++activePlayerIndex >= players.size()) activePlayerIndex = 0;
-
-        //turn = new Turn(getActivePlayer());
+        players.next();
 
         return getActivePlayer();
     }
@@ -162,7 +144,7 @@ public final class Game {
 
     private void checkVictory() {
         List<Player> winners = new ArrayList<Player>();
-        for (Player player : players) {
+        for (Player player : players.getPlayers()) {
             if (player.getScore() >= Config.SCORE_TO_VICTORY) winners.add(player);
         }
         if (winners.size() > 0) {

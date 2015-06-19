@@ -7,30 +7,54 @@ import de.htwg.se.catanishsettlers.model.map.Vertex;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Arrays;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.util.LinkedList;
 import java.util.List;
 
 /**
  * Created by Stephan on 11.06.2015.
  */
-public class MapPanel extends JPanel {
+public class MapPanel extends JPanel implements MouseMotionListener, ComponentListener {
 
     //private final double scale = 20;
     private final int padding = 190;
-    private final Map map;
+    private Map map;
     private final int width = 2;
     private final int height = 2;
     private final int side = 1;
+    private Label debugLabel = new Label();
+    private List<ObjectWithPosition> objects;
+    private ObjectWithPosition mouseHover;
+
+    private List<VertexWithCoordinates> verticesForPainting;
+    private List<EdgeWithCoordinates> edgesForPainting;
+    private List<FieldWithCoordinates> fieldsForPainting;
 
     private class VertexWithCoordinates {
-        public final int x, y;
         public final Vertex vertex;
+        public final int x, y;
 
         public VertexWithCoordinates(Vertex vertex, int x, int y) {
+            this.vertex = vertex;
             this.x = x;
             this.y = y;
-            this.vertex = vertex;
+        }
+    }
+
+    private class FieldWithCoordinates {
+        public final Field field;
+        public final int x, y;
+        public final int[] vx, vy;
+
+        public FieldWithCoordinates(Field field, int x, int y, int[] vx, int[] vy) {
+            this.field = field;
+            this.x = x;
+            this.y = y;
+            this.vx = vx;
+            this.vy = vy;
         }
     }
 
@@ -47,25 +71,49 @@ public class MapPanel extends JPanel {
         }
     }
 
-    public MapPanel(Map map) {
-        this.map = map;
+    private class ObjectWithPosition {
+        public final Object object;
+        public final int x, y;
+
+        public ObjectWithPosition(Object object, int x, int y) {
+            this.object = object;
+            this.x = x;
+            this.y = y;
+        }
     }
 
-    public void paint(Graphics g) {
-        if (map == null) return;
+    public MapPanel(Map map) {
+        this.map = map;
+        add(debugLabel);
+        addMouseMotionListener(this);
+        addComponentListener(this);
+        recalculate();
+    }
 
-        List<VertexWithCoordinates> vertices = new LinkedList<VertexWithCoordinates>();
-        List<EdgeWithCoordinates> edges = new LinkedList<EdgeWithCoordinates>();
+    public void componentResized(ComponentEvent e) {
+        recalculate();
+    }
+
+    public void componentMoved(ComponentEvent e) {
+        recalculate();
+    }
+
+    public void componentShown(ComponentEvent e) {
+        recalculate();
+    }
+
+    public void componentHidden(ComponentEvent e) {
+        recalculate();
+    }
+
+    private void recalculate() {
+        objects = new LinkedList<ObjectWithPosition>();
+        verticesForPainting = new LinkedList<VertexWithCoordinates>();
+        edgesForPainting = new LinkedList<EdgeWithCoordinates>();
+        fieldsForPainting = new LinkedList<FieldWithCoordinates>();
         List<Field> fields = map.getFields();
-        int maxX = 0;
-        int maxY = 0;
-        for (Field field : fields) {
-            if (field.getX() > maxX) maxX = field.getX();
-            if (field.getY() > maxY) maxY = field.getY();
-        }
-        int scaleX = getWidth() / maxX / (width + side);
-        int scaleY = getHeight() / maxY / (3 * height / 2);
-        int scale = Math.min(scaleX, scaleY);// / fields.size();
+
+        int scale = getScale(fields);
 
         for (Field field : fields) {
             int midX = padding + field.getX() * (width + side) * scale;
@@ -74,69 +122,181 @@ public class MapPanel extends JPanel {
 
             int[] vx = new int[6];
             int[] vy = new int[6];
-            Point[] vectors = {new Point(-width, -height), new Point(+width, -height),
-                               new Point(+width +side * 2, 0), new Point(+width, +height), new Point(-width, +height), new Point(-width -side * 2, 0)};
+            Point[] vectors = {new Point(-width, -height), new Point(+width, -height), new Point(+width + side * 2, 0),
+                    new Point(+width, +height), new Point(-width, +height), new Point(-width - side * 2, 0)};
 
             VertexWithCoordinates lastVertex = new VertexWithCoordinates(null, 0, 0);
             VertexWithCoordinates firstVertex = new VertexWithCoordinates(null, 0, 0);
             for (int i = 0; i < 6; i++) {
+                Vertex mapVertex = map.getVertices(field)[i];
+
                 int x = midX + vectors[i].x * scale / 2;
                 int y = midY + vectors[i].y * scale / 2;
+
+                objects.add(new ObjectWithPosition(mapVertex, x, y));
+
                 vx[i] = x;
                 vy[i] = y;
 
-                VertexWithCoordinates vertex = new VertexWithCoordinates(map.getVertices(field)[i], x, y);
-                vertices.add(vertex);
-                if (i > 0) {
-                    EdgeWithCoordinates edge = new EdgeWithCoordinates(map.getEdges(field)[i], x, y, lastVertex.x, lastVertex.y);
-                    edges.add(edge);
-                } else {
+                VertexWithCoordinates vertex = new VertexWithCoordinates(mapVertex, x, y);
+                verticesForPainting.add(vertex);
+                if (i == 0) {
                     firstVertex = vertex;
+                } else {
+                    Edge mapEdge = map.getEdges(field)[i - 1];
+
+                    edgesForPainting.add(new EdgeWithCoordinates(mapEdge, lastVertex.x, lastVertex.y, x, y));
+                    objects.add(new ObjectWithPosition(mapEdge, (lastVertex.x + x) / 2, (lastVertex.y + y) / 2));
                 }
                 lastVertex = vertex;
             }
-            edges.add(new EdgeWithCoordinates(map.getEdges(field)[0], firstVertex.x, firstVertex.y, lastVertex.x, lastVertex.y));
+            Edge lastMapEdge = map.getEdges(field)[0];
+            edgesForPainting.add(new EdgeWithCoordinates(lastMapEdge, lastVertex.x, lastVertex.y, firstVertex.x, firstVertex.y));
+            objects.add(new ObjectWithPosition(lastMapEdge, (lastVertex.x + firstVertex.x) / 2, (lastVertex.y + firstVertex.y) / 2));
 
-            Color color = Color.MAGENTA;
-            switch (field.getType()) {
-                case BRICK:
-                    color = Color.ORANGE;
-                    break;
-                case LUMBER:
-                    color = Color.GREEN;
-                    break;
-                case WOOL:
-                    color = Color.LIGHT_GRAY;
-                    break;
-                case GRAIN:
-                    color = Color.YELLOW;
-                    break;
-                case ORE:
-                    color = Color.BLACK;
-                    break;
-            }
-            g.setColor(color);
-            g.fillPolygon(vx, vy, 6);
-            g.setColor(Color.GRAY);
-            g.drawString(String.valueOf(field.getTriggerNumber()), midX, midY);
-        }
-
-        Graphics2D g2 = (Graphics2D)g;
-        for (EdgeWithCoordinates edge : edges) {
-            g2.setStroke(new BasicStroke(1));
-            g2.setColor(Color.GRAY);
-            if(edge.edge.hasRoad()) {
-                g2.setStroke(new BasicStroke(4));
-                g.setColor(edge.edge.getRoad().getPlayer().color);
-            }
-            g.drawLine(edge.x1, edge.y1, edge.x2, edge.y2);
-        }
-
-        for (VertexWithCoordinates vertex : vertices) {
-            if (vertex.vertex.hasBuilding()) g.setColor(vertex.vertex.getBuilding().getPlayer().color);
-            if (vertex.vertex.hasSettlement()) g.fillOval(vertex.x - 5, vertex.y - 5, 10, 10);
-            if (vertex.vertex.hasCity()) g.fillRect(vertex.x - 5, vertex.y - 5, 10, 10);
+            fieldsForPainting.add(new FieldWithCoordinates(field, midX, midY, vx, vy));
+            objects.add(new ObjectWithPosition(field, midX, midY));
         }
     }
 
+    public void mouseDragged(MouseEvent e) {}
+    public void mouseMoved(MouseEvent e) {
+        ObjectWithPosition best = objects.get(0);
+        int x = best.x - e.getX();
+        int y = best.y - e.getY();
+        double minDistance = Math.sqrt(x * x + y * y);
+
+        for(ObjectWithPosition object : objects) {
+            x = object.x - e.getX();
+            y = object.y - e.getY();
+            double distance = Math.sqrt(x * x + y * y);
+            if (distance < minDistance) {
+                best = object;
+                minDistance = distance;
+            }
+        }
+
+        if (minDistance > 100) best = null;
+
+        String text = "Mouse @ ";
+        if (best == null) {
+            debugLabel.setText(text + "nothing.");
+        } else {
+            if (best.object.getClass().equals(Field.class)) text += "Field " + ((Field)best.object).getX() + ", " + ((Field)best.object).getY();
+            if (best.object.getClass().equals(Edge.class)) text += "Edge " + ((Edge)best.object).getX() + ", " + ((Edge)best.object).getY();
+            if (best.object.getClass().equals(Vertex.class)) text += "Vertex " + ((Vertex)best.object).getX() + ", " + ((Vertex)best.object).getY();
+            debugLabel.setText(text);
+        }
+        debugLabel.revalidate();
+
+        mouseHover = best;
+        repaint();
+    }
+
+    public void paint(Graphics g) {
+        if (map == null) return;
+        Graphics2D g2 = (Graphics2D)g;
+
+        drawFields(g2, fieldsForPainting);
+        drawEdges(g2, edgesForPainting);
+        drawBuildings(g2, verticesForPainting);
+        indicateMouseHover(g2);
+    }
+
+    private void drawFields(Graphics2D g2, List<FieldWithCoordinates> fields) {
+        for(FieldWithCoordinates fieldWithCoords : fields) {
+            Field field = fieldWithCoords.field;
+            int x = fieldWithCoords.x;
+            int y = fieldWithCoords.y;
+            int[] vx = fieldWithCoords.vx;
+            int[] vy = fieldWithCoords.vy;
+            g2.setColor(getColor(field));
+            g2.fillPolygon(vx, vy, 6);
+            g2.setColor(Color.GRAY);
+            g2.drawString(String.valueOf(field.getTriggerNumber()), x, y);
+        }
+    }
+
+    private void drawEdges(Graphics2D g2, List<EdgeWithCoordinates> edges) {
+        for (EdgeWithCoordinates edgeWithCoord : edges) {
+            Edge edge = edgeWithCoord.edge;
+            int x1 = edgeWithCoord.x1;
+            int x2 = edgeWithCoord.x2;
+            int y1 = edgeWithCoord.y1;
+            int y2 = edgeWithCoord.y2;
+
+            if(edge.hasRoad()) {
+                g2.setStroke(new BasicStroke(4));
+                g2.setColor(edge.getRoad().getPlayer().color);
+            } else {
+                g2.setStroke(new BasicStroke(1));
+                g2.setColor(Color.GRAY);
+            }
+            g2.drawLine(x1, y1, x2, y2);
+        }
+    }
+
+    private void drawBuildings(Graphics2D g2, List<VertexWithCoordinates> vertices) {
+        for (VertexWithCoordinates vertexWithCoord : vertices) {
+            Vertex vertex = vertexWithCoord.vertex;
+            int x = vertexWithCoord.x;
+            int y = vertexWithCoord.y;
+            if (vertex.hasBuilding()) g2.setColor(vertex.getBuilding().getPlayer().color);
+            if (vertex.hasSettlement()) drawCircle(g2, x, y, 10, true);
+            if (vertex.hasCity()) drawSquare(g2, x, y, 10);
+        }
+    }
+
+    private void drawCircle(Graphics2D g2, int x, int y, int d, boolean fill) {
+        if (fill) {
+            g2.fillOval(x - d / 2, y - d / 2, d, d);
+        } else {
+            g2.drawOval(x - d / 2, y - d / 2, d, d);
+        }
+    }
+
+    private void drawSquare(Graphics2D g2, int x, int y, int a) {
+        g2.fillRect(x - a / 2, y - a / 2, a, a);
+    }
+
+    private void indicateMouseHover(Graphics2D g2) {
+        if (mouseHover == null) return;
+        g2.setColor(Color.RED);
+        g2.setStroke(new BasicStroke(3));
+        drawCircle(g2, mouseHover.x , mouseHover.y, 10, false);
+    }
+
+    private int getScale(List<Field> fields) {
+        int maxX = 0;
+        int maxY = 0;
+        for (Field field : fields) {
+            if (field.getX() > maxX) maxX = field.getX();
+            if (field.getY() > maxY) maxY = field.getY();
+        }
+        int scaleX = getWidth() / maxX / (width + side);
+        int scaleY = getHeight() / maxY / (3 * height / 2);
+        return Math.min(scaleX, scaleY);
+    }
+
+    private Color getColor(Field field) {
+        Color color = Color.MAGENTA;    // if magenta can be seen, an error occured.
+        switch (field.getType()) {
+            case BRICK:
+                color = Color.ORANGE;
+                break;
+            case LUMBER:
+                color = Color.GREEN;
+                break;
+            case WOOL:
+                color = Color.LIGHT_GRAY;
+                break;
+            case GRAIN:
+                color = Color.YELLOW;
+                break;
+            case ORE:
+                color = Color.BLACK;
+                break;
+        }
+        return color;
+    }
 }
