@@ -75,9 +75,9 @@ public class CatanishSettlers {
         ConstructionRealizer.buildSettlement(hans, vertices.get(20), game.getMap());
 
         if (mode == Mode.GUI) {
-            PlayersPanel playersPanel = new PlayersPanel(game.getPlayers().getPlayers());
+            PlayersPanel playersPanel = new PlayersPanel(game.getPlayerContainer().getPlayers());
             MapPanel mapPanel = new MapPanel(game.getMap());
-            game.getPlayers().addObserver(playersPanel);
+            game.getPlayerContainer().addObserver(playersPanel);
             new GUIFrame(playersPanel, mapPanel);
         }
     }

@@ -1,6 +1,6 @@
 package de.htwg.se.catanishsettlers.view.gui;
 
-import de.htwg.se.catanishsettlers.controller.Players;
+import de.htwg.se.catanishsettlers.controller.PlayerContainer;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
 
 import javax.swing.*;
@@ -27,10 +27,10 @@ public class PlayersPanel extends JPanel implements Observer {
     }
 
     public void update(Observable o, Object arg) {
-        Players players = (Players)o;
-        for(int i = 0; i < players.getPlayers().size(); i++) {
-            Player player = players.getPlayers().get(i);
-            if (player == players.getActivePlayer()) {
+        PlayerContainer playerContainer = (PlayerContainer)o;
+        for(int i = 0; i < playerContainer.getPlayers().size(); i++) {
+            Player player = playerContainer.getPlayers().get(i);
+            if (player == playerContainer.getActivePlayer()) {
                 panels.get(i).set(PlayerPanelSwitchable.Status.EXTENDED);
             } else {
                 panels.get(i).set(PlayerPanelSwitchable.Status.COMPACT);

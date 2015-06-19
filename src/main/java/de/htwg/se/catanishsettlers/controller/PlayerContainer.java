@@ -9,11 +9,11 @@ import java.util.Observable;
 /**
  * Created by Stephan on 15.06.2015.
  */
-public class Players extends Observable {
+public class PlayerContainer extends Observable {
     private List<Player> players = new LinkedList<Player>();
     private int activePlayerIndex = 0;
 
-    public Players(List<Player> players) {
+    public PlayerContainer(List<Player> players) {
         this.players = players;
     }
 
@@ -31,5 +31,9 @@ public class Players extends Observable {
 
     public List<Player> getPlayers() {
         return players;
+    }
+
+    public Player getPlayer(int i) {
+        return players.get(i);
     }
 }

@@ -16,7 +16,7 @@ import java.util.*;
  * Created by Stephan on 31.03.2015.
  */
 public final class Game {
-    private Players players;
+    private PlayerContainer playerContainer;
     private Random rnd;
     private Stack<Card> cardStack;
     private List<Card> discardPile;
@@ -30,7 +30,7 @@ public final class Game {
         cardStack = new Stack<Card>();
         discardPile = new ArrayList<Card>();
         prepareStack();
-        this.players = new Players(players);
+        this.playerContainer = new PlayerContainer(players);
         state = new PreparationState();
         map = new Map();
     }
@@ -39,23 +39,11 @@ public final class Game {
         this.state = state;
     }
     public Map getMap() {return map;}
-    public Players getPlayers() {return players;}
-    public Player getActivePlayer() { return players.getActivePlayer(); }
+    public PlayerContainer getPlayerContainer() {return playerContainer;}
+    public Player getActivePlayer() { return playerContainer.getActivePlayer(); }
 
     public void nextPhase() {
         state.nextState(this);
-    }
-
-    public Map getMap() {
-        return map;
-    }
-
-    public List<Player> getPlayers() {
-        return players;
-    }
-
-    public Player getActivePlayer() {
-        return players.get(activePlayerIndex);
     }
 
     private void prepareStack() {
@@ -78,14 +66,12 @@ public final class Game {
     }
 
     public Player getPlayer(int i) {
-        return players.get(i);
+        return playerContainer.getPlayer(i);
     }
 
     public Player switchPlayer() {
         checkVictory();
-
-        players.next();
-
+        playerContainer.next();
         return getActivePlayer();
     }
 
@@ -122,7 +108,7 @@ public final class Game {
         return ConstructionRealizer.buildRoad(getActivePlayer(), edge, map);
     }
 
-    private boolean isBuildingPhase() {
+    public boolean isBuildingPhase() {
         return state instanceof PostDiceRollState;
     }
 
@@ -144,11 +130,11 @@ public final class Game {
 
     private void checkVictory() {
         List<Player> winners = new ArrayList<Player>();
-        for (Player player : players.getPlayers()) {
+        for (Player player : playerContainer.getPlayers()) {
             if (player.getScore() >= Config.SCORE_TO_VICTORY) winners.add(player);
         }
         if (winners.size() > 0) {
-            //TODO: game ends, one (or more) players won the game
+            //TODO: game ends, one (or more) playerContainer won the game
         }
     }
 

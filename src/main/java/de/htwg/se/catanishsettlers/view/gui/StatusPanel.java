@@ -13,10 +13,15 @@ import java.awt.event.ActionListener;
 public class StatusPanel extends JPanel {
 
     public StatusPanel() {
-        JButton switchButton = new JButton("End turn");
+        final JButton switchButton = new JButton("End Preparation");
         switchButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
-                CatanishSettlers.game.switchPlayer();
+                CatanishSettlers.game.nextPhase();
+                if (CatanishSettlers.game.isBuildingPhase()) {
+                    switchButton.setText("End turn");
+                } else {
+                    switchButton.setText("Roll dice");
+                }
             }
         });
         add(switchButton);
