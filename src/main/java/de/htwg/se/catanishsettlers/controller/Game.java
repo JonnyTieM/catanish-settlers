@@ -21,11 +21,13 @@ public final class Game {
     private Stack<Card> cardStack;
     private List<Card> discardPile;
     private Map map;
+    private boolean isThereAWinner;
 
     private int lastRolledDiceNumber;
     private IGameState state;
 
     public Game(List<Player> players) {
+        isThereAWinner = false;
         rnd = new Random();
         cardStack = new Stack<Card>();
         discardPile = new ArrayList<Card>();
@@ -38,9 +40,18 @@ public final class Game {
     protected void setState(IGameState state) {
         this.state = state;
     }
-    public Map getMap() {return map;}
-    public PlayerContainer getPlayerContainer() {return playerContainer;}
-    public Player getActivePlayer() { return playerContainer.getActivePlayer(); }
+
+    public Map getMap() {
+        return map;
+    }
+
+    public PlayerContainer getPlayerContainer() {
+        return playerContainer;
+    }
+
+    public Player getActivePlayer() {
+        return playerContainer.getActivePlayer();
+    }
 
     public void nextPhase() {
         state.nextState(this);
@@ -128,14 +139,15 @@ public final class Game {
         }
     }
 
-    private void checkVictory() {
+    public List<Player> checkVictory() {
         List<Player> winners = new ArrayList<Player>();
         for (Player player : playerContainer.getPlayers()) {
             if (player.getScore() >= Config.SCORE_TO_VICTORY) winners.add(player);
         }
         if (winners.size() > 0) {
-            //TODO: game ends, one (or more) playerContainer won the game
+            isThereAWinner = true;
         }
+        return winners;
     }
 
     public Card popTopCard() {
@@ -152,5 +164,9 @@ public final class Game {
 
     public void setLastRolledDiceNumber(int lastRolledDiceNumber) {
         this.lastRolledDiceNumber = lastRolledDiceNumber;
+    }
+
+    public boolean isThereAWinner() {
+        return isThereAWinner;
     }
 }

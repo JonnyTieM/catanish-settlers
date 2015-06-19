@@ -6,6 +6,10 @@ package de.htwg.se.catanishsettlers.controller;
 public class PostDiceRollState implements IGameState {
     public void nextState(Game game) {
         game.switchPlayer();
-        game.setState(new PreDiceRollState());
+        if (game.isThereAWinner()) {
+            game.setState(new WinnerEndState());
+        } else {
+            game.setState(new PreDiceRollState());
+        }
     }
 }
