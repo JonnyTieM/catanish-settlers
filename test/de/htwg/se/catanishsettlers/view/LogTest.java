@@ -5,6 +5,8 @@ import de.htwg.se.catanishsettlers.model.constructions.Road;
 import de.htwg.se.catanishsettlers.model.constructions.Settlement;
 import de.htwg.se.catanishsettlers.model.mechanic.DiceRoll;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
+import de.htwg.se.catanishsettlers.view.tui.Log;
+import de.htwg.se.catanishsettlers.view.tui.Message;
 import org.junit.Test;
 
 public class LogTest {
