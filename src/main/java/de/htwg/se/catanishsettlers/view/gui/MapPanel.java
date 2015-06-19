@@ -25,17 +25,18 @@ public class MapPanel extends JPanel implements MouseMotionListener {
     private final int side = 1;
     private Label debugLabel = new Label();
     private List<ObjectWithPosition> objects = new LinkedList<ObjectWithPosition>();
+    private ObjectWithPosition mouseHover;
 
     public void mouseDragged(MouseEvent e) {}
     public void mouseMoved(MouseEvent e) {
         ObjectWithPosition best = objects.get(0);
-        int x = best.position.x - e.getX();
-        int y = best.position.y - e.getY();
+        int x = best.x - e.getX();
+        int y = best.y - e.getY();
         double minDistance = Math.sqrt(x * x + y * y);
 
         for(ObjectWithPosition object : objects) {
-            x = object.position.x - e.getX();
-            y = object.position.y - e.getY();
+            x = object.x - e.getX();
+            y = object.y - e.getY();
             double distance = Math.sqrt(x * x + y * y);
             if (distance < minDistance) {
                 best = object;
@@ -43,13 +44,23 @@ public class MapPanel extends JPanel implements MouseMotionListener {
             }
         }
 
-        String text = "";
-        if (best.object.getClass().equals(Field.class)) text += "Feld";
-        if (best.object.getClass().equals(EdgeWithCoordinates.class)) text += "Kante";
-        if (best.object.getClass().equals(VertexWithCoordinates.class)) text += "Ecke";
+        if (minDistance > 100) best = null;
 
-        debugLabel.setText("Maus ist bei: " + text);
+        String text = "Mouse @ ";
+        if (best == null) {
+            debugLabel.setText(text + "nothing.");
+        } else {
+            if (best.object.getClass().equals(Field.class)) text += "Field " + ((Field)best.object).getX() + ", " + ((Field)best.object).getY();
+            if (best.object.getClass().equals(Edge.class)) text += "Edge " + ((Edge)best.object).getX() + ", " + ((Edge)best.object).getY();
+            if (best.object.getClass().equals(Vertex.class)) text += "Vertex " + ((Vertex)best.object).getX() + ", " + ((Vertex)best.object).getY();
+            debugLabel.setText(text);
+        }
+        debugLabel.revalidate();
+
+        mouseHover = best;
+        repaint();
     }
+
 
     private class VertexWithCoordinates {
         public final int x, y;
@@ -77,28 +88,13 @@ public class MapPanel extends JPanel implements MouseMotionListener {
 
     private class ObjectWithPosition {
         public final Object object;
-        public final Point position;
+        public final int x;
+        public final int y;
 
-        public ObjectWithPosition(Object object) {
+        public ObjectWithPosition(Object object, int x, int y) {
             this.object = object;
-            int x = 0;
-            int y = 0;
-            if (object.getClass().equals(EdgeWithCoordinates.class)) {
-                EdgeWithCoordinates edge = (EdgeWithCoordinates)object;
-                x = edge.x2 - edge.x1;
-                y = edge.y2 - edge.y1;
-            }
-            if (object.getClass().equals(VertexWithCoordinates.class)) {
-                VertexWithCoordinates vertex = (VertexWithCoordinates)object;
-                x = vertex.x;
-                y = vertex.y;
-            }
-            if (object.getClass().equals(Field.class)) {
-                Field field = (Field)object;
-                x = field.getX();
-                y = field.getY();
-            }
-            this.position = new Point(x, y);
+            this.x = x;
+            this.y = y;
         }
     }
 
@@ -107,15 +103,10 @@ public class MapPanel extends JPanel implements MouseMotionListener {
         debugLabel.setText("debug ready");
         add(debugLabel);
         addMouseMotionListener(this);
-        for(Field field : map.getFields()) objects.add(new ObjectWithPosition(field));
-        for(Vertex vertex : map.getVertices()) objects.add(new ObjectWithPosition(vertex));
-        for(Edge edge : map.getEdges()) objects.add(new ObjectWithPosition(edge));
     }
 
     public void paint(Graphics g) {
         if (map == null) return;
-
-        debugLabel.setText("paint() was called");
 
         List<VertexWithCoordinates> vertices = new LinkedList<VertexWithCoordinates>();
         List<EdgeWithCoordinates> edges = new LinkedList<EdgeWithCoordinates>();
@@ -128,6 +119,8 @@ public class MapPanel extends JPanel implements MouseMotionListener {
             int midY = padding + field.getY() * (height * 1) * scale;
             if (field.getX() % 2 == 1) midY += (height / 2) * scale;
 
+            objects.add(new ObjectWithPosition(field, midX, midY));
+
             int[] vx = new int[6];
             int[] vy = new int[6];
             Point[] vectors = {new Point(-width, -height), new Point(+width, -height), new Point(+width +side * 2, 0),
@@ -138,6 +131,9 @@ public class MapPanel extends JPanel implements MouseMotionListener {
             for (int i = 0; i < 6; i++) {
                 int x = midX + vectors[i].x * scale / 2;
                 int y = midY + vectors[i].y * scale / 2;
+
+                objects.add(new ObjectWithPosition(map.getVertices(field)[i], x, y));
+
                 vx[i] = x;
                 vy[i] = y;
 
@@ -147,10 +143,12 @@ public class MapPanel extends JPanel implements MouseMotionListener {
                     firstVertex = vertex;
                 } else {
                     edges.add(new EdgeWithCoordinates(map.getEdges(field)[i], lastVertex.x, lastVertex.y, x, y));
+                    objects.add(new ObjectWithPosition(map.getEdges(field)[i], (lastVertex.x + x) / 2, (lastVertex.y + y) / 2));
                 }
                 lastVertex = vertex;
             }
             edges.add(new EdgeWithCoordinates(map.getEdges(field)[0], lastVertex.x, lastVertex.y, firstVertex.x, firstVertex.y));
+            objects.add(new ObjectWithPosition(map.getEdges(field)[0], (lastVertex.x + firstVertex.x) / 2, (lastVertex.y + firstVertex.y) / 2));
 
             g.setColor(getColor(field));
             g.fillPolygon(vx, vy, 6);
@@ -175,6 +173,12 @@ public class MapPanel extends JPanel implements MouseMotionListener {
             if (vertex.vertex.hasBuilding()) g.setColor(vertex.vertex.getBuilding().getPlayer().color);
             if (vertex.vertex.hasSettlement()) g.fillOval(vertex.x - 5, vertex.y - 5, 10, 10);
             if (vertex.vertex.hasCity()) g.fillRect(vertex.x - 5, vertex.y - 5, 10, 10);
+        }
+
+        if (mouseHover != null) {
+            g2.setColor(Color.RED);
+            g2.setStroke(new BasicStroke(3));
+            g2.drawOval(mouseHover.x - 5, mouseHover.y - 5, 10, 10);
         }
     }
 
