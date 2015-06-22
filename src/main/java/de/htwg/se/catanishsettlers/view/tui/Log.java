@@ -1,4 +1,6 @@
-package de.htwg.se.catanishsettlers.view;
+package de.htwg.se.catanishsettlers.view.tui;
+
+import de.htwg.se.catanishsettlers.view.tui.Message;
 
 import java.util.*;
 

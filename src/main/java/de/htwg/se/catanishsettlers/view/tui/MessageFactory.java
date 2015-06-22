@@ -1,12 +1,9 @@
-package de.htwg.se.catanishsettlers.view;
+package de.htwg.se.catanishsettlers.view.tui;
 
 import de.htwg.se.catanishsettlers.model.constructions.Construction;
-import de.htwg.se.catanishsettlers.model.map.Field;
 import de.htwg.se.catanishsettlers.model.map.Map;
-import de.htwg.se.catanishsettlers.model.map.Vertex;
 import de.htwg.se.catanishsettlers.model.mechanic.DiceRoll;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
-import de.htwg.se.catanishsettlers.model.map.Edge;
 
 import java.util.ArrayList;
 import java.util.List;
