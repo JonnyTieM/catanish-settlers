@@ -27,7 +27,6 @@ public class Dice extends Observable {
 
         setChanged();
         notifyObservers();
-        System.out.println("rolled");
     }
 
     public int getValue() {

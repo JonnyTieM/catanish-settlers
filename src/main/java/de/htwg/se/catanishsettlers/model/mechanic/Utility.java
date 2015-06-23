@@ -1,5 +1,6 @@
 package de.htwg.se.catanishsettlers.model.mechanic;
 
+import java.awt.*;
 import java.util.Random;
 
 /**
@@ -24,5 +25,15 @@ public final class Utility {
 
     public static Random getRandom() {
         return getInstance().random;
+    }
+
+    public static Point placeTextInBox(int width, int height, String text, FontMetrics fontMetrics) {
+
+        int w = fontMetrics.stringWidth(text);
+        int h = fontMetrics.getHeight();
+        int x = width / 2 - w / 2;   // position text in center of cube
+        int y = height / 2 + h / 4;   // position text in center of cube
+
+        return new Point(x, y);
     }
 }

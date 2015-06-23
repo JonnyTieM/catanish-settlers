@@ -10,7 +10,7 @@ import de.htwg.se.catanishsettlers.model.map.Vertex;
 import de.htwg.se.catanishsettlers.model.mechanic.Dice;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
 import de.htwg.se.catanishsettlers.model.resources.ResourceCollection;
-import de.htwg.se.catanishsettlers.view.gui.DicePanel;
+import de.htwg.se.catanishsettlers.view.gui.MultiDicePanel;
 import de.htwg.se.catanishsettlers.view.tui.Log;
 import de.htwg.se.catanishsettlers.view.tui.Message;
 import de.htwg.se.catanishsettlers.view.tui.MessageFactory;
@@ -80,10 +80,11 @@ public class CatanishSettlers {
         if (mode == Mode.GUI) {
             PlayersPanel playersPanel = new PlayersPanel(game.getPlayerContainer().getPlayers());
             MapPanel mapPanel = new MapPanel(game.getMap());
-            DicePanel dicePanel = new DicePanel(game.getDice());
-            game.getDice().addObserver(dicePanel);
+            MultiDicePanel multiDicePanel = new MultiDicePanel(game.getDice());
+            game.getDice().addObserver(multiDicePanel);
+            game.getDice().addObserver(mapPanel);
             game.getPlayerContainer().addObserver(playersPanel);
-            new GUIFrame(playersPanel, mapPanel, dicePanel);
+            new GUIFrame(playersPanel, mapPanel, multiDicePanel);
         }
     }
 }
