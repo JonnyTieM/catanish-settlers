@@ -1,28 +1,44 @@
-package de.htwg.se.catanishsettlers.view;
+package de.htwg.se.catanishsettlers.view.tui;
 
 import de.htwg.se.catanishsettlers.model.Config;
 import de.htwg.se.catanishsettlers.model.map.Edge;
 import de.htwg.se.catanishsettlers.model.map.Field;
 import de.htwg.se.catanishsettlers.model.map.Map;
 import de.htwg.se.catanishsettlers.model.map.Vertex;
+import de.htwg.se.catanishsettlers.model.mechanic.Player;
 
 /**
  * This class can convert a map to a printable text output.
  * Created by Jonathan on 22.05.2015.
  */
 public class MapTUI {
-    Map map;
+
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_BLACK = "\u001B[30m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+    public static final String ANSI_BLUE = "\u001B[34m";
+    public static final String ANSI_PURPLE = "\u001B[35m";
+    public static final String ANSI_CYAN = "\u001B[36m";
+    public static final String ANSI_WHITE = "\u001B[37m";
+
+    private Map map;
+    private Vertex markedVertex;
+    private Edge markedEdge;
+    private Player activePlayer;
 
     public MapTUI(Map map) {
         this.map = map;
     }
 
     //just for testing the output
-    public static void main(String [] args) {
+    public static void main(String[] args) {
         Map map = new Map();
         MapTUI m = new MapTUI(map);
-
-        System.out.println(m.printMap());
+        m.markVertex(2, 4);
+        m.markEdge(4,4);
+        m.printMap();
     }
 
     public String printMap() {
@@ -34,6 +50,7 @@ public class MapTUI {
             s += printFourthLine(i);
         }
         s += printFirstLine(Config.FIELDS_HEIGHT);
+        System.out.println(s);
         return s;
     }
 
@@ -107,31 +124,86 @@ public class MapTUI {
         return s;
     }
 
+    public boolean markVertex(int x, int y) {
+        Vertex vertex = map.getVertex(x, y);
+        if (vertex == null) {
+            return false;
+        } else {
+            markedVertex = vertex;
+            return true;
+        }
+    }
+
+    public void unmarkVertex() {
+        markedVertex = null;
+    }
+
+    public boolean markEdge(int x, int y) {
+        Edge edge = map.getEdge(x, y);
+        if (edge == null) {
+            return false;
+        } else {
+            markedEdge = edge;
+            return true;
+        }
+    }
+
+    public void unmarkEdge() {
+        markedEdge = null;
+    }
+
+    public void setActivePlayer(Player player) {
+        activePlayer = player;
+    }
+
     private String printVertex(int x, int y) {
+        String s = "";
         Vertex vertex = map.getVertex(x, y);
         if (vertex == null) {
             return " ";
         }
         if (vertex.hasBuilding()) {
             if (vertex.hasSettlement()) {
-                return "S";
+                s = "S";
+            } else {
+                s = "C";
             }
-            return "C";
         } else {
-            return "X";
+            s = "X";
         }
+        return checkVertexColor(s, vertex);
+    }
+
+    private String checkVertexColor(String s, Vertex vertex) {
+        if (vertex == markedVertex) {
+            s = ANSI_RED + s + ANSI_RESET;
+        } else if (vertex.hasBuilding() && vertex.getBuilding().getPlayer() == activePlayer) {
+            s = ANSI_GREEN + s + ANSI_RESET;
+        }
+        return s;
     }
 
     private String printEdge(int x, int y) {
+        String s = "";
         Edge edge = map.getEdge(x, y);
         if (edge == null) {
             return " ";
         }
         if (edge.hasRoad()) {
-            return "-";
+            s = "-";
         } else {
-            return "*";
+            s = "*";
         }
+        return checkEdgeColor(s, edge);
+    }
+
+    private String checkEdgeColor(String s, Edge edge) {
+        if (edge == markedEdge) {
+            s = ANSI_RED + s + ANSI_RESET;
+        } else if (edge.hasRoad() && edge.getRoad().getPlayer() == activePlayer) {
+            s = ANSI_GREEN + s + ANSI_RESET;
+        }
+        return s;
     }
 
     private String printField(int x, int y) {

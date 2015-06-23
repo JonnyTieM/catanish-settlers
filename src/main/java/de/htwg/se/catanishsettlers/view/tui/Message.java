@@ -1,4 +1,4 @@
-package de.htwg.se.catanishsettlers.view;
+package de.htwg.se.catanishsettlers.view.tui;
 
 import java.util.List;
 
