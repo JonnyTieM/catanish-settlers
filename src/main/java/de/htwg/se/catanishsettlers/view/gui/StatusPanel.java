@@ -12,7 +12,9 @@ import java.awt.event.ActionListener;
  */
 public class StatusPanel extends JPanel {
 
-    public StatusPanel() {
+    public StatusPanel(DicePanel dicePanel) {
+        setLayout(new FlowLayout());
+
         final JButton switchButton = new JButton("End Preparation");
         switchButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
@@ -25,5 +27,6 @@ public class StatusPanel extends JPanel {
             }
         });
         add(switchButton);
+        add(dicePanel);
     }
 }

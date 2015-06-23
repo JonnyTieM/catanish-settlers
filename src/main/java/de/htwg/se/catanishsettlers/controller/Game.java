@@ -6,6 +6,7 @@ import de.htwg.se.catanishsettlers.model.map.Edge;
 import de.htwg.se.catanishsettlers.model.map.Vertex;
 import de.htwg.se.catanishsettlers.model.mechanic.Card;
 import de.htwg.se.catanishsettlers.model.map.Field;
+import de.htwg.se.catanishsettlers.model.mechanic.Dice;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
 import de.htwg.se.catanishsettlers.model.map.Map;
 import de.htwg.se.catanishsettlers.model.resources.ResourceCollection;
@@ -17,18 +18,17 @@ import java.util.*;
  */
 public final class Game {
     private PlayerContainer playerContainer;
-    private Random rnd;
     private Stack<Card> cardStack;
     private List<Card> discardPile;
     private Map map;
     private boolean isThereAWinner;
 
-    private int lastRolledDiceNumber;
+    private final Dice dice;
     private IGameState state;
 
     public Game(List<Player> players) {
+        dice = new Dice(2, 6);
         isThereAWinner = false;
-        rnd = new Random();
         cardStack = new Stack<Card>();
         discardPile = new ArrayList<Card>();
         prepareStack();
@@ -158,14 +158,9 @@ public final class Game {
         }
     }
 
-    public int getLastRolledDiceNumber() {
-        return lastRolledDiceNumber;
+    public Dice getDice() {
+        return dice;
     }
-
-    public void setLastRolledDiceNumber(int lastRolledDiceNumber) {
-        this.lastRolledDiceNumber = lastRolledDiceNumber;
-    }
-
     public boolean isThereAWinner() {
         return isThereAWinner;
     }

@@ -7,9 +7,10 @@ import de.htwg.se.catanishsettlers.model.constructions.Road;
 import de.htwg.se.catanishsettlers.model.constructions.Settlement;
 import de.htwg.se.catanishsettlers.model.map.Edge;
 import de.htwg.se.catanishsettlers.model.map.Vertex;
-import de.htwg.se.catanishsettlers.model.mechanic.DiceRoll;
+import de.htwg.se.catanishsettlers.model.mechanic.Dice;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
 import de.htwg.se.catanishsettlers.model.resources.ResourceCollection;
+import de.htwg.se.catanishsettlers.view.gui.DicePanel;
 import de.htwg.se.catanishsettlers.view.tui.Log;
 import de.htwg.se.catanishsettlers.view.tui.Message;
 import de.htwg.se.catanishsettlers.view.tui.MessageFactory;
@@ -54,7 +55,9 @@ public class CatanishSettlers {
             Log.categories.add(Message.Category.MAP);
             Log.display(MessageFactory.map_overview(game.getMap()));
             Log.categories.add(Message.Category.DICE_ROLL);
-            Log.display(MessageFactory.dice_roll(new DiceRoll(3)));
+            Dice dice = new Dice(3, 8);
+            dice.roll();
+            Log.display(MessageFactory.dice_roll(dice));
             Log.categories.add(Message.Category.PLAYER);
             Log.display(MessageFactory.player(players.get(0)));
             Log.categories.add(Message.Category.CONSTRUCTION);
@@ -77,8 +80,10 @@ public class CatanishSettlers {
         if (mode == Mode.GUI) {
             PlayersPanel playersPanel = new PlayersPanel(game.getPlayerContainer().getPlayers());
             MapPanel mapPanel = new MapPanel(game.getMap());
+            DicePanel dicePanel = new DicePanel(game.getDice());
+            game.getDice().addObserver(dicePanel);
             game.getPlayerContainer().addObserver(playersPanel);
-            new GUIFrame(playersPanel, mapPanel);
+            new GUIFrame(playersPanel, mapPanel, dicePanel);
         }
     }
 }

@@ -2,7 +2,7 @@ package de.htwg.se.catanishsettlers.view.tui;
 
 import de.htwg.se.catanishsettlers.model.constructions.Construction;
 import de.htwg.se.catanishsettlers.model.map.Map;
-import de.htwg.se.catanishsettlers.model.mechanic.DiceRoll;
+import de.htwg.se.catanishsettlers.model.mechanic.Dice;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
 
 import java.util.ArrayList;
@@ -49,15 +49,15 @@ public class MessageFactory {
         return messages.toArray(new Message[messages.size()]);
     }
 
-    public static Message[] dice_roll(DiceRoll diceRoll) {
+    public static Message[] dice_roll(Dice dice) {
         initialize();
         categories.add(Message.Category.DICE_ROLL);
 
-        int[] singleValues = diceRoll.getSingleValues();
+        int[] singleValues = dice.getSingleValues();
         text = "Dice roll:\n";
         messages.add(new Message(text, detail, categories));
 
-        text = String.valueOf(diceRoll.getValue());
+        text = String.valueOf(dice.getValue());
         messages.add(new Message(text, detail, categories));
 
         text = "(";

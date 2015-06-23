@@ -1,6 +1,6 @@
 package de.htwg.se.catanishsettlers.controller;
 
-import de.htwg.se.catanishsettlers.model.mechanic.DiceRoll;
+import de.htwg.se.catanishsettlers.model.mechanic.Dice;
 
 /**
  * Created by Stephan on 05.06.2015.
@@ -11,11 +11,9 @@ public class PreDiceRollState implements IGameState {
     }
 
     public void nextState(Game game) {
-
-        DiceRoll dice = new DiceRoll(2);
-        int rolledNumber = dice.getValue();
-        game.setLastRolledDiceNumber(rolledNumber);
-        distributeResources(rolledNumber, game);
+        Dice dice = game.getDice();
+        dice.roll();
+        distributeResources(dice.getValue(), game);
 
         game.setState(new PostDiceRollState());
     }

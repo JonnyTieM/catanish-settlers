@@ -10,12 +10,11 @@ import java.util.Observable;
  */
 public class GUIFrame extends JFrame {
 
-    private StatusPanel statusPanel = new StatusPanel();
-    private JSplitPane sPaneStatusAndMap, sPaneStatusMapAndPlayers;
+    private final StatusPanel statusPanel;
+    private final JSplitPane sPaneStatusAndMap, sPaneStatusMapAndPlayers;
 
-    public GUIFrame(PlayersPanel playersPanel, MapPanel mapPanel) {
-        //playersPanel = new PlayersPanel(null, null);
-        //statusPanel = new StatusPanel();
+    public GUIFrame(PlayersPanel playersPanel, MapPanel mapPanel, DicePanel dicePanel) {
+        statusPanel = new StatusPanel(dicePanel);
 
         sPaneStatusAndMap = initSplitPaneDefaultSettings(JSplitPane.VERTICAL_SPLIT);
         sPaneStatusAndMap.setLeftComponent(mapPanel);
