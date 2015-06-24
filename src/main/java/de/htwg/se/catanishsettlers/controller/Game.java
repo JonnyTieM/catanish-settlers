@@ -158,6 +158,10 @@ public final class Game {
         }
     }
 
+    public int getLastRolledDiceNumber() {
+        return dice.getValue();
+    }
+
     public Dice getDice() {
         return dice;
     }
