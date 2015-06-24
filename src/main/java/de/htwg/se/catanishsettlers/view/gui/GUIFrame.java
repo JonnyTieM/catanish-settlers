@@ -1,21 +1,17 @@
 package de.htwg.se.catanishsettlers.view.gui;
 
-import de.htwg.se.catanishsettlers.model.map.Map;
-
 import javax.swing.*;
-import java.util.Observable;
 
 /**
  * Created by Stephan on 11.06.2015.
  */
 public class GUIFrame extends JFrame {
 
-    private StatusPanel statusPanel = new StatusPanel();
-    private JSplitPane sPaneStatusAndMap, sPaneStatusMapAndPlayers;
+    private final StatusPanel statusPanel;
+    private final JSplitPane sPaneStatusAndMap, sPaneStatusMapAndPlayers;
 
-    public GUIFrame(PlayersPanel playersPanel, MapPanel mapPanel) {
-        //playersPanel = new PlayersPanel(null, null);
-        //statusPanel = new StatusPanel();
+    public GUIFrame(PlayersPanel playersPanel, MapPanel mapPanel, MultiDicePanel multiDicePanel) {
+        statusPanel = new StatusPanel(multiDicePanel);
 
         sPaneStatusAndMap = initSplitPaneDefaultSettings(JSplitPane.VERTICAL_SPLIT);
         sPaneStatusAndMap.setLeftComponent(mapPanel);

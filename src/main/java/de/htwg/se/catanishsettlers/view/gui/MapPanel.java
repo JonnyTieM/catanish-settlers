@@ -4,6 +4,8 @@ import de.htwg.se.catanishsettlers.model.map.Edge;
 import de.htwg.se.catanishsettlers.model.map.Field;
 import de.htwg.se.catanishsettlers.model.map.Map;
 import de.htwg.se.catanishsettlers.model.map.Vertex;
+import de.htwg.se.catanishsettlers.model.mechanic.Dice;
+import de.htwg.se.catanishsettlers.model.mechanic.Utility;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,11 +15,13 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Created by Stephan on 11.06.2015.
  */
-public class MapPanel extends JPanel implements MouseMotionListener, ComponentListener {
+public class MapPanel extends JPanel implements MouseMotionListener, ComponentListener, Observer {
 
     //private final double scale = 20;
     private final int padding = 190;
@@ -28,10 +32,19 @@ public class MapPanel extends JPanel implements MouseMotionListener, ComponentLi
     private Label debugLabel = new Label();
     private List<ObjectWithPosition> objects;
     private ObjectWithPosition mouseHover;
+    private int rolledNumber;
+    private final Font smallFont = new Font("Arial", Font.PLAIN, 14);
+    private final Font bigFont = new Font("Arial", Font.BOLD, 20);
 
     private List<VertexWithCoordinates> verticesForPainting;
     private List<EdgeWithCoordinates> edgesForPainting;
     private List<FieldWithCoordinates> fieldsForPainting;
+
+    public void update(Observable o, Object arg) {
+        Dice dice = (Dice)o;
+        rolledNumber = dice.getValue();
+        paint(this.getGraphics());
+    }
 
     private class VertexWithCoordinates {
         public final Vertex vertex;
@@ -182,9 +195,12 @@ public class MapPanel extends JPanel implements MouseMotionListener, ComponentLi
         if (best == null) {
             debugLabel.setText(text + "nothing.");
         } else {
-            if (best.object.getClass().equals(Field.class)) text += "Field " + ((Field)best.object).getX() + ", " + ((Field)best.object).getY();
-            if (best.object.getClass().equals(Edge.class)) text += "Edge " + ((Edge)best.object).getX() + ", " + ((Edge)best.object).getY();
-            if (best.object.getClass().equals(Vertex.class)) text += "Vertex " + ((Vertex)best.object).getX() + ", " + ((Vertex)best.object).getY();
+            if (best.object.getClass().equals(Field.class)) text += "Field "
+                    + ((Field)best.object).getX() + ", " + ((Field)best.object).getY();
+            if (best.object.getClass().equals(Edge.class)) text += "Edge "
+                    + ((Edge)best.object).getX() + ", " + ((Edge)best.object).getY();
+            if (best.object.getClass().equals(Vertex.class)) text += "Vertex "
+                    + ((Vertex)best.object).getX() + ", " + ((Vertex)best.object).getY();
             debugLabel.setText(text);
         }
         debugLabel.revalidate();
@@ -206,14 +222,25 @@ public class MapPanel extends JPanel implements MouseMotionListener, ComponentLi
     private void drawFields(Graphics2D g2, List<FieldWithCoordinates> fields) {
         for(FieldWithCoordinates fieldWithCoords : fields) {
             Field field = fieldWithCoords.field;
-            int x = fieldWithCoords.x;
-            int y = fieldWithCoords.y;
             int[] vx = fieldWithCoords.vx;
             int[] vy = fieldWithCoords.vy;
             g2.setColor(getColor(field));
             g2.fillPolygon(vx, vy, 6);
             g2.setColor(Color.GRAY);
-            g2.drawString(String.valueOf(field.getTriggerNumber()), x, y);
+
+            int number = field.getTriggerNumber();
+
+            Font font = smallFont;
+            String text = String.valueOf(number);
+            if (number == rolledNumber) {
+                font = bigFont;
+                text = "< " + text + " >";
+            }
+            g2.setFont(font);
+            int w = vx[1] - vx[0];
+            int h = vy[4] - vy[1];
+            Point textPosition = Utility.placeTextInBox(w, h, text, g2.getFontMetrics());
+            g2.drawString(text, vx[0] + textPosition.x, vy[0] + textPosition.y);
         }
     }
 

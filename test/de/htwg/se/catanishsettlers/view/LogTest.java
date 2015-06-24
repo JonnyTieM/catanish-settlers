@@ -3,7 +3,7 @@ package de.htwg.se.catanishsettlers.view;
 import de.htwg.se.catanishsettlers.model.constructions.City;
 import de.htwg.se.catanishsettlers.model.constructions.Road;
 import de.htwg.se.catanishsettlers.model.constructions.Settlement;
-import de.htwg.se.catanishsettlers.model.mechanic.DiceRoll;
+import de.htwg.se.catanishsettlers.model.mechanic.Dice;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
 import de.htwg.se.catanishsettlers.view.tui.Log;
 import de.htwg.se.catanishsettlers.view.tui.Message;
@@ -22,7 +22,7 @@ public class LogTest {
 
         Player player = new Player("Test Heinrich");
 
-        DiceRoll roll = new DiceRoll(5);
+        Dice roll = new Dice(5);
 
         Log.display(roll.getMessages());
 
