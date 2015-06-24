@@ -141,13 +141,13 @@ public class TUIPreparationPhase {
     }
 
     private void moveCursor(String s, Point cursor) {
-        if (s.equals("up")) {
+        if (s.contentEquals("up")) {
             cursor.y -= 1;
-        } else if (s.equals("down")) {
+        } else if (s.contentEquals("down")) {
             cursor.y += 1;
-        } else if (s.equals("left")) {
+        } else if (s.contentEquals("left")) {
             cursor.x -= 1;
-        } else if (s.equals("right")) {
+        } else if (s.contentEquals("right")) {
             cursor.x += 1;
         }
     }
