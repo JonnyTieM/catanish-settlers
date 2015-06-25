@@ -8,6 +8,7 @@ import de.htwg.se.catanishsettlers.model.map.Vertex;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -59,7 +60,7 @@ public class TUI {
         String s = "";
         mapTUI.setActivePlayer(player);
         while (!s.contentEquals("end")) {
-            System.out.println("\n\nResources of " + player.getName() + " (" + player.getScore() + " points)");
+            System.out.println("\nResources of " + player.getName() + " (" + player.getScore() + " points)");
             System.out.println("Lumber: " + player.getResources().getLumber());
             System.out.println("Brick: " + player.getResources().getBrick());
             System.out.println("Wool: " + player.getResources().getBrick());
@@ -171,7 +172,11 @@ public class TUI {
     }
 
     private void announceWinner() {
-
+        System.out.println("The game has come to an end. There is a winner.");
+        List<Player> winners = game.checkVictory();
+        for (int i = 0; i < winners.size(); i++) {
+            System.out.println(winners.get(i).getName() + " has won the game with " + winners.get(i).getScore() + " points");
+        }
     }
 
     public static void main(String[] args) {
