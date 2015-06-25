@@ -141,7 +141,7 @@ public class ResourceCollection {
         for (ResourceCollection resourceCollection : resourceCollections) {
             brick -= resourceCollection.getBrick();
             lumber -= resourceCollection.getLumber();
-            wool -= resourceCollection.getLumber();
+            wool -= resourceCollection.getWool();
             grain -= resourceCollection.getGrain();
             ore -= resourceCollection.getOre();
         }
