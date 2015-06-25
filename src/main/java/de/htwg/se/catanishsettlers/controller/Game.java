@@ -37,26 +37,6 @@ public final class Game {
         map = new Map();
     }
 
-    protected void setState(IGameState state) {
-        this.state = state;
-    }
-
-    public Map getMap() {
-        return map;
-    }
-
-    public PlayerContainer getPlayerContainer() {
-        return playerContainer;
-    }
-
-    public Player getActivePlayer() {
-        return playerContainer.getActivePlayer();
-    }
-
-    public void nextPhase() {
-        state.nextState(this);
-    }
-
     private void prepareStack() {
         for (int k = 0; k < Config.KNIGHTS_AMOUNT; k++) {
             cardStack.push(new Card(Card.Types.KNIGHT));
@@ -74,10 +54,6 @@ public final class Game {
             cardStack.push(new Card(Card.Types.VICTORYPOINT));
         }
         Collections.shuffle(cardStack);
-    }
-
-    public Player getPlayer(int i) {
-        return playerContainer.getPlayer(i);
     }
 
     public Player switchPlayer() {
@@ -119,14 +95,6 @@ public final class Game {
         return ConstructionRealizer.buildRoad(getActivePlayer(), edge, map);
     }
 
-    public boolean isBuildingPhase() {
-        return state instanceof PostDiceRollState;
-    }
-
-    private boolean isPreparationPhase() {
-        return state instanceof PreparationState;
-    }
-
     protected void distributeResources(int diceRoll) {
         List<Field> productiveFields = map.getFieldsWithTriggerNumber(diceRoll);
 
@@ -161,11 +129,34 @@ public final class Game {
     public int getLastRolledDiceNumber() {
         return dice.getValue();
     }
-
     public Dice getDice() {
         return dice;
     }
     public boolean isThereAWinner() {
         return isThereAWinner;
+    }
+    public boolean isBuildingPhase() {
+        return state instanceof PostDiceRollState;
+    }
+    private boolean isPreparationPhase() {
+        return state instanceof PreparationState;
+    }
+    public Player getPlayer(int i) {
+        return playerContainer.getPlayer(i);
+    }
+    protected void setState(IGameState state) {
+        this.state = state;
+    }
+    public Map getMap() {
+        return map;
+    }
+    public PlayerContainer getPlayerContainer() {
+        return playerContainer;
+    }
+    public Player getActivePlayer() {
+        return playerContainer.getActivePlayer();
+    }
+    public void nextPhase() {
+        state.nextState(this);
     }
 }
