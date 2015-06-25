@@ -211,10 +211,10 @@ public class MapTUI {
         if (field == null) {
             return " ";
         }
-        if (field.getType() == null) {
+        if (field.getResourceType() == null) {
             return "F";
         }
-        switch (field.getType()) {
+        switch (field.getResourceType()) {
             case BRICK:
                 return "B";
             case GRAIN:
