@@ -21,7 +21,7 @@ public final class ConstructionInspector {
     private ConstructionInspector() {
     }
 
-    public static LinkedList<Vertex> possibleHouses(Player player, Map map) {
+    public static LinkedList<Vertex> possibleSettlements(Player player, Map map) {
         LinkedList<Vertex> possibleHouses = new LinkedList<Vertex>();
 
         LinkedList<Vertex> vertices = map.getVertices();

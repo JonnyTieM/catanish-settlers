@@ -3,13 +3,11 @@ package de.htwg.se.catanishsettlers.view.tui;
 import de.htwg.se.catanishsettlers.controller.ConstructionInspector;
 import de.htwg.se.catanishsettlers.controller.ConstructionRealizer;
 import de.htwg.se.catanishsettlers.controller.Game;
-import de.htwg.se.catanishsettlers.model.constructions.Settlement;
 import de.htwg.se.catanishsettlers.model.map.Edge;
+import de.htwg.se.catanishsettlers.model.map.Vertex;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -31,16 +29,19 @@ public class TUI {
             System.out.println("\n\n" + player.getName() + ", it's your turn.");
             preDiceRoll(player);
             postDiceRoll(player);
-            game.nextPhase();
         }
         announceWinner();
     }
 
     private void preDiceRoll(Player player) {
-        System.out.println(player.getName() + ": Type \"roll\" to roll the dice."); //\"devcard\" for playing a development card.
-        String s = input.next();
-        if (s.contentEquals("roll")) {
-            game.nextPhase();
+        boolean nextPhase = false;
+        while (!nextPhase) {
+            System.out.println(player.getName() + ": Type \"roll\" to roll the dice."); //\"devcard\" for playing a development card.
+            String s = input.next();
+            if (s.contentEquals("roll")) {
+                game.nextPhase();
+                nextPhase = true;
+            }
         }
     }
 
@@ -51,13 +52,20 @@ public class TUI {
             System.out.println(player.getName() + ": You rolled a " + game.getLastRolledDiceNumber() + ". Nothing happens, because there is no robber yet.");
         }
         playerActions(player);
+        game.nextPhase();
     }
 
     private void playerActions(Player player) {
         String s = "";
         mapTUI.setActivePlayer(player);
         while (!s.contentEquals("end")) {
-            System.out.println(player.getName() + ": Choose what to do next:");
+            System.out.println("\n\nResources of " + player.getName() + " (" + player.getScore() + " points)");
+            System.out.println("Lumber: " + player.getResources().getLumber());
+            System.out.println("Brick: " + player.getResources().getBrick());
+            System.out.println("Wool: " + player.getResources().getBrick());
+            System.out.println("Grain: " + player.getResources().getGrain());
+            System.out.println("Ore: " + player.getResources().getOre());
+            System.out.println("\n" + player.getName() + ": Choose what to do next:");
             System.out.println("\"road\" for building a road");
             System.out.println("\"settlement\" for building a settlement");
             System.out.println("\"city\" for building a city");
@@ -80,7 +88,7 @@ public class TUI {
 
     private void buildRoad(Player player) {
         int cnt = 0;
-        LinkedList<Edge> possibleRoads = ConstructionInspector.possibleStreets(player,game.getMap());
+        LinkedList<Edge> possibleRoads = ConstructionInspector.possibleStreets(player, game.getMap());
         if (possibleRoads.isEmpty()) {
             System.out.println(player.getName() + ": You can't build a road anywhere right now.");
             return;
@@ -98,7 +106,7 @@ public class TUI {
                 mapTUI.markEdge(selectedEdge.getX(), selectedEdge.getY());
             }
         }
-        if(ConstructionRealizer.buildRoad(player, selectedEdge, game.getMap())) {
+        if (game.buildRoad(selectedEdge.getX(), selectedEdge.getY())) {
             System.out.println(player.getName() + ": Building road at desired position was successful.");
         } else {
             System.out.println(player.getName() + ": Couldn't build road at desired position. You didn't have enough resources.");
@@ -107,11 +115,59 @@ public class TUI {
     }
 
     private void buildSettlement(Player player) {
-
+        int cnt = 0;
+        LinkedList<Vertex> possibleSettlements = ConstructionInspector.possibleSettlements(player, game.getMap());
+        if (possibleSettlements.isEmpty()) {
+            System.out.println(player.getName() + ": There are no available positions right now, where it's possible for you to build a settlement.");
+            return;
+        }
+        String s = "";
+        Vertex selectedVertex = possibleSettlements.get(cnt);
+        mapTUI.markVertex(selectedVertex.getX(), selectedVertex.getY());
+        while (!s.contentEquals("build")) {
+            System.out.println(player.getName() + ": Choose location where to build the settlement. Type \"next\" for next possible position and \"build\" for building the settlement at the red marked position.");
+            mapTUI.printMap();
+            s = input.next();
+            if (s.contentEquals("next")) {
+                cnt = (cnt + 1) % possibleSettlements.size();
+                selectedVertex = possibleSettlements.get(cnt);
+                mapTUI.markVertex(selectedVertex.getX(), selectedVertex.getY());
+            }
+        }
+        if (game.buildSettlement(selectedVertex.getX(), selectedVertex.getY())) {
+            System.out.println(player.getName() + ": Building settlement at desired position was successful.");
+        } else {
+            System.out.println(player.getName() + ": Couldn't build settlement at desired position. You didn't have enough resources.");
+        }
+        mapTUI.unmarkVertex();
     }
 
     private void buildCity(Player player) {
-
+        int cnt = 0;
+        LinkedList<Vertex> possibleCities = ConstructionInspector.possibleCities(player, game.getMap());
+        if (possibleCities.isEmpty()) {
+            System.out.println(player.getName() + ": There are no available positions right now, where it's possible for you to build a city.");
+            return;
+        }
+        String s = "";
+        Vertex selectedVertex = possibleCities.get(cnt);
+        mapTUI.markVertex(selectedVertex.getX(), selectedVertex.getY());
+        while (!s.contentEquals("build")) {
+            System.out.println(player.getName() + ": Choose location where to build the city. Type \"next\" for next possible position and \"build\" for building the city at the red marked position.");
+            mapTUI.printMap();
+            s = input.next();
+            if (s.contentEquals("next")) {
+                cnt = (cnt + 1) % possibleCities.size();
+                selectedVertex = possibleCities.get(cnt);
+                mapTUI.markVertex(selectedVertex.getX(), selectedVertex.getY());
+            }
+        }
+        if (game.buildCity(selectedVertex.getX(), selectedVertex.getY())) {
+            System.out.println(player.getName() + ": Building city at desired position was successful.");
+        } else {
+            System.out.println(player.getName() + ": Couldn't build city at desired position. You didn't have enough resources.");
+        }
+        mapTUI.unmarkVertex();
     }
 
     private void announceWinner() {
