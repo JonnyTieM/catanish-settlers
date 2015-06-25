@@ -31,7 +31,7 @@ public final class Config {
     // resources       (brick, lumber, wool, grain, ore)
     public final static ResourceCollection CARD_COST = new ResourceCollection(0, 0, 1, 1, 1);
     public final static ResourceCollection SETTLEMENT_COST = new ResourceCollection(1, 1, 1, 1, 0);
-    public final static ResourceCollection CITY_COST = new ResourceCollection(0, 0, 0, 3, 2);
+    public final static ResourceCollection CITY_COST = new ResourceCollection(0, 0, 0, 2, 3);
     public final static ResourceCollection ROAD_COST = new ResourceCollection(1, 1, 0, 0, 0);
 
     public final static int SETTLEMENT_YIELD = 1;
