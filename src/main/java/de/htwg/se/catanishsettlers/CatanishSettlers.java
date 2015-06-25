@@ -49,7 +49,7 @@ public class CatanishSettlers {
 
         game = new Game(players);
 
-        Mode mode = Mode.GUI;
+        Mode mode = Mode.TUI;
 
         if (mode == Mode.TUI) {
             Log.categories.add(Message.Category.MAP);

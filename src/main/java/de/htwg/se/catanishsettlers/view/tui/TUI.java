@@ -45,10 +45,10 @@ public class TUI {
     }
 
     private void postDiceRoll(Player player) {
-        if (game.getLastRolledDiceNumber() != 7) {
-            System.out.println(player.getName() + ": You rolled a " + game.getLastRolledDiceNumber() + ". Resources were distributed.");
+        if (game.getDice().getValue() != 7) {
+            System.out.println(player.getName() + ": You rolled a " + game.getDice().getValue() + ". Resources were distributed.");
         } else {
-            System.out.println(player.getName() + ": You rolled a " + game.getLastRolledDiceNumber() + ". Nothing happens, because there is no robber yet.");
+            System.out.println(player.getName() + ": You rolled a " + game.getDice().getValue() + ". Nothing happens, because there is no robber yet.");
         }
         playerActions(player);
     }

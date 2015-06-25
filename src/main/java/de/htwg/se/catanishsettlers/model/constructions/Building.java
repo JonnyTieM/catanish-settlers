@@ -23,7 +23,7 @@ public abstract class Building extends Construction{
 //
 //        Vertex vertex = (Vertex)getPosition();
 //        for(Field surroundingField : vertex.getSurroundingFields()) {
-//            EResource resource = surroundingField.getType();
+//            EResource resource = surroundingField.getResourceType();
 //            collectedResources.add(resource, yield);
 //        }
 //        return collectedResources;

@@ -151,5 +151,4 @@ public class TUIPreparationPhase {
             cursor.x += 1;
         }
     }
-
 }

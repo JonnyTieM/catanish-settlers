@@ -307,7 +307,7 @@ public class MapPanel extends JPanel implements MouseMotionListener, ComponentLi
 
     private Color getColor(Field field) {
         Color color = Color.MAGENTA;    // if magenta can be seen, an error occured.
-        switch (field.getType()) {
+        switch (field.getResourceType()) {
             case BRICK:
                 color = Color.ORANGE;
                 break;

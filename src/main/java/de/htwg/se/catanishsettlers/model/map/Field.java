@@ -5,34 +5,23 @@ import de.htwg.se.catanishsettlers.model.resources.EResource;
 /**
  * Created by JonnyTieM on 29.03.2015.
  */
-public class Field extends MapObject {
-    //TODO: add enum for different field types
+public final class Field extends MapObject {
 
-    private EResource sort;
-    private int triggerNumber;
+    private final EResource resourceType;
+    private final int triggerNumber;
 
-    public Field(int x, int y, EResource sort, int trigger) {
+    public Field(int x, int y, EResource resourceType, int triggerNumber) {
         super(x, y);
 
-        if (sort == null) throw new IllegalArgumentException("Only Brick, Lumber, Wool, Grain or Ore allowed");
-        this.sort = sort;
-        triggerNumber = trigger;
+        if (resourceType == null) throw new IllegalArgumentException("Only Brick, Lumber, Wool, Grain or Ore allowed");
+        this.resourceType = resourceType;
+        this.triggerNumber = triggerNumber;
     }
 
-    public EResource getType() {
-        return sort;
+    public EResource getResourceType() {
+        return resourceType;
     }
-
     public int getTriggerNumber() {
         return triggerNumber;
     }
-
-//    public List<Building> getSurroundingBuildings() {
-//        List<Building> surroundingBuildings = new LinkedList<Building>();
-//        for(Vertex vertex : getSurroundingVertices()) {
-//            Building building = vertex.getBuilding();
-//            if (building != null) surroundingBuildings.add(building);
-//        }
-//        return surroundingBuildings;
-//    }
 }
