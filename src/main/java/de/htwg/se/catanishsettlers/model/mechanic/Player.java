@@ -97,7 +97,7 @@ public class Player {
     }
 
     public boolean hasEnoughResources(ResourceCollection cost) {
-        return resources.compareTo(cost) > 0;
+        return resources.compareTo(cost) >= 0;
     }
 
     public boolean payCost(ResourceCollection cost) {
