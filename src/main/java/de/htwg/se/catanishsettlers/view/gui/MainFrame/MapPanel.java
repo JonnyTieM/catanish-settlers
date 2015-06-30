@@ -1,4 +1,4 @@
-package de.htwg.se.catanishsettlers.view.gui;
+package de.htwg.se.catanishsettlers.view.gui.MainFrame;
 
 import de.htwg.se.catanishsettlers.model.map.Edge;
 import de.htwg.se.catanishsettlers.model.map.Field;
@@ -254,7 +254,7 @@ public class MapPanel extends JPanel implements MouseMotionListener, ComponentLi
 
             if(edge.hasRoad()) {
                 g2.setStroke(new BasicStroke(4));
-                g2.setColor(edge.getRoad().getPlayer().color);
+                g2.setColor(edge.getRoad().getPlayer().getColor());
             } else {
                 g2.setStroke(new BasicStroke(1));
                 g2.setColor(Color.GRAY);
@@ -268,7 +268,7 @@ public class MapPanel extends JPanel implements MouseMotionListener, ComponentLi
             Vertex vertex = vertexWithCoord.vertex;
             int x = vertexWithCoord.x;
             int y = vertexWithCoord.y;
-            if (vertex.hasBuilding()) g2.setColor(vertex.getBuilding().getPlayer().color);
+            if (vertex.hasBuilding()) g2.setColor(vertex.getBuilding().getPlayer().getColor());
             if (vertex.hasSettlement()) drawCircle(g2, x, y, 10, true);
             if (vertex.hasCity()) drawSquare(g2, x, y, 10);
         }

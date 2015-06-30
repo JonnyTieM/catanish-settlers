@@ -1,4 +1,4 @@
-package de.htwg.se.catanishsettlers.view.gui;
+package de.htwg.se.catanishsettlers.view.gui.MainFrame;
 
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
 
@@ -18,10 +18,10 @@ public abstract class PlayerPanelAbstract extends JPanel {
         this.player = player;
 
         TitledBorder border =BorderFactory.createTitledBorder(player.getName());
-        border.setTitleColor(player.color);
+        border.setTitleColor(player.getColor());
         setBorder(border);
 
-        setForeground(player.color);
+        setForeground(player.getColor());
 
         add(new Label("Settlements: " + player.settlements));
         add(new Label("Cities: " + player.cities));

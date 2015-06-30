@@ -1,4 +1,4 @@
-package de.htwg.se.catanishsettlers.view.gui;
+package de.htwg.se.catanishsettlers.view.gui.MainFrame;
 
 import de.htwg.se.catanishsettlers.controller.PlayerContainer;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
@@ -23,11 +23,37 @@ public class PlayersPanel extends JPanel implements Observer {
             panels.add(panel);
             add(panel);
         }
-        panels.get(0).set(PlayerPanelSwitchable.Status.EXTENDED);
+        if(panels.size() > 0) panels.get(0).set(PlayerPanelSwitchable.Status.EXTENDED);
     }
 
     public void update(Observable o, Object arg) {
+
         PlayerContainer playerContainer = (PlayerContainer)o;
+        if (playerContainer.getPlayers().size() > panels.size()) {
+            PlayerPanelSwitchable panel = new PlayerPanelSwitchable(playerContainer.getPlayers().get(playerContainer.getPlayers().size() - 1));
+            panels.add(panel);
+            add(panel);
+            revalidate();
+            repaint();
+        } else if (playerContainer.getPlayers().size() < panels.size()) {
+
+            for (PlayerPanelSwitchable panel : panels) {
+                boolean remove = true;
+                for (Player player : playerContainer.getPlayers()) {
+                    if (player.getName().contentEquals(panel.getName())) {
+                        remove = false;
+                        break;
+                    }
+                }
+                if (remove) {
+
+                    remove(panel);
+                    panels.remove(panel);
+                    revalidate();
+                    repaint();
+                }
+            }
+        }
         for(int i = 0; i < playerContainer.getPlayers().size(); i++) {
             Player player = playerContainer.getPlayers().get(i);
             if (player == playerContainer.getActivePlayer()) {

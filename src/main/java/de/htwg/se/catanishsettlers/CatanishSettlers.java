@@ -10,13 +10,10 @@ import de.htwg.se.catanishsettlers.model.map.Vertex;
 import de.htwg.se.catanishsettlers.model.mechanic.Dice;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
 import de.htwg.se.catanishsettlers.model.resources.ResourceCollection;
-import de.htwg.se.catanishsettlers.view.gui.MultiDicePanel;
+import de.htwg.se.catanishsettlers.view.gui.MainFrame.*;
 import de.htwg.se.catanishsettlers.view.tui.Log;
 import de.htwg.se.catanishsettlers.view.tui.Message;
 import de.htwg.se.catanishsettlers.view.tui.MessageFactory;
-import de.htwg.se.catanishsettlers.view.gui.GUIFrame;
-import de.htwg.se.catanishsettlers.view.gui.MapPanel;
-import de.htwg.se.catanishsettlers.view.gui.PlayersPanel;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -43,11 +40,11 @@ public class CatanishSettlers {
         players.add(susi);
         players.add(john);
 
-        hans.color = Color.RED;
-        susi.color = Color.BLUE;
-        john.color = Color.MAGENTA;
+        hans.setColor(Color.RED);
+        susi.setColor(Color.BLUE);
+        john.setColor(Color.MAGENTA);
 
-        game = new Game(players);
+        game = new Game();
 
         Mode mode = Mode.GUI;
 
@@ -80,11 +77,12 @@ public class CatanishSettlers {
         if (mode == Mode.GUI) {
             PlayersPanel playersPanel = new PlayersPanel(game.getPlayerContainer().getPlayers());
             MapPanel mapPanel = new MapPanel(game.getMap());
+            MapAndCreateGamePanel mapAndCreateGamePanel = new MapAndCreateGamePanel(mapPanel);
             MultiDicePanel multiDicePanel = new MultiDicePanel(game.getDice());
             game.getDice().addObserver(multiDicePanel);
             game.getDice().addObserver(mapPanel);
             game.getPlayerContainer().addObserver(playersPanel);
-            new GUIFrame(playersPanel, mapPanel, multiDicePanel);
+            new GUIFrame(playersPanel, mapAndCreateGamePanel, multiDicePanel);
         }
     }
 }

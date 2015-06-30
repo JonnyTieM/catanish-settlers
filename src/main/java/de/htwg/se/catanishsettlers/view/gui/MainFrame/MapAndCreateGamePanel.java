@@ -1,0 +1,29 @@
+package de.htwg.se.catanishsettlers.view.gui.MainFrame;
+
+import javax.swing.*;
+import java.awt.*;
+
+/**
+ * Created by Stephan on 26.06.2015.
+ */
+public class MapAndCreateGamePanel extends JPanel {
+
+    private GUIFrame guiFrame;
+
+    public MapAndCreateGamePanel(MapPanel mapPanel) {
+        setLayout(new CardLayout());
+        add(new CreateGamePanel());
+        add(mapPanel);
+    }
+
+    public void next() {
+        CardLayout cardLayout = (CardLayout)getLayout();
+        cardLayout.next(this);
+
+        guiFrame.repaint();
+    }
+
+    public void registerGUI(GUIFrame guiFrame) {
+        this.guiFrame = guiFrame;
+    }
+}

@@ -1,4 +1,4 @@
-package de.htwg.se.catanishsettlers.view.gui;
+package de.htwg.se.catanishsettlers.view.gui.MainFrame;
 
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
 
@@ -15,12 +15,15 @@ public class PlayerPanelSwitchable extends JPanel {
 
     private PlayerPanelCompact compactPanel;
     private PlayerPanelExtended extendedPanel;
+    private final String name;
+
     public enum Status {
         COMPACT,
         EXTENDED
     }
 
     public PlayerPanelSwitchable(Player player) {
+        name = player.getName();
         compactPanel = new PlayerPanelCompact(player);
         extendedPanel = new PlayerPanelExtended(player);
         setLayout(new CardLayout());
@@ -37,4 +40,6 @@ public class PlayerPanelSwitchable extends JPanel {
             cl.show(this, extended);
         }
     }
+
+    public String getName() { return name; }
 }

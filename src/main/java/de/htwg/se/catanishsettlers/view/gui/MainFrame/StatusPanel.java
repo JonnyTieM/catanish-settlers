@@ -1,4 +1,4 @@
-package de.htwg.se.catanishsettlers.view.gui;
+package de.htwg.se.catanishsettlers.view.gui.MainFrame;
 
 import de.htwg.se.catanishsettlers.CatanishSettlers;
 
@@ -12,12 +12,17 @@ import java.awt.event.ActionListener;
  */
 public class StatusPanel extends JPanel {
 
-    public StatusPanel(MultiDicePanel multiDicePanel) {
+    private final JButton switchButton;
+
+    public StatusPanel(MultiDicePanel multiDicePanel, final MapAndCreateGamePanel mapAndCreateGamePanel) {
         setLayout(new FlowLayout());
 
-        final JButton switchButton = new JButton("End Preparation");
+        switchButton = new JButton("End Preparation");
         switchButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
+                if (switchButton.getText() == "End Preparation") {
+                    mapAndCreateGamePanel.next();
+                }
                 CatanishSettlers.game.nextPhase();
                 if (CatanishSettlers.game.isBuildingPhase()) {
                     switchButton.setText("End turn");
@@ -29,4 +34,6 @@ public class StatusPanel extends JPanel {
         add(switchButton);
         add(multiDicePanel);
     }
+
+    public JButton getSwitchButton() { return switchButton; }
 }

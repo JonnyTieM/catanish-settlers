@@ -27,12 +27,17 @@ public final class Game {
     private IGameState state;
 
     public Game(List<Player> players) {
+        this();
+        this.playerContainer = new PlayerContainer(players);
+    }
+
+    public Game() {
         dice = new Dice(2, 6);
         isThereAWinner = false;
         cardStack = new Stack<Card>();
         discardPile = new ArrayList<Card>();
         prepareStack();
-        this.playerContainer = new PlayerContainer(players);
+        this.playerContainer = new PlayerContainer();
         state = new PreparationState();
         map = new Map();
     }

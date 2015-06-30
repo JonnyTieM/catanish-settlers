@@ -2,6 +2,7 @@ package de.htwg.se.catanishsettlers.model.mechanic;
 
 import de.htwg.se.catanishsettlers.model.Config;
 import de.htwg.se.catanishsettlers.model.resources.ResourceCollection;
+import de.htwg.se.catanishsettlers.view.gui.MainFrame.ColorChoosePanel;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ public class Player {
     private ArrayList<Card> cards;
     private int knightCount, victoryCardsCount;
     private ResourceCollection resources;
-    public Color color;
+    private Color color;
 
     public int settlements, cities, roads;
 
@@ -32,6 +33,10 @@ public class Player {
     public String getName() {
         return name;
     }
+    public void setName(String value) { name = value; }
+
+    public Color getColor() {return color; }
+    public void setColor(Color color) { this.color = color; }
 
     public boolean playCard(Card.Types cardType) {
 
