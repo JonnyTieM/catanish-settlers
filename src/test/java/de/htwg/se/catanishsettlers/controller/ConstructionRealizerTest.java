@@ -47,6 +47,7 @@ public class ConstructionRealizerTest {
         map.getVertex(2, 4).placeBuilding(new Settlement(player));
         assertTrue(ConstructionRealizer.buildCity(player, map.getVertex(2, 4), map));
         assertFalse(ConstructionRealizer.buildCity(player, map.getVertex(2, 4), map));
+        assertTrue(player.getResources().compareTo(new ResourceCollection(5, 5, 5, 3, 2)) == 0);
     }
 
     @Test
@@ -57,7 +58,8 @@ public class ConstructionRealizerTest {
         assertFalse(ConstructionRealizer.buildRoad(player, map.getEdge(2, 5), map));
 
         player.addResources(new ResourceCollection(5, 5, 5, 5, 5));
-        assertTrue(ConstructionRealizer.buildRoad(player, map.getEdge(2,5), map));
+        assertTrue(ConstructionRealizer.buildRoad(player, map.getEdge(2, 5), map));
+        assertTrue(player.getResources().compareTo(new ResourceCollection(4, 4, 5, 5, 5)) == 0);
     }
 
     @Test
