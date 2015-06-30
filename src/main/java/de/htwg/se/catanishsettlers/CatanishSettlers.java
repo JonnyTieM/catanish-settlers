@@ -31,7 +31,7 @@ public class CatanishSettlers {
     }
 
     public static void main(String[] args) {
-        List<Player> players = new ArrayList<Player>();
+        /*List<Player> players = new ArrayList<Player>();
         Player hans = new Player("Hans");
         Player susi = new Player("Susi");
         Player john = new Player("John");
@@ -42,7 +42,7 @@ public class CatanishSettlers {
 
         hans.setColor(Color.RED);
         susi.setColor(Color.BLUE);
-        john.setColor(Color.MAGENTA);
+        john.setColor(Color.MAGENTA);*/
 
         game = new Game();
 
@@ -56,23 +56,10 @@ public class CatanishSettlers {
             dice.roll();
             Log.display(MessageFactory.dice_roll(dice));
             Log.categories.add(Message.Category.PLAYER);
-            Log.display(MessageFactory.player(players.get(0)));
+            //Log.display(MessageFactory.player(players.get(0)));
             Log.categories.add(Message.Category.CONSTRUCTION);
-            Log.display(MessageFactory.construction(new Road(players.get(1))));
+            //Log.display(MessageFactory.construction(new Road(players.get(1))));
         }
-
-        for (Player player : players) {
-            player.addResources(new ResourceCollection(10));
-        }
-
-        List<Vertex> vertices = game.getMap().getVertices();
-        List<Edge> edges = game.getMap().getEdges();
-
-        edges.get(16).buildRoad(new Road(hans));
-        vertices.get(10).placeBuilding(new Settlement(susi));
-        vertices.get(20).placeBuilding(new City(john));
-
-        ConstructionRealizer.buildSettlement(hans, vertices.get(20), game.getMap());
 
         if (mode == Mode.GUI) {
             PlayersPanel playersPanel = new PlayersPanel(game.getPlayerContainer().getPlayers());

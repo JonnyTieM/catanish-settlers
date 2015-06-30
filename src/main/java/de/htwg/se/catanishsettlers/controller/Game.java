@@ -38,7 +38,7 @@ public final class Game {
         discardPile = new ArrayList<Card>();
         prepareStack();
         this.playerContainer = new PlayerContainer();
-        state = new PreparationState();
+        state = new GameSetupState();
         map = new Map();
     }
 
@@ -143,7 +143,7 @@ public final class Game {
     public boolean isBuildingPhase() {
         return state instanceof PostDiceRollState;
     }
-    private boolean isPreparationPhase() {
+    public boolean isPreparationPhase() {
         return state instanceof PreparationState;
     }
     public Player getPlayer(int i) {

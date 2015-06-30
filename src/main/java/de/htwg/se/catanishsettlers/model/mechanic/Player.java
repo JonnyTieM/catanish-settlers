@@ -27,7 +27,7 @@ public class Player {
         cities = Config.MAX_CITIES;
         roads = Config.MAX_ROADS;
         cards = new ArrayList<Card>();
-        resources = new ResourceCollection();
+        resources = Config.START_RESOURCES;
     }
 
     public String getName() {
