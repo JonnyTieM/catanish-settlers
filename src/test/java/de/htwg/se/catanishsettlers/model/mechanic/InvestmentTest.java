@@ -19,7 +19,7 @@ public class InvestmentTest {
 
     @Test
     public void testGetCOST() throws Exception {
-        Investment investment = new City(new Player("Hans"));
-        assertTrue(investment.getCOST().compareTo(new ResourceCollection(0,0,0,2,3)) == 0);
+        Investment investment = new Card(Card.Types.KNIGHT);
+        assertTrue(investment.getCOST().compareTo(new ResourceCollection(0,0,1,1,1)) == 0);
     }
 }

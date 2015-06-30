@@ -118,7 +118,16 @@ public final class Game {
         return winners;
     }
 
-    public Card popTopCard() {
+    public boolean buyCard() {
+        if (!isBuildingPhase()) {
+            return false;
+        }
+        //TODO: make player pay for the card and check for resources. Also the whole card stack should be an own class.
+        getActivePlayer().addCard(popTopCard());
+        return true;
+    }
+
+    private Card popTopCard() {
         if (cardStack.size() > 0) {
             return cardStack.pop();
         } else {
