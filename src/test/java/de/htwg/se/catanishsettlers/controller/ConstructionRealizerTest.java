@@ -33,7 +33,7 @@ public class ConstructionRealizerTest {
         map.getEdge(2, 6).buildRoad(new Road(player));
         assertTrue(ConstructionRealizer.buildSettlement(player, map.getVertex(2, 4), map));
         System.out.println(player.getResources().toString());
-        assertTrue(player.getResources().compareTo(new ResourceCollection(4,4,4,4,5)) == 0);
+        assertTrue(player.getResources().compareTo(new ResourceCollection(4, 4, 4, 4, 5)) == 0);
     }
 
     @Test
@@ -52,9 +52,9 @@ public class ConstructionRealizerTest {
 
     @Test
     public void testBuildRoad() throws Exception {
-        assertFalse(ConstructionRealizer.buildRoad(player, map.getEdge(2,5), map));
+        assertFalse(ConstructionRealizer.buildRoad(player, map.getEdge(2, 5), map));
 
-        map.getEdge(2,6).buildRoad(new Road(player));
+        map.getEdge(2, 6).buildRoad(new Road(player));
         assertFalse(ConstructionRealizer.buildRoad(player, map.getEdge(2, 5), map));
 
         player.addResources(new ResourceCollection(5, 5, 5, 5, 5));
@@ -64,6 +64,9 @@ public class ConstructionRealizerTest {
 
     @Test
     public void testBuildFirstSettlementWithRoad() throws Exception {
-
+        assertTrue(ConstructionRealizer.buildFirstSettlementWithRoad(player, map.getVertex(2, 4), map.getEdge(2, 6), map));
+        assertFalse(ConstructionRealizer.buildFirstSettlementWithRoad(player, map.getVertex(2, 4), map.getEdge(2, 6), map));
+        assertFalse(ConstructionRealizer.buildFirstSettlementWithRoad(player, map.getVertex(3, 4), map.getEdge(2, 6), map));
+        assertFalse(ConstructionRealizer.buildFirstSettlementWithRoad(player, map.getVertex(2, 4), map.getEdge(2, 7), map));
     }
 }
