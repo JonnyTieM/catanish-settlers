@@ -1,6 +1,7 @@
 package de.htwg.se.catanishsettlers.view.gui.MainFrame;
 
 import de.htwg.se.catanishsettlers.CatanishSettlers;
+import de.htwg.se.catanishsettlers.controller.PlayerContainer;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
 
 import javax.swing.*;
@@ -67,6 +68,7 @@ public class CreatePlayerPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 removeButton.setEnabled(true);
                 addButton.setEnabled(false);
+                StatusPanel.switchButton.setEnabled(true);
                 CreatePlayerPanel newCreatePlayerPanel = createGamePanel.addCreatePlayerPanel();
                 newCreatePlayerPanel.getTextField().requestFocus();
 
@@ -82,7 +84,9 @@ public class CreatePlayerPanel extends JPanel {
 
         removeButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                CatanishSettlers.game.getPlayerContainer().remove(player);
+                PlayerContainer pc = CatanishSettlers.game.getPlayerContainer();
+                pc.remove(player);
+                if(pc.getPlayers().size() == 0) StatusPanel.switchButton.setEnabled(false);
 
                 createGamePanel.removeCreatePlayerPanel(thisPanel);
                 createGamePanel.getYoungestCreatePlayerPanel().getTextField().requestFocus();

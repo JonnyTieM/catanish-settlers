@@ -12,15 +12,16 @@ import java.awt.event.ActionListener;
  */
 public class StatusPanel extends JPanel {
 
-    private final JButton switchButton;
+    public final static JButton switchButton = new JButton("End Preparation");
 
     public StatusPanel(MultiDicePanel multiDicePanel, final MapAndCreateGamePanel mapAndCreateGamePanel) {
         setLayout(new FlowLayout());
+        switchButton.setEnabled(false);
 
-        switchButton = new JButton("End Preparation");
         switchButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
                 if (switchButton.getText() == "End Preparation") {
+                    if (CatanishSettlers.game.getPlayerContainer().getPlayers().size() == 0) return;
                     mapAndCreateGamePanel.next();
                 }
                 CatanishSettlers.game.nextPhase();
@@ -34,6 +35,4 @@ public class StatusPanel extends JPanel {
         add(switchButton);
         add(multiDicePanel);
     }
-
-    public JButton getSwitchButton() { return switchButton; }
 }
