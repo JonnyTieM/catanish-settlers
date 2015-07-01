@@ -50,4 +50,20 @@ public class PlayerContainerTest {
         assertSame(hans, playerContainer.getPlayer(0));
         assertSame(peter, playerContainer.getPlayer(1));
     }
+
+    @Test
+    public void testAdd() throws Exception {
+        assertEquals(2, playerContainer.getPlayers().size());
+
+        playerContainer.add(new Player("Max"));
+        assertEquals(3, playerContainer.getPlayers().size());
+    }
+
+    @Test
+    public void testRemove() throws Exception {
+        assertEquals(2, playerContainer.getPlayers().size());
+
+        playerContainer.remove(hans);
+        assertEquals(1, playerContainer.getPlayers().size());
+    }
 }
