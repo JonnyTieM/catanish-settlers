@@ -2,12 +2,10 @@ package de.htwg.se.catanishsettlers.model.mechanic;
 
 import de.htwg.se.catanishsettlers.model.Config;
 import de.htwg.se.catanishsettlers.model.resources.ResourceCollection;
-import de.htwg.se.catanishsettlers.view.gui.MainFrame.ColorChoosePanel;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Observable;
-import java.util.Observer;
 
 /**
  * Created by Stephan on 31.03.2015.
