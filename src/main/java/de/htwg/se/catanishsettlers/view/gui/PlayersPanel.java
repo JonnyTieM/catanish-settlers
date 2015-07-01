@@ -2,7 +2,7 @@ package de.htwg.se.catanishsettlers.view.gui;
 
 import de.htwg.se.catanishsettlers.controller.PlayerContainer;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
-import de.htwg.se.catanishsettlers.view.gui.playerPanel.PlayerPanelSwitchable;
+import de.htwg.se.catanishsettlers.view.gui.playersPanel.PlayerPanelSwitchable;
 
 import javax.swing.*;
 import java.awt.*;
