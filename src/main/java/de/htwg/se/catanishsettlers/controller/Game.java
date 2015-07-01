@@ -61,7 +61,7 @@ public final class Game {
         Collections.shuffle(cardStack);
     }
 
-    public Player switchPlayer() {
+    protected Player switchPlayer() {
         checkVictory();
         playerContainer.next();
         return getActivePlayer();
