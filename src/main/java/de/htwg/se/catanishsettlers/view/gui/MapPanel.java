@@ -235,7 +235,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
             g2.setFont(font);
             int w = vx[1] - vx[0];
             int h = vy[4] - vy[1];
-            Point textPosition = Utility.placeTextInBox(w, h, text, g2.getFontMetrics());
+            Point textPosition = GUIhelper.placeTextInBox(w, h, text, g2.getFontMetrics());
             g2.drawString(text, vx[0] + textPosition.x, vy[0] + textPosition.y);
         }
     }

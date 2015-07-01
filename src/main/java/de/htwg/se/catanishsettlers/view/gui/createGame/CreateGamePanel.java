@@ -1,4 +1,4 @@
-package de.htwg.se.catanishsettlers.view.gui;
+package de.htwg.se.catanishsettlers.view.gui.createGame;
 
 import javax.swing.*;
 import java.awt.*;

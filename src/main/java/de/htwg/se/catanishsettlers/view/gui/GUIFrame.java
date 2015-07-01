@@ -1,5 +1,8 @@
 package de.htwg.se.catanishsettlers.view.gui;
 
+import de.htwg.se.catanishsettlers.view.gui.statusPanel.MultiDicePanel;
+import de.htwg.se.catanishsettlers.view.gui.statusPanel.StatusPanel;
+
 import javax.swing.*;
 
 /**

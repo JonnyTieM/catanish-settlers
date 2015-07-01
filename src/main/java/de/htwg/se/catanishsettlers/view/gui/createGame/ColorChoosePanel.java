@@ -1,4 +1,4 @@
-package de.htwg.se.catanishsettlers.view.gui;
+package de.htwg.se.catanishsettlers.view.gui.createGame;
 
 import de.htwg.se.catanishsettlers.CatanishSettlers;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;

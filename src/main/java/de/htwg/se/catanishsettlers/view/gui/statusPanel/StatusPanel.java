@@ -1,6 +1,7 @@
-package de.htwg.se.catanishsettlers.view.gui;
+package de.htwg.se.catanishsettlers.view.gui.statusPanel;
 
 import de.htwg.se.catanishsettlers.CatanishSettlers;
+import de.htwg.se.catanishsettlers.view.gui.MapAndCreateGamePanel;
 
 import javax.swing.*;
 import java.awt.*;

@@ -3,6 +3,7 @@ package de.htwg.se.catanishsettlers;
 import de.htwg.se.catanishsettlers.controller.Game;
 import de.htwg.se.catanishsettlers.model.mechanic.Dice;
 import de.htwg.se.catanishsettlers.view.gui.*;
+import de.htwg.se.catanishsettlers.view.gui.statusPanel.MultiDicePanel;
 import de.htwg.se.catanishsettlers.view.tui.Log;
 import de.htwg.se.catanishsettlers.view.tui.Message;
 import de.htwg.se.catanishsettlers.view.tui.MessageFactory;

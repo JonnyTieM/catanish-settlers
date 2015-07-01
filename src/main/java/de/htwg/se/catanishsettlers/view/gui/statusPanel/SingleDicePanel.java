@@ -1,6 +1,7 @@
-package de.htwg.se.catanishsettlers.view.gui;
+package de.htwg.se.catanishsettlers.view.gui.statusPanel;
 
 import de.htwg.se.catanishsettlers.model.mechanic.Utility;
+import de.htwg.se.catanishsettlers.view.gui.GUIhelper;
 
 import javax.swing.*;
 import java.awt.*;
@@ -43,7 +44,7 @@ public class SingleDicePanel extends JPanel {
         g.drawLine(cubeLength + padding + height3D, padding,
                 cubeLength + padding + height3D, cubeLength + padding);
 
-        Point textPosition = Utility.placeTextInBox(cubeLength, cubeLength, text, g.getFontMetrics());
+        Point textPosition = GUIhelper.placeTextInBox(cubeLength, cubeLength, text, g.getFontMetrics());
         g.drawString(text, padding + textPosition.x, padding + height3D + textPosition.y);
     }
 }

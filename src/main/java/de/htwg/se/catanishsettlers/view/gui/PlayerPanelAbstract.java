@@ -4,7 +4,6 @@ import de.htwg.se.catanishsettlers.model.mechanic.Player;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
-import java.awt.*;
 import java.util.Observer;
 
 /**

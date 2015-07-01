@@ -1,4 +1,4 @@
-package de.htwg.se.catanishsettlers.view.gui;
+package de.htwg.se.catanishsettlers.view.gui.statusPanel;
 
 import de.htwg.se.catanishsettlers.model.mechanic.Dice;
 
