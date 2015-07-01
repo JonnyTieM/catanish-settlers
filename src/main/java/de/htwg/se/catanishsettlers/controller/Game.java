@@ -27,13 +27,18 @@ public final class Game {
     private IGameState state;
 
     public Game(List<Player> players) {
+        this();
+        this.playerContainer = new PlayerContainer(players);
+    }
+
+    public Game() {
         dice = new Dice(2, 6);
         isThereAWinner = false;
         cardStack = new Stack<Card>();
         discardPile = new ArrayList<Card>();
         prepareStack();
-        this.playerContainer = new PlayerContainer(players);
-        state = new PreparationState();
+        this.playerContainer = new PlayerContainer();
+        state = new GameSetupState();
         map = new Map();
     }
 
@@ -69,6 +74,23 @@ public final class Game {
         Vertex vertex = map.getVertex(xVertex, yVertex);
         Edge edge = map.getEdge(xEdge, yEdge);
         return ConstructionRealizer.buildFirstSettlementWithRoad(player, vertex, edge, map);
+    }
+
+    public boolean buildFirstSettlement(Player player, int xVertex, int yVertex) {
+        if (!isPreparationPhase()) {
+            return false;
+        }
+        Vertex vertex = map.getVertex(xVertex, yVertex);
+        return ConstructionRealizer.buildFirstSettlement(player, vertex, map);
+    }
+
+    public boolean buildFirstRoad(Player player, int xVertex, int yVertex, int xEdge, int yEdge) {
+        if (!isPreparationPhase()) {
+            return false;
+        }
+        Vertex vertex = map.getVertex(xVertex, yVertex);
+        Edge edge = map.getEdge(xEdge, yEdge);
+        return ConstructionRealizer.buildFirstRoad(player, vertex, edge, map);
     }
 
     public boolean buildSettlement(int x, int y) {
@@ -147,7 +169,7 @@ public final class Game {
     public boolean isBuildingPhase() {
         return state instanceof PostDiceRollState;
     }
-    private boolean isPreparationPhase() {
+    public boolean isPreparationPhase() {
         return state instanceof PreparationState;
     }
     public Player getPlayer(int i) {

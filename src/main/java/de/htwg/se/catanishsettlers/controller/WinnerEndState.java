@@ -5,8 +5,6 @@ package de.htwg.se.catanishsettlers.controller;
  */
 public class WinnerEndState implements IGameState {
 
-
-    @Override
     public void nextState(Game game) {
     }
 }

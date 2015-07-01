@@ -34,7 +34,8 @@ public class PlayerTest {
     public void testGetScore() throws Exception {
         assertEquals(0, player.getScore());
 
-        player.settlements -= 2;
+        player.decreaseSettlements();
+        player.decreaseSettlements();
         assertEquals(2, player.getScore());
     }
 

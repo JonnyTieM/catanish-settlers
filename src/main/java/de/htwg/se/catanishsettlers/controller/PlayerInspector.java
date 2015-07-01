@@ -14,15 +14,15 @@ public class PlayerInspector {
     private PlayerInspector() {}    // cannot be instantiated.
 
     private static boolean hasEnoughSettlements(Player player) {
-        return player.settlements > 0;
+        return player.getAvailableSettlements() > 0;
     }
 
     private static boolean hasEnoughCities(Player player) {
-        return player.cities > 0;
+        return player.getAvailableCities() > 0;
     }
 
     private static boolean hasEnoughRoads(Player player) {
-        return player.roads > 0;
+        return player.getAvailableRoads() > 0;
     }
 
     private static boolean hasEnoughResources(Player player, ResourceCollection cost) {
