@@ -25,7 +25,7 @@ public class GUIFrame extends JFrame {
 
         add(sPaneStatusMapAndPlayers);
 
-        setSize(600, 400);
+        setSize(800, 600);
         setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Catanish Settlers");

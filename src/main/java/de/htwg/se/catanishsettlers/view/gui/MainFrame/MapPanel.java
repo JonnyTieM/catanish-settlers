@@ -1,18 +1,14 @@
 package de.htwg.se.catanishsettlers.view.gui.MainFrame;
 
-import de.htwg.se.catanishsettlers.model.map.Edge;
-import de.htwg.se.catanishsettlers.model.map.Field;
-import de.htwg.se.catanishsettlers.model.map.Map;
-import de.htwg.se.catanishsettlers.model.map.Vertex;
+import de.htwg.se.catanishsettlers.CatanishSettlers;
+import de.htwg.se.catanishsettlers.controller.Game;
+import de.htwg.se.catanishsettlers.model.map.*;
 import de.htwg.se.catanishsettlers.model.mechanic.Dice;
 import de.htwg.se.catanishsettlers.model.mechanic.Utility;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
@@ -21,7 +17,7 @@ import java.util.Observer;
 /**
  * Created by Stephan on 11.06.2015.
  */
-public class MapPanel extends JPanel implements MouseMotionListener, ComponentListener, Observer {
+public class MapPanel extends JPanel implements MouseListener, MouseMotionListener, ComponentListener, Observer {
 
     //private final double scale = 20;
     private final int padding = 190;
@@ -41,8 +37,10 @@ public class MapPanel extends JPanel implements MouseMotionListener, ComponentLi
     private List<FieldWithCoordinates> fieldsForPainting;
 
     public void update(Observable o, Object arg) {
-        Dice dice = (Dice)o;
-        rolledNumber = dice.getValue();
+        if (o.getClass() == Dice.class) {
+            Dice dice = (Dice) o;
+            rolledNumber = dice.getValue();
+        }
         paint(this.getGraphics());
     }
 
@@ -85,10 +83,10 @@ public class MapPanel extends JPanel implements MouseMotionListener, ComponentLi
     }
 
     private class ObjectWithPosition {
-        public final Object object;
+        public final MapObject object;
         public final int x, y;
 
-        public ObjectWithPosition(Object object, int x, int y) {
+        public ObjectWithPosition(MapObject object, int x, int y) {
             this.object = object;
             this.x = x;
             this.y = y;
@@ -98,6 +96,7 @@ public class MapPanel extends JPanel implements MouseMotionListener, ComponentLi
     public MapPanel(Map map) {
         this.map = map;
         add(debugLabel);
+        addMouseListener(this);
         addMouseMotionListener(this);
         addComponentListener(this);
         recalculate();
@@ -106,15 +105,12 @@ public class MapPanel extends JPanel implements MouseMotionListener, ComponentLi
     public void componentResized(ComponentEvent e) {
         recalculate();
     }
-
     public void componentMoved(ComponentEvent e) {
         recalculate();
     }
-
     public void componentShown(ComponentEvent e) {
         recalculate();
     }
-
     public void componentHidden(ComponentEvent e) {
         recalculate();
     }
@@ -288,10 +284,24 @@ public class MapPanel extends JPanel implements MouseMotionListener, ComponentLi
 
     private void indicateMouseHover(Graphics2D g2) {
         if (mouseHover == null) return;
-        g2.setColor(Color.RED);
+        g2.setColor(CatanishSettlers.game.getActivePlayer().getColor());
         g2.setStroke(new BasicStroke(3));
         drawCircle(g2, mouseHover.x , mouseHover.y, 10, false);
     }
+
+    public void mouseClicked(MouseEvent e) {
+        Game game = CatanishSettlers.game;
+
+        MapObject mapObject = mouseHover.object;
+
+        if (mouseHover.object.getClass().equals(Edge.class));
+        if (mouseHover.object.getClass().equals(Vertex.class))
+            game.buildFirstSettlement(game.getActivePlayer(), mapObject.getX(), mapObject.getY());
+    }
+    public void mousePressed(MouseEvent e) {}
+    public void mouseReleased(MouseEvent e) {}
+    public void mouseEntered(MouseEvent e) {}
+    public void mouseExited(MouseEvent e) {}
 
     private int getScale(List<Field> fields) {
         int maxX = 0;

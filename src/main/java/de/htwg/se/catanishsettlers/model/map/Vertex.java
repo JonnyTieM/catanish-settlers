@@ -15,7 +15,9 @@ public class Vertex extends MapObject {
         super(x, y);
     }
 
-    public void placeBuilding(Building newBuilding) { building = newBuilding; }
+    public void placeBuilding(Building newBuilding) {
+        building = newBuilding;
+    }
     public Building getBuilding() { return  building; }
     public boolean hasBuilding() { return building != null; }
     public boolean hasSettlement() {

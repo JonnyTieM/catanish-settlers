@@ -1,6 +1,8 @@
 package de.htwg.se.catanishsettlers.view.gui.MainFrame;
 
 import de.htwg.se.catanishsettlers.controller.PlayerContainer;
+import de.htwg.se.catanishsettlers.model.map.Edge;
+import de.htwg.se.catanishsettlers.model.map.Vertex;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
 
 import javax.swing.*;
@@ -18,6 +20,7 @@ public class PlayersPanel extends JPanel implements Observer {
 
     public PlayersPanel(List<Player> players) {
         setLayout(gridLayout);
+
         for(Player player : players) {
             PlayerPanelSwitchable panel = new PlayerPanelSwitchable(player);
             panels.add(panel);
@@ -28,38 +31,40 @@ public class PlayersPanel extends JPanel implements Observer {
 
     public void update(Observable o, Object arg) {
 
-        PlayerContainer playerContainer = (PlayerContainer)o;
-        if (playerContainer.getPlayers().size() > panels.size()) {
-            PlayerPanelSwitchable panel = new PlayerPanelSwitchable(playerContainer.getPlayers().get(playerContainer.getPlayers().size() - 1));
-            panels.add(panel);
-            add(panel);
-            revalidate();
-            repaint();
-        } else if (playerContainer.getPlayers().size() < panels.size()) {
+        if (o.getClass() == PlayerContainer.class) {
+            PlayerContainer playerContainer = (PlayerContainer) o;
+            if (playerContainer.getPlayers().size() > panels.size()) {
+                Player newPlayer = playerContainer.getPlayers().get(playerContainer.getPlayers().size() - 1);
+                PlayerPanelSwitchable panel = new PlayerPanelSwitchable(newPlayer);
+                panels.add(panel);
+                add(panel);
+                revalidate();
+                repaint();
+            } else if (playerContainer.getPlayers().size() < panels.size()) {
 
-            for (PlayerPanelSwitchable panel : panels) {
-                boolean remove = true;
-                for (Player player : playerContainer.getPlayers()) {
-                    if (player.getName().contentEquals(panel.getName())) {
-                        remove = false;
-                        break;
+                for (PlayerPanelSwitchable panel : panels) {
+                    boolean remove = true;
+                    for (Player player : playerContainer.getPlayers()) {
+                        if (player.getName().contentEquals(panel.getName())) {
+                            remove = false;
+                            break;
+                        }
+                    }
+                    if (remove) {
+                        remove(panel);
+                        panels.remove(panel);
+                        revalidate();
+                        repaint();
                     }
                 }
-                if (remove) {
-
-                    remove(panel);
-                    panels.remove(panel);
-                    revalidate();
-                    repaint();
-                }
             }
-        }
-        for(int i = 0; i < playerContainer.getPlayers().size(); i++) {
-            Player player = playerContainer.getPlayers().get(i);
-            if (player == playerContainer.getActivePlayer()) {
-                panels.get(i).set(PlayerPanelSwitchable.Status.EXTENDED);
-            } else {
-                panels.get(i).set(PlayerPanelSwitchable.Status.COMPACT);
+            for (int i = 0; i < playerContainer.getPlayers().size(); i++) {
+                Player player = playerContainer.getPlayers().get(i);
+                if (player == playerContainer.getActivePlayer()) {
+                    panels.get(i).set(PlayerPanelSwitchable.Status.EXTENDED);
+                } else {
+                    panels.get(i).set(PlayerPanelSwitchable.Status.COMPACT);
+                }
             }
         }
     }

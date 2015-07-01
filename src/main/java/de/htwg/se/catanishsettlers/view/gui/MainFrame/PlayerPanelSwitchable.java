@@ -4,6 +4,8 @@ import de.htwg.se.catanishsettlers.model.mechanic.Player;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Created by Stephan on 15.06.2015.
@@ -26,6 +28,10 @@ public class PlayerPanelSwitchable extends JPanel {
         name = player.getName();
         compactPanel = new PlayerPanelCompact(player);
         extendedPanel = new PlayerPanelExtended(player);
+
+        player.addObserver(compactPanel);
+        player.addObserver(extendedPanel);
+
         setLayout(new CardLayout());
 
         add(compactPanel, compact);

@@ -76,6 +76,23 @@ public final class Game {
         return ConstructionRealizer.buildFirstSettlementWithRoad(player, vertex, edge, map);
     }
 
+    public boolean buildFirstSettlement(Player player, int xVertex, int yVertex) {
+        if (!isPreparationPhase()) {
+            return false;
+        }
+        Vertex vertex = map.getVertex(xVertex, yVertex);
+        return ConstructionRealizer.buildFirstSettlement(player, vertex, map);
+    }
+
+    public boolean buildFirstRoad(Player player, int xVertex, int yVertex, int xEdge, int yEdge) {
+        if (!isPreparationPhase()) {
+            return false;
+        }
+        Vertex vertex = map.getVertex(xVertex, yVertex);
+        Edge edge = map.getEdge(xEdge, yEdge);
+        return ConstructionRealizer.buildFirstRoad(player, vertex, edge, map);
+    }
+
     public boolean buildSettlement(int x, int y) {
         if (!isBuildingPhase()) {
             return false;
