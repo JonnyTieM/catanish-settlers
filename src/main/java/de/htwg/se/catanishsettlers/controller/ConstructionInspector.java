@@ -1,5 +1,6 @@
 package de.htwg.se.catanishsettlers.controller;
 
+import de.htwg.se.catanishsettlers.model.Config;
 import de.htwg.se.catanishsettlers.model.constructions.Road;
 import de.htwg.se.catanishsettlers.model.map.Edge;
 import de.htwg.se.catanishsettlers.model.map.Map;
@@ -131,8 +132,22 @@ public final class ConstructionInspector {
     }
 
     public static boolean canBuildFirstSettlementWithRoad(Player player, Vertex vertex, Edge edge, Map map) {
+        return canBuildFirstSettlement(player, vertex, map) && canBuildFirstRoad(player, vertex, edge, map);
+    }
+
+    public static boolean canBuildFirstSettlement(Player player, Vertex vertex, Map map) {
         Vertex[] vertices = map.getNeighbouringVertices(vertex);
-        if (vertex != null && edge != null && !hasABuilding(vertices) && !vertex.hasBuilding() && !edge.hasRoad() && vertexAndEdgeAreNeighbours(vertex, edge, map)) {
+        if (vertex != null && !hasABuilding(vertices) && !vertex.hasBuilding() && player.getAvailableSettlements() > Config.MAX_SETTLEMENTS - 2) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean canBuildFirstRoad(Player player, Vertex vertex, Edge edge, Map map) {
+        Vertex[] vertices = map.getNeighbouringVertices(vertex);
+        if (vertex != null && edge != null && !hasABuilding(vertices) && !vertex.hasBuilding()
+                && !edge.hasRoad() && vertexAndEdgeAreNeighbours(vertex, edge, map)
+                && player.getAvailableRoads() > Config.MAX_ROADS - 2) {
             return true;
         }
         return false;

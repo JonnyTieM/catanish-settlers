@@ -10,13 +10,10 @@ import de.htwg.se.catanishsettlers.model.map.Vertex;
 import de.htwg.se.catanishsettlers.model.mechanic.Dice;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
 import de.htwg.se.catanishsettlers.model.resources.ResourceCollection;
-import de.htwg.se.catanishsettlers.view.gui.MultiDicePanel;
+import de.htwg.se.catanishsettlers.view.gui.MainFrame.*;
 import de.htwg.se.catanishsettlers.view.tui.Log;
 import de.htwg.se.catanishsettlers.view.tui.Message;
 import de.htwg.se.catanishsettlers.view.tui.MessageFactory;
-import de.htwg.se.catanishsettlers.view.gui.GUIFrame;
-import de.htwg.se.catanishsettlers.view.gui.MapPanel;
-import de.htwg.se.catanishsettlers.view.gui.PlayersPanel;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -34,7 +31,7 @@ public class CatanishSettlers {
     }
 
     public static void main(String[] args) {
-        List<Player> players = new ArrayList<Player>();
+        /*List<Player> players = new ArrayList<Player>();
         Player hans = new Player("Hans");
         Player susi = new Player("Susi");
         Player john = new Player("John");
@@ -43,11 +40,11 @@ public class CatanishSettlers {
         players.add(susi);
         players.add(john);
 
-        hans.color = Color.RED;
-        susi.color = Color.BLUE;
-        john.color = Color.MAGENTA;
+        hans.setColor(Color.RED);
+        susi.setColor(Color.BLUE);
+        john.setColor(Color.MAGENTA);*/
 
-        game = new Game(players);
+        game = new Game();
 
         Mode mode = Mode.GUI;
 
@@ -59,32 +56,20 @@ public class CatanishSettlers {
             dice.roll();
             Log.display(MessageFactory.dice_roll(dice));
             Log.categories.add(Message.Category.PLAYER);
-            Log.display(MessageFactory.player(players.get(0)));
+            //Log.display(MessageFactory.player(players.get(0)));
             Log.categories.add(Message.Category.CONSTRUCTION);
-            Log.display(MessageFactory.construction(new Road(players.get(1))));
+            //Log.display(MessageFactory.construction(new Road(players.get(1))));
         }
-
-        for (Player player : players) {
-            player.addResources(new ResourceCollection(10));
-        }
-
-        List<Vertex> vertices = game.getMap().getVertices();
-        List<Edge> edges = game.getMap().getEdges();
-
-        edges.get(16).buildRoad(new Road(hans));
-        vertices.get(10).placeBuilding(new Settlement(susi));
-        vertices.get(20).placeBuilding(new City(john));
-
-        ConstructionRealizer.buildSettlement(hans, vertices.get(20), game.getMap());
 
         if (mode == Mode.GUI) {
             PlayersPanel playersPanel = new PlayersPanel(game.getPlayerContainer().getPlayers());
             MapPanel mapPanel = new MapPanel(game.getMap());
+            MapAndCreateGamePanel mapAndCreateGamePanel = new MapAndCreateGamePanel(mapPanel);
             MultiDicePanel multiDicePanel = new MultiDicePanel(game.getDice());
             game.getDice().addObserver(multiDicePanel);
             game.getDice().addObserver(mapPanel);
             game.getPlayerContainer().addObserver(playersPanel);
-            new GUIFrame(playersPanel, mapPanel, multiDicePanel);
+            new GUIFrame(playersPanel, mapAndCreateGamePanel, multiDicePanel);
         }
     }
 }

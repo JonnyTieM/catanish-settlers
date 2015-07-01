@@ -1,9 +1,11 @@
-package de.htwg.se.catanishsettlers.view.gui;
+package de.htwg.se.catanishsettlers.view.gui.MainFrame;
 
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Created by Stephan on 15.06.2015.
@@ -15,14 +17,21 @@ public class PlayerPanelSwitchable extends JPanel {
 
     private PlayerPanelCompact compactPanel;
     private PlayerPanelExtended extendedPanel;
+    private final String name;
+
     public enum Status {
         COMPACT,
         EXTENDED
     }
 
     public PlayerPanelSwitchable(Player player) {
+        name = player.getName();
         compactPanel = new PlayerPanelCompact(player);
         extendedPanel = new PlayerPanelExtended(player);
+
+        player.addObserver(compactPanel);
+        player.addObserver(extendedPanel);
+
         setLayout(new CardLayout());
 
         add(compactPanel, compact);
@@ -37,4 +46,6 @@ public class PlayerPanelSwitchable extends JPanel {
             cl.show(this, extended);
         }
     }
+
+    public String getName() { return name; }
 }

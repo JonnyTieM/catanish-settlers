@@ -1,9 +1,8 @@
-package de.htwg.se.catanishsettlers.view.gui;
+package de.htwg.se.catanishsettlers.view.gui.MainFrame;
 
 import de.htwg.se.catanishsettlers.model.mechanic.Dice;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.Observable;
 import java.util.Observer;
 

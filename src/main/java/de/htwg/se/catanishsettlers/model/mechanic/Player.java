@@ -5,18 +5,18 @@ import de.htwg.se.catanishsettlers.model.resources.ResourceCollection;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Observable;
 
 /**
  * Created by Stephan on 31.03.2015.
  */
-public class Player {
+public class Player extends Observable {
     private String name = "unnamed";
     private ArrayList<Card> cards;
     private int knightCount, victoryCardsCount;
     private ResourceCollection resources;
-    public Color color;
-
-    public int settlements, cities, roads;
+    private Color color;
+    private int settlements, cities, roads;
 
     private boolean hasLargestKnightArmy, hasLongestTradeRoute;
 
@@ -26,12 +26,16 @@ public class Player {
         cities = Config.MAX_CITIES;
         roads = Config.MAX_ROADS;
         cards = new ArrayList<Card>();
-        resources = new ResourceCollection();
+        resources = Config.START_RESOURCES;
     }
 
     public String getName() {
         return name;
     }
+    public void setName(String value) { name = value; }
+
+    public Color getColor() {return color; }
+    public void setColor(Color color) { this.color = color; }
 
     public boolean playCard(Card.Types cardType) {
 
@@ -114,5 +118,45 @@ public class Player {
             return true;
         }
         return false;
+    }
+
+    public int getAvailableRoads() {
+        return roads;
+    }
+    public int getAvailableSettlements() {
+        return settlements;
+    }
+    public int getAvailableCities() {
+        return cities;
+    }
+
+    private void setChangedAndNotifyObservers() {
+        setChanged();
+        notifyObservers();
+    }
+
+    public void increaseRoads() {
+        roads++;
+        setChangedAndNotifyObservers();
+    }
+    public void decreaseRoads() {
+        roads--;
+        setChangedAndNotifyObservers();
+    }
+    public void increaseSettlements() {
+        settlements++;
+        setChangedAndNotifyObservers();
+    }
+    public void decreaseSettlements() {
+        settlements--;
+        setChangedAndNotifyObservers();
+    }
+    public void increaseCities() {
+        cities++;
+        setChangedAndNotifyObservers();
+    }
+    public void decreaseCities() {
+        cities--;
+        setChangedAndNotifyObservers();
     }
 }

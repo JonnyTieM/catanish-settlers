@@ -2,6 +2,7 @@ package de.htwg.se.catanishsettlers.controller;
 
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
 
+import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
@@ -16,6 +17,8 @@ public class PlayerContainer extends Observable {
     public PlayerContainer(List<Player> players) {
         this.players = players;
     }
+
+    public PlayerContainer() {}
 
     public Player next() {
         activePlayerIndex++;
@@ -35,5 +38,17 @@ public class PlayerContainer extends Observable {
 
     public Player getPlayer(int i) {
         return players.get(i);
+    }
+
+    public void add(final Player player) {
+        players.add(player);
+        setChanged();
+        notifyObservers();
+    }
+
+    public void remove(final Player player) {
+        players.remove(player);
+        setChanged();
+        notifyObservers();
     }
 }
