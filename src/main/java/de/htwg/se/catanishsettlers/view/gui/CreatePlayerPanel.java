@@ -1,4 +1,4 @@
-package de.htwg.se.catanishsettlers.view.gui.MainFrame;
+package de.htwg.se.catanishsettlers.view.gui;
 
 import de.htwg.se.catanishsettlers.CatanishSettlers;
 import de.htwg.se.catanishsettlers.controller.PlayerContainer;
@@ -68,6 +68,7 @@ public class CreatePlayerPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 removeButton.setEnabled(true);
                 addButton.setEnabled(false);
+                changeColorButton.setEnabled(false);
                 StatusPanel.switchButton.setEnabled(true);
                 CreatePlayerPanel newCreatePlayerPanel = createGamePanel.addCreatePlayerPanel();
                 newCreatePlayerPanel.getTextField().requestFocus();

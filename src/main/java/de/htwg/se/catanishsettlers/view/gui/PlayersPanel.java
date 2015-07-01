@@ -1,8 +1,6 @@
-package de.htwg.se.catanishsettlers.view.gui.MainFrame;
+package de.htwg.se.catanishsettlers.view.gui;
 
 import de.htwg.se.catanishsettlers.controller.PlayerContainer;
-import de.htwg.se.catanishsettlers.model.map.Edge;
-import de.htwg.se.catanishsettlers.model.map.Vertex;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
 
 import javax.swing.*;

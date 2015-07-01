@@ -13,7 +13,6 @@ public final class Config {
     public final static int MAX_SETTLEMENTS = 5;
     public final static int MAX_CITIES = 4;
     public final static int MAX_ROADS = 15;
-    public final static ResourceCollection START_RESOURCES = new ResourceCollection(0, 0, 0, 0, 0);
 
     // map config
     public final static int STANDARD_MAP_EDGE_LENGTH = 3;

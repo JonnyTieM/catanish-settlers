@@ -1,4 +1,4 @@
-package de.htwg.se.catanishsettlers.view.gui.MainFrame;
+package de.htwg.se.catanishsettlers.view.gui;
 
 import javax.swing.*;
 import java.awt.*;

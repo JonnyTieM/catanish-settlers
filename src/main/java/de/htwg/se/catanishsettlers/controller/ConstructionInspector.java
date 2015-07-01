@@ -132,7 +132,11 @@ public final class ConstructionInspector {
     }
 
     public static boolean canBuildFirstSettlementWithRoad(Player player, Vertex vertex, Edge edge, Map map) {
-        return canBuildFirstSettlement(player, vertex, map) && canBuildFirstRoad(player, vertex, edge, map);
+        Vertex[] vertices = map.getNeighbouringVertices(vertex);
+        if (vertex != null && edge != null && !hasABuilding(vertices) && !vertex.hasBuilding() && !edge.hasRoad() && vertexAndEdgeAreNeighbours(vertex, edge, map)) {
+            return true;
+        }
+        return false;
     }
 
     public static boolean canBuildFirstSettlement(Player player, Vertex vertex, Map map) {
@@ -144,8 +148,7 @@ public final class ConstructionInspector {
     }
 
     public static boolean canBuildFirstRoad(Player player, Vertex vertex, Edge edge, Map map) {
-        Vertex[] vertices = map.getNeighbouringVertices(vertex);
-        if (vertex != null && edge != null && !hasABuilding(vertices) && !vertex.hasBuilding()
+        if (vertex != null && edge != null && vertex.hasBuilding() && vertex.getBuilding().getPlayer().equals(player)
                 && !edge.hasRoad() && vertexAndEdgeAreNeighbours(vertex, edge, map)
                 && player.getAvailableRoads() > Config.MAX_ROADS - 2) {
             return true;

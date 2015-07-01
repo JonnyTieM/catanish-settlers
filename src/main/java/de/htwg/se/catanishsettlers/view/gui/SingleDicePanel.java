@@ -1,4 +1,4 @@
-package de.htwg.se.catanishsettlers.view.gui.MainFrame;
+package de.htwg.se.catanishsettlers.view.gui;
 
 import de.htwg.se.catanishsettlers.model.mechanic.Utility;
 

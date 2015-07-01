@@ -26,7 +26,7 @@ public class Player extends Observable {
         cities = Config.MAX_CITIES;
         roads = Config.MAX_ROADS;
         cards = new ArrayList<Card>();
-        resources = Config.START_RESOURCES;
+        resources = new ResourceCollection(0, 0, 0, 0, 0);
     }
 
     public String getName() {
