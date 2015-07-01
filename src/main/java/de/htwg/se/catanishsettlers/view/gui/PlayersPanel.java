@@ -2,6 +2,7 @@ package de.htwg.se.catanishsettlers.view.gui;
 
 import de.htwg.se.catanishsettlers.controller.PlayerContainer;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
+import de.htwg.se.catanishsettlers.view.gui.playerPanel.PlayerPanelSwitchable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,22 +19,51 @@ public class PlayersPanel extends JPanel implements Observer {
 
     public PlayersPanel(List<Player> players) {
         setLayout(gridLayout);
+
         for(Player player : players) {
             PlayerPanelSwitchable panel = new PlayerPanelSwitchable(player);
             panels.add(panel);
             add(panel);
         }
-        panels.get(0).set(PlayerPanelSwitchable.Status.EXTENDED);
+        if(panels.size() > 0) panels.get(0).set(PlayerPanelSwitchable.Status.EXTENDED);
     }
 
     public void update(Observable o, Object arg) {
-        PlayerContainer playerContainer = (PlayerContainer)o;
-        for(int i = 0; i < playerContainer.getPlayers().size(); i++) {
-            Player player = playerContainer.getPlayers().get(i);
-            if (player == playerContainer.getActivePlayer()) {
-                panels.get(i).set(PlayerPanelSwitchable.Status.EXTENDED);
-            } else {
-                panels.get(i).set(PlayerPanelSwitchable.Status.COMPACT);
+
+        if (o.getClass() == PlayerContainer.class) {
+            PlayerContainer playerContainer = (PlayerContainer) o;
+            if (playerContainer.getPlayers().size() > panels.size()) {
+                Player newPlayer = playerContainer.getPlayers().get(playerContainer.getPlayers().size() - 1);
+                PlayerPanelSwitchable panel = new PlayerPanelSwitchable(newPlayer);
+                panels.add(panel);
+                add(panel);
+                revalidate();
+                repaint();
+            } else if (playerContainer.getPlayers().size() < panels.size()) {
+
+                for (PlayerPanelSwitchable panel : panels) {
+                    boolean remove = true;
+                    for (Player player : playerContainer.getPlayers()) {
+                        if (player.getName().contentEquals(panel.getName())) {
+                            remove = false;
+                            break;
+                        }
+                    }
+                    if (remove) {
+                        remove(panel);
+                        panels.remove(panel);
+                        revalidate();
+                        repaint();
+                    }
+                }
+            }
+            for (int i = 0; i < playerContainer.getPlayers().size(); i++) {
+                Player player = playerContainer.getPlayers().get(i);
+                if (player == playerContainer.getActivePlayer()) {
+                    panels.get(i).set(PlayerPanelSwitchable.Status.EXTENDED);
+                } else {
+                    panels.get(i).set(PlayerPanelSwitchable.Status.COMPACT);
+                }
             }
         }
     }

@@ -23,7 +23,7 @@ public final class ConstructionRealizer {
             Settlement settlement = new Settlement(player);
             vertex.placeBuilding(settlement);
             player.payCost(cost);
-            player.settlements--;
+            player.decreaseSettlements();
             return true;
         }
         return false;
@@ -35,8 +35,8 @@ public final class ConstructionRealizer {
             City city = new City(player);
             vertex.placeBuilding(city);
             player.payCost(cost);
-            player.settlements++;
-            player.cities--;
+            player.increaseSettlements();
+            player.decreaseCities();
             return true;
         }
         return false;
@@ -48,7 +48,7 @@ public final class ConstructionRealizer {
             Road road = new Road(player);
             edge.buildRoad(road);
             player.payCost(cost);
-            player.roads--;
+            player.decreaseRoads();
             return true;
         }
         return false;
@@ -56,13 +56,25 @@ public final class ConstructionRealizer {
 
     public static boolean buildFirstSettlementWithRoad(Player player, Vertex vertex, Edge edge, Map map) {
         if (ConstructionInspector.canBuildFirstSettlementWithRoad(player, vertex, edge, map)) {
+            return buildFirstSettlement(player, vertex, map) && buildFirstRoad(player, vertex, edge, map);
+        }
+        return false;
+    }
+    public static boolean buildFirstSettlement(Player player, Vertex vertex, Map map) {
+        if (ConstructionInspector.canBuildFirstSettlement(player, vertex, map)) {
             Settlement settlement = new Settlement(player);
             vertex.placeBuilding(settlement);
-            player.settlements--;
+            player.decreaseSettlements();
 
+            return true;
+        }
+        return false;
+    }
+    public static boolean buildFirstRoad(Player player, Vertex vertex, Edge edge, Map map) {
+        if (ConstructionInspector.canBuildFirstRoad(player, vertex, edge, map)) {
             Road road = new Road(player);
             edge.buildRoad(road);
-            player.roads--;
+            player.decreaseRoads();
 
             return true;
         }

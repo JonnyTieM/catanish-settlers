@@ -1,5 +1,8 @@
 package de.htwg.se.catanishsettlers.view.gui;
 
+import de.htwg.se.catanishsettlers.view.gui.statusPanel.MultiDicePanel;
+import de.htwg.se.catanishsettlers.view.gui.statusPanel.StatusPanel;
+
 import javax.swing.*;
 
 /**
@@ -10,11 +13,13 @@ public class GUIFrame extends JFrame {
     private final StatusPanel statusPanel;
     private final JSplitPane sPaneStatusAndMap, sPaneStatusMapAndPlayers;
 
-    public GUIFrame(PlayersPanel playersPanel, MapPanel mapPanel, MultiDicePanel multiDicePanel) {
-        statusPanel = new StatusPanel(multiDicePanel);
+    public GUIFrame(PlayersPanel playersPanel, MapAndCreateGamePanel mapAndCreateGamePanel, MultiDicePanel multiDicePanel) {
+        statusPanel = new StatusPanel(multiDicePanel, mapAndCreateGamePanel);
+
+        mapAndCreateGamePanel.registerGUI(this);
 
         sPaneStatusAndMap = initSplitPaneDefaultSettings(JSplitPane.VERTICAL_SPLIT);
-        sPaneStatusAndMap.setLeftComponent(mapPanel);
+        sPaneStatusAndMap.setLeftComponent(mapAndCreateGamePanel);
         sPaneStatusAndMap.setRightComponent(statusPanel);
 
         sPaneStatusMapAndPlayers = initSplitPaneDefaultSettings(JSplitPane.HORIZONTAL_SPLIT);
@@ -23,7 +28,7 @@ public class GUIFrame extends JFrame {
 
         add(sPaneStatusMapAndPlayers);
 
-        setSize(600, 400);
+        setSize(800, 600);
         setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Catanish Settlers");

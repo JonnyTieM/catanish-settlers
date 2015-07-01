@@ -102,7 +102,7 @@ public class ConstructionInspectorTest {
 
     @Test
     public void testCanBuildFirstSettlementWithRoad() throws Exception {
-        assertTrue(ConstructionInspector.canBuildFirstSettlementWithRoad(player, map.getVertex(2,4), map.getEdge(2,6),map));
+        assertTrue(ConstructionInspector.canBuildFirstSettlementWithRoad(player, map.getVertex(2, 4), map.getEdge(2, 6),map));
         assertFalse(ConstructionInspector.canBuildFirstSettlementWithRoad(player, map.getVertex(2, 4), map.getEdge(3, 7), map));
 
         map.getVertex(2,4).placeBuilding(new Settlement(player));
