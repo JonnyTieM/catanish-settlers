@@ -36,6 +36,7 @@ public class GameTest {
 
     @Test
     public void testBuildFirstSettlementWithRoad() throws Exception {
+        game.nextPhase();
         assertTrue(game.buildFirstSettlementWithRoad(hans,2,3,2,5));
         game.nextPhase();
         assertFalse(game.buildFirstSettlementWithRoad(peter,2,6,2,9));
