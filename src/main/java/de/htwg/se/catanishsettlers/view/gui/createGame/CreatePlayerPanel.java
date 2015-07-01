@@ -61,8 +61,8 @@ public class CreatePlayerPanel extends JPanel {
             public void insertUpdate(DocumentEvent e) {
                 textFieldUpdated(textField);
             }
-            public void removeUpdate(DocumentEvent e) {}
-            public void changedUpdate(DocumentEvent e) {}
+            public void removeUpdate(DocumentEvent e) { textFieldUpdated(textField); }
+            public void changedUpdate(DocumentEvent e) { textFieldUpdated(textField); }
         });
 
         addButton.addActionListener(new ActionListener() {
@@ -105,13 +105,19 @@ public class CreatePlayerPanel extends JPanel {
     }
 
     private void textFieldUpdated(JTextField textField) {
-        if (player != null) return;
-        if (textField.getText().isEmpty()) {
+        String name = textField.getText();
+        if (name.isEmpty() || nameIsAlreadyInUse(name)) {
             addButton.setEnabled(false);
-            System.out.println("hi");
         } else {
             addButton.setEnabled(true);
         }
+    }
+
+    private boolean nameIsAlreadyInUse(String name) {
+        for (Player player : CatanishSettlers.game.getPlayerContainer().getPlayers()) {
+            if (player.getName().equals(name)) return true;
+        }
+        return false;
     }
 
     public JTextField getTextField() {
