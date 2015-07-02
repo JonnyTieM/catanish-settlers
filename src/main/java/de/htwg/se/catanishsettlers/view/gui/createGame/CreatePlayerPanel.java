@@ -1,7 +1,7 @@
 package de.htwg.se.catanishsettlers.view.gui.createGame;
 
 import de.htwg.se.catanishsettlers.CatanishSettlers;
-import de.htwg.se.catanishsettlers.controller.PlayerContainer;
+import de.htwg.se.catanishsettlers.controller.impl.PlayerContainer;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
 import de.htwg.se.catanishsettlers.view.gui.statusPanel.StatusPanel;
 

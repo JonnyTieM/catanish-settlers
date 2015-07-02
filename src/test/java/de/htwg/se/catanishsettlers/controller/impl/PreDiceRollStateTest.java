@@ -1,5 +1,8 @@
-package de.htwg.se.catanishsettlers.controller;
+package de.htwg.se.catanishsettlers.controller.impl;
 
+import de.htwg.se.catanishsettlers.controller.impl.Game;
+import de.htwg.se.catanishsettlers.controller.impl.IGameState;
+import de.htwg.se.catanishsettlers.controller.impl.PreDiceRollState;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,7 +11,10 @@ import java.util.LinkedList;
 
 import static org.junit.Assert.*;
 
-public class PostDiceRollStateTest {
+/**
+ * Created by Jonathan on 02.07.2015.
+ */
+public class PreDiceRollStateTest {
     Game game;
 
     @Before
@@ -21,9 +27,11 @@ public class PostDiceRollStateTest {
 
     @Test
     public void testNextState() throws Exception {
-        Player player = game.getActivePlayer();
-        IGameState state = new PostDiceRollState();
+        game.nextPhase();
+        game.nextPhase();
+        assertFalse(game.isBuildingPhase());
+        IGameState state = new PreDiceRollState();
         state.nextState(game);
-        assertTrue(player != game.getActivePlayer());
+        assertTrue(game.isBuildingPhase());
     }
 }

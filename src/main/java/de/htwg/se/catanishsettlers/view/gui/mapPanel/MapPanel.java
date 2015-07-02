@@ -1,7 +1,7 @@
 package de.htwg.se.catanishsettlers.view.gui.mapPanel;
 
 import de.htwg.se.catanishsettlers.CatanishSettlers;
-import de.htwg.se.catanishsettlers.controller.Game;
+import de.htwg.se.catanishsettlers.controller.impl.Game;
 import de.htwg.se.catanishsettlers.model.map.*;
 import de.htwg.se.catanishsettlers.model.mechanic.Dice;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
@@ -71,8 +71,12 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
     public void componentMoved(ComponentEvent e) {
         recalculate();
     }
-    public void componentShown(ComponentEvent e) { recalculate(); }
-    public void componentHidden(ComponentEvent e) { recalculate(); }
+    public void componentShown(ComponentEvent e) {
+        recalculate();
+    }
+    public void componentHidden(ComponentEvent e) {
+        recalculate();
+    }
 
     private void recalculate() {
         players = CatanishSettlers.game.getPlayerContainer().getPlayers().toArray(new Player[CatanishSettlers.game.getPlayerContainer().getPlayers().size()]);

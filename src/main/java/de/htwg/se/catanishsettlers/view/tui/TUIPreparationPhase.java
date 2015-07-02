@@ -1,6 +1,6 @@
 package de.htwg.se.catanishsettlers.view.tui;
 
-import de.htwg.se.catanishsettlers.controller.Game;
+import de.htwg.se.catanishsettlers.controller.impl.Game;
 import de.htwg.se.catanishsettlers.model.map.Edge;
 import de.htwg.se.catanishsettlers.model.map.Map;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;

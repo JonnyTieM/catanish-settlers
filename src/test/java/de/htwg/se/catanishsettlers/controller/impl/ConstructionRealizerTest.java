@@ -1,5 +1,6 @@
-package de.htwg.se.catanishsettlers.controller;
+package de.htwg.se.catanishsettlers.controller.impl;
 
+import de.htwg.se.catanishsettlers.controller.impl.ConstructionRealizer;
 import de.htwg.se.catanishsettlers.model.constructions.Road;
 import de.htwg.se.catanishsettlers.model.constructions.Settlement;
 import de.htwg.se.catanishsettlers.model.map.Map;
