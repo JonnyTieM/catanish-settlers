@@ -223,4 +223,18 @@ public class MapTest {
         assertSame(map.getVertex(3, 4), vertices[0]);
         assertSame(map.getVertex(3, 5), vertices[1]);
     }
+
+    @Test
+    public void testGetFieldsWithTriggerNumber() throws Exception {
+        List<Field> productiveFields = map.getFieldsWithTriggerNumber(6);
+        for (Field field : productiveFields) {
+            assertTrue(field.getTriggerNumber() == 6);
+        }
+        assertSame(2, productiveFields.size());
+    }
+
+    @Test
+    public void testGetFieldsCount() throws Exception {
+
+    }
 }
