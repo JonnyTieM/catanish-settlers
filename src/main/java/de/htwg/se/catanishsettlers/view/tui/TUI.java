@@ -1,7 +1,6 @@
 package de.htwg.se.catanishsettlers.view.tui;
 
 import de.htwg.se.catanishsettlers.controller.ConstructionInspector;
-import de.htwg.se.catanishsettlers.controller.ConstructionRealizer;
 import de.htwg.se.catanishsettlers.controller.Game;
 import de.htwg.se.catanishsettlers.model.map.Edge;
 import de.htwg.se.catanishsettlers.model.map.Vertex;
