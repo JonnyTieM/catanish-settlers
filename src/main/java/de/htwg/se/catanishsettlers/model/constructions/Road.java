@@ -8,7 +8,7 @@ import de.htwg.se.catanishsettlers.model.resources.ResourceCollection;
  * Created by Stephan on 01.04.2015.
  */
 public final class Road extends Construction {
-    public final static ResourceCollection COST = Config.ROAD_COST;
+    public static final ResourceCollection COST = Config.ROAD_COST;
 
     public Road(Player player) {
         super(player);
