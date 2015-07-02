@@ -7,9 +7,6 @@ import de.htwg.se.catanishsettlers.model.resources.ResourceCollection;
  */
 public final class Config {
 
-    private Config() {
-    } // cannot be instantiated.
-
     // player config
     public static final int MAX_SETTLEMENTS = 5;
     public static final int MAX_CITIES = 4;
@@ -54,4 +51,8 @@ public final class Config {
     public static final int DEVELOPMENT_AMOUNT = 2;
     public static final int CONSTRUCTION_AMOUNT = 2;
     public static final int VICTORY_CARD_AMOUNT = 5;
+
+    private Config() {
+    } // cannot be instantiated.
+
 }
