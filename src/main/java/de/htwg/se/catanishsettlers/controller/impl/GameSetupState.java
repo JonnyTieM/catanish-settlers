@@ -1,4 +1,4 @@
-package de.htwg.se.catanishsettlers.controller;
+package de.htwg.se.catanishsettlers.controller.impl;
 
 /**
  * Created by Stephan on 01.07.2015.

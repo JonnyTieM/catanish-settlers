@@ -1,5 +1,6 @@
-package de.htwg.se.catanishsettlers.controller;
+package de.htwg.se.catanishsettlers.controller.impl;
 
+import de.htwg.se.catanishsettlers.controller.IGame;
 import de.htwg.se.catanishsettlers.model.Config;
 import de.htwg.se.catanishsettlers.model.constructions.Building;
 import de.htwg.se.catanishsettlers.model.map.Edge;
@@ -16,7 +17,7 @@ import java.util.*;
 /**
  * Created by Stephan on 31.03.2015.
  */
-public final class Game {
+public final class Game implements IGame {
     private PlayerContainer playerContainer;
     private Stack<Card> cardStack;
     //private List<Card> discardPile; //not used

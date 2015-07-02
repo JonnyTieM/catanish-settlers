@@ -1,10 +1,9 @@
 package de.htwg.se.catanishsettlers.view.gui;
 
 import de.htwg.se.catanishsettlers.CatanishSettlers;
-import de.htwg.se.catanishsettlers.controller.Game;
+import de.htwg.se.catanishsettlers.controller.impl.Game;
 import de.htwg.se.catanishsettlers.model.map.*;
 import de.htwg.se.catanishsettlers.model.mechanic.Dice;
-import de.htwg.se.catanishsettlers.model.mechanic.Utility;
 
 import javax.swing.*;
 import java.awt.*;
