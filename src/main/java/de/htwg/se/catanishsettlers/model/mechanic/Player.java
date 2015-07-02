@@ -34,10 +34,6 @@ public class Player extends Observable {
         return name;
     }
 
-    public void setName(String value) {
-        name = value;
-    }
-
     public Color getColor() {
         return color;
     }
