@@ -6,5 +6,6 @@ package de.htwg.se.catanishsettlers.controller;
 public class WinnerEndState implements IGameState {
 
     public void nextState(Game game) {
+        //Do nothing because someone has one and the game ended
     }
 }

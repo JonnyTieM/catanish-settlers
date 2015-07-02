@@ -5,6 +5,7 @@ import de.htwg.se.catanishsettlers.model.resources.ResourceCollection;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 
 /**
@@ -12,7 +13,7 @@ import java.util.Observable;
  */
 public class Player extends Observable {
     private String name = "unnamed";
-    private ArrayList<Card> cards;
+    private List<Card> cards;
     private int knightCount, victoryCardsCount;
     private ResourceCollection resources;
     private Color color;
@@ -32,13 +33,33 @@ public class Player extends Observable {
     public String getName() {
         return name;
     }
-    public void setName(String value) { name = value; }
 
-    public Color getColor() {return color; }
-    public void setColor(Color color) { this.color = color; }
+    public void setName(String value) {
+        name = value;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
 
     public boolean playCard(Card.Types cardType) {
 
+        Card foundCard = findThisCardInPlayersInventory(cardType);
+
+        if (foundCard == null) {
+            return false;        // player didn't have such a card
+        }
+
+        cards.remove(foundCard);
+        playerPlaysThisCard(cardType);
+        return true;
+    }
+
+    private Card findThisCardInPlayersInventory(Card.Types cardType) {
         Card foundCard = null;
         for (Card card : cards) {
             if (card.getType() == cardType) {
@@ -46,25 +67,27 @@ public class Player extends Observable {
                 break;
             }
         }
+        return foundCard;
+    }
 
-        if (foundCard == null) return false;        // player didn't have such a card
-
-        cards.remove(foundCard);
+    private void playerPlaysThisCard(Card.Types cardType) {
         switch (cardType) {
-            case KNIGHT: knightCount++;
-                //TODO: reposition robber
+            case KNIGHT:
+                knightCount++;
+                //TO DO: reposition robber
                 break;
-            case VICTORYPOINT: victoryCardsCount++;
+            case VICTORYPOINT:
+                victoryCardsCount++;
                 break;
-            case PROGRESS_DEVELOPMENT:          //TODO: get 2 resources as requested
+            case PROGRESS_DEVELOPMENT:          //TO DO: get 2 resources as requested
                 break;
-            case PROGRESS_MONOPOLY:             //TODO: get all resources from other players of one requested type
+            case PROGRESS_MONOPOLY:             //TO DO: get all resources from other players of one requested type
                 break;
-            case PROGRESS_ROAD_CONSTRUCTION:    //TODO: immediately legally place 2 roads without paying COST
+            case PROGRESS_ROAD_CONSTRUCTION:    //TO DO: immediately legally place 2 roads without paying COST
                 break;
-            default: throw new IllegalStateException();   // this should never happen as there are only 3 card types
+            default:
+                throw new IllegalStateException();   // this should never happen as there are only 3 card types
         }
-        return true;
     }
 
     public int getScore() {
@@ -90,7 +113,9 @@ public class Player extends Observable {
         return knightCount;
     }
 
-    public void addResources(ResourceCollection res) { resources.add(res); }
+    public void addResources(ResourceCollection res) {
+        resources.add(res);
+    }
 
     public ResourceCollection getResources() {
         return resources;
@@ -123,9 +148,11 @@ public class Player extends Observable {
     public int getAvailableRoads() {
         return roads;
     }
+
     public int getAvailableSettlements() {
         return settlements;
     }
+
     public int getAvailableCities() {
         return cities;
     }
@@ -139,22 +166,27 @@ public class Player extends Observable {
         roads++;
         setChangedAndNotifyObservers();
     }
+
     public void decreaseRoads() {
         roads--;
         setChangedAndNotifyObservers();
     }
+
     public void increaseSettlements() {
         settlements++;
         setChangedAndNotifyObservers();
     }
+
     public void decreaseSettlements() {
         settlements--;
         setChangedAndNotifyObservers();
     }
+
     public void increaseCities() {
         cities++;
         setChangedAndNotifyObservers();
     }
+
     public void decreaseCities() {
         cities--;
         setChangedAndNotifyObservers();

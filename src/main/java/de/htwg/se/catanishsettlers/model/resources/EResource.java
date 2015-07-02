@@ -1,6 +1,8 @@
 package de.htwg.se.catanishsettlers.model.resources;
 
+import java.util.Deque;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -9,9 +11,9 @@ import java.util.Random;
 public enum EResource {
     BRICK, GRAIN, LUMBER, ORE, WOOL;
 
-    public static LinkedList<EResource> getRandomResourceList(int amountBrick, int amountGrain, int amountLumber, int amountOre, int amountWool) {
-        LinkedList<EResource> list = new LinkedList<EResource>();
-        LinkedList<EResource> listTemp = new LinkedList<EResource>();
+    public static Deque<EResource> getRandomResourceList(int amountBrick, int amountGrain, int amountLumber, int amountOre, int amountWool) {
+        Deque<EResource> list = new LinkedList<EResource>();
+        List<EResource> listTemp = new LinkedList<EResource>();
         add(amountBrick, BRICK, listTemp);
         add(amountGrain, GRAIN, listTemp);
         add(amountLumber, LUMBER, listTemp);
@@ -26,7 +28,7 @@ public enum EResource {
         return list;
     }
 
-    private static void add(int amount, EResource res, LinkedList<EResource> list) {
+    private static void add(int amount, EResource res, List<EResource> list) {
         for (int i = 0; i < amount; i++) {
             list.add(res);
         }

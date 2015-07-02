@@ -1,6 +1,8 @@
 package de.htwg.se.catanishsettlers.model.map;
 
+import java.util.Deque;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -11,13 +13,13 @@ public final class TriggerNumberCreator {
 
     }
 
-    public static LinkedList<Integer> getRandomTriggerNumbers(int amount2, int amount3,
+    public static Deque<Integer> getRandomTriggerNumbers(int amount2, int amount3,
                                                               int amount4, int amount5,
                                                               int amount6, int amount8,
                                                               int amount9, int amount10,
                                                               int amount11, int amount12) {
-        LinkedList<Integer> list = new LinkedList<Integer>();
-        LinkedList<Integer> listTemp = new LinkedList<Integer>();
+        Deque<Integer> list = new LinkedList<Integer>();
+        List<Integer> listTemp = new LinkedList<Integer>();
 
         add(amount2, 2, listTemp);
         add(amount3, 3, listTemp);
@@ -40,7 +42,7 @@ public final class TriggerNumberCreator {
         return list;
     }
 
-    private static void add(int amount, int trigger, LinkedList<Integer> list) {
+    private static void add(int amount, int trigger, List<Integer> list) {
         for (int i = 0; i < amount; i++) {
             list.add(trigger);
         }

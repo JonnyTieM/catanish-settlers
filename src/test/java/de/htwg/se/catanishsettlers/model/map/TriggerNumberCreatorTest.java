@@ -3,6 +3,7 @@ package de.htwg.se.catanishsettlers.model.map;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Deque;
 import java.util.LinkedList;
 
 import static org.junit.Assert.*;
@@ -16,7 +17,7 @@ public class TriggerNumberCreatorTest {
 
     @Test
     public void testGetRandomTriggerNumbers() throws Exception {
-        LinkedList<Integer> list = TriggerNumberCreator.getRandomTriggerNumbers(2,0,0,0,3,0,0,0,0,0);
+        Deque<Integer> list = TriggerNumberCreator.getRandomTriggerNumbers(2,0,0,0,3,0,0,0,0,0);
         int two = 0;
         int six = 0;
 

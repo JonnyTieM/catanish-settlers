@@ -1,7 +1,6 @@
 package de.htwg.se.catanishsettlers.view.tui;
 
 import de.htwg.se.catanishsettlers.controller.ConstructionInspector;
-import de.htwg.se.catanishsettlers.controller.ConstructionRealizer;
 import de.htwg.se.catanishsettlers.controller.Game;
 import de.htwg.se.catanishsettlers.model.map.Edge;
 import de.htwg.se.catanishsettlers.model.map.Vertex;
@@ -63,7 +62,7 @@ public class TUI {
             System.out.println("\nResources of " + player.getName() + " (" + player.getScore() + " points)");
             System.out.println("Lumber: " + player.getResources().getLumber());
             System.out.println("Brick: " + player.getResources().getBrick());
-            System.out.println("Wool: " + player.getResources().getBrick());
+            System.out.println("Wool: " + player.getResources().getWool());
             System.out.println("Grain: " + player.getResources().getGrain());
             System.out.println("Ore: " + player.getResources().getOre());
             System.out.println("\n" + player.getName() + ": Choose what to do next:");

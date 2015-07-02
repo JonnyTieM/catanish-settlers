@@ -7,6 +7,7 @@ import de.htwg.se.catanishsettlers.model.map.Map;
 import de.htwg.se.catanishsettlers.model.map.Vertex;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
 
+import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -25,7 +26,7 @@ public final class ConstructionInspector {
     public static LinkedList<Vertex> possibleSettlements(Player player, Map map) {
         LinkedList<Vertex> possibleHouses = new LinkedList<Vertex>();
 
-        LinkedList<Vertex> vertices = map.getVertices();
+        Deque<Vertex> vertices = map.getVertices();
 
         while (!vertices.isEmpty()) {
             Vertex vertex = vertices.pop();
@@ -40,7 +41,7 @@ public final class ConstructionInspector {
     public static LinkedList<Vertex> possibleCities(Player player, Map map) {
         LinkedList<Vertex> possibleCities = new LinkedList<Vertex>();
 
-        LinkedList<Vertex> vertices = map.getVertices();
+        Deque<Vertex> vertices = map.getVertices();
 
         while (!vertices.isEmpty()) {
             Vertex vertex = vertices.pop();
@@ -55,7 +56,7 @@ public final class ConstructionInspector {
     public static LinkedList<Edge> possibleStreets(Player player, Map map) {
         LinkedList<Edge> possibleStreets = new LinkedList<Edge>();
 
-        LinkedList<Edge> edges = map.getEdges();
+        Deque<Edge> edges = map.getEdges();
 
         while (!edges.isEmpty()) {
             Edge edge = edges.pop();

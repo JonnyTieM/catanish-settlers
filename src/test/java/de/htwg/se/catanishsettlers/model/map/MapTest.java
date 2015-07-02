@@ -6,6 +6,7 @@ import de.htwg.se.catanishsettlers.model.mechanic.Player;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -77,13 +78,13 @@ public class MapTest {
 
     @Test
     public void testGetEdges() throws Exception {
-        LinkedList<Edge> edges = map.getEdges();
+        Deque<Edge> edges = map.getEdges();
         assertEquals(72, edges.size());
     }
 
     @Test
     public void testGetVertices() throws Exception {
-        LinkedList<Vertex> vertices = map.getVertices();
+        Deque<Vertex> vertices = map.getVertices();
         assertEquals(54, vertices.size());
     }
 

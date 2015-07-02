@@ -1,6 +1,5 @@
 package de.htwg.se.catanishsettlers.model.constructions;
 
-import de.htwg.se.catanishsettlers.model.mechanic.Investment;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
 
 /**

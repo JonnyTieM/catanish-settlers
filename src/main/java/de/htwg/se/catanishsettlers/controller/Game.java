@@ -19,7 +19,7 @@ import java.util.*;
 public final class Game {
     private PlayerContainer playerContainer;
     private Stack<Card> cardStack;
-    private List<Card> discardPile;
+    //private List<Card> discardPile; //not used
     private Map map;
     private boolean isThereAWinner;
 
@@ -35,7 +35,7 @@ public final class Game {
         dice = new Dice(2, 6);
         isThereAWinner = false;
         cardStack = new Stack<Card>();
-        discardPile = new ArrayList<Card>();
+        //discardPile = new ArrayList<Card>();
         prepareStack();
         this.playerContainer = new PlayerContainer();
         state = new GameSetupState();

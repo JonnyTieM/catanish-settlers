@@ -2,12 +2,11 @@ package de.htwg.se.catanishsettlers.model.map;
 
 import de.htwg.se.catanishsettlers.model.Config;
 import de.htwg.se.catanishsettlers.model.constructions.Building;
-import de.htwg.se.catanishsettlers.model.mechanic.Utility;
 import de.htwg.se.catanishsettlers.model.resources.EResource;
 
+import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Observable;
 
 /**
  * Map manages the fields, edges and vertices of the board. It knows to which field each vetix or edge belongs.
@@ -36,8 +35,8 @@ public final class Map implements IMap {
         edges = new Edge[Config.EDGES_WIDTH][Config.EDGES_HEIGHT];
         vertices = new Vertex[Config.VERTICES_WIDTH][Config.VERTICES_HEIGHT];
 
-        LinkedList<EResource> resources = EResource.getRandomResourceList(4,4,4,3,4);
-        LinkedList<Integer> triggers = TriggerNumberCreator.getRandomTriggerNumbers(2,2,2,2,2,2,2,2,2,1);
+        Deque<EResource> resources = EResource.getRandomResourceList(4, 4, 4, 3, 4);
+        Deque<Integer> triggers = TriggerNumberCreator.getRandomTriggerNumbers(2, 2, 2, 2, 2, 2, 2, 2, 2, 1);
 
         createField(2, 0, resources.pop(), triggers.pop());
         createField(1, 0, resources.pop(), triggers.pop());
@@ -129,61 +128,63 @@ public final class Map implements IMap {
         List<Field> returnFields = new LinkedList<Field>();
         for (Field[] fieldRow : fields) {
             for (Field field : fieldRow) {
-                if (field != null) returnFields.add(field);
+                if (field != null) {
+                    returnFields.add(field);
+                }
             }
         }
         return returnFields;
     }
 
-    public LinkedList<Edge> getEdges() {
-        LinkedList<Edge> edges = new LinkedList<Edge>();
+    public Deque<Edge> getEdges() {
+        Deque<Edge> allEdges = new LinkedList<Edge>();
 
         for (int y = 0; y < Config.EDGES_HEIGHT; y++) {
             for (int x = 0; x < Config.EDGES_WIDTH; x++) {
                 Edge edge = getEdge(x, y);
                 if (edge != null) {
-                    edges.add(edge);
+                    allEdges.add(edge);
                 }
             }
         }
 
-        return edges;
+        return allEdges;
     }
 
-    public LinkedList<Vertex> getVertices() {
-        LinkedList<Vertex> vertices = new LinkedList<Vertex>();
+    public Deque<Vertex> getVertices() {
+        Deque<Vertex> allVertices = new LinkedList<Vertex>();
 
         for (int y = 0; y < Config.VERTICES_HEIGHT; y++) {
             for (int x = 0; x < Config.VERTICES_WIDTH; x++) {
                 Vertex vertex = getVertex(x, y);
                 if (vertex != null) {
-                    vertices.add(vertex);
+                    allVertices.add(vertex);
                 }
             }
         }
 
-        return vertices;
+        return allVertices;
     }
 
     public Edge[] getEdges(Field field) {
         if (field == null) {
-            return null;
+            return new Edge[0];
         }
 
-        // Create edges array, where we put in all the edges of the field and then return it.
-        Edge[] edges = new Edge[6];
+        // Create edgesOfField array, where we put in all the edges of the field and then return it.
+        Edge[] edgesOfField = new Edge[6];
 
         int[] x = getEdgesCoordinateX(field);
         int[] y = getEdgesCoordinateY(field);
 
-        edges[0] = getEdge(x[0], y[0]); // top
-        edges[1] = getEdge(x[1], y[1]); // top right
-        edges[2] = getEdge(x[2], y[2]); // bottom right
-        edges[3] = getEdge(x[3], y[3]); // bottom
-        edges[4] = getEdge(x[4], y[4]); // bottom left
-        edges[5] = getEdge(x[5], y[5]); // top left
+        edgesOfField[0] = getEdge(x[0], y[0]); // top
+        edgesOfField[1] = getEdge(x[1], y[1]); // top right
+        edgesOfField[2] = getEdge(x[2], y[2]); // bottom right
+        edgesOfField[3] = getEdge(x[3], y[3]); // bottom
+        edgesOfField[4] = getEdge(x[4], y[4]); // bottom left
+        edgesOfField[5] = getEdge(x[5], y[5]); // top left
 
-        return edges;
+        return edgesOfField;
     }
 
     /**
@@ -195,7 +196,7 @@ public final class Map implements IMap {
     private int[] getEdgesCoordinateX(Field field) {
         int x = field.getX();
 
-        int[] xEdge = new int[]{
+        return new int[]{
                 x, //top
                 x + 1, // top right
                 x + 1, // bottom right
@@ -203,7 +204,6 @@ public final class Map implements IMap {
                 x, // bottom left
                 x // top left
         };
-        return xEdge;
     }
 
     /**
@@ -242,32 +242,34 @@ public final class Map implements IMap {
 
     public List<Building> getBuildings(Field field) {
         List<Building> returnBuildings = new LinkedList<Building>();
-        Vertex[] vertices = getVertices(field);
-        for (Vertex vertex : vertices) {
-            if (vertex.hasBuilding()) returnBuildings.add(vertex.getBuilding());
+        Vertex[] verticesOfField = getVertices(field);
+        for (Vertex vertex : verticesOfField) {
+            if (vertex.hasBuilding()) {
+                returnBuildings.add(vertex.getBuilding());
+            }
         }
         return returnBuildings;
     }
 
     public Vertex[] getVertices(Field field) {
         if (field == null) {
-            return null;
+            return new Vertex[0];
         }
 
         // Create vertex array, where we put in all the vertices of the field and then return it.
-        Vertex[] vertices = new Vertex[6];
+        Vertex[] verticesOfField = new Vertex[6];
 
         int[] x = getVerticesCoordinateX(field);
         int[] y = getVerticesCoordinateY(field);
 
-        vertices[0] = getVertex(x[0], y[0]); // top left
-        vertices[1] = getVertex(x[1], y[1]); // top right
-        vertices[2] = getVertex(x[2], y[2]); // middle right
-        vertices[3] = getVertex(x[3], y[3]); // bottom right
-        vertices[4] = getVertex(x[4], y[4]); // bottom left
-        vertices[5] = getVertex(x[5], y[5]); // middle left
+        verticesOfField[0] = getVertex(x[0], y[0]); // top left
+        verticesOfField[1] = getVertex(x[1], y[1]); // top right
+        verticesOfField[2] = getVertex(x[2], y[2]); // middle right
+        verticesOfField[3] = getVertex(x[3], y[3]); // bottom right
+        verticesOfField[4] = getVertex(x[4], y[4]); // bottom left
+        verticesOfField[5] = getVertex(x[5], y[5]); // middle left
 
-        return vertices;
+        return verticesOfField;
     }
 
     /**
@@ -279,7 +281,7 @@ public final class Map implements IMap {
     private int[] getVerticesCoordinateX(Field field) {
         int x = field.getX();
 
-        int[] xVertex = new int[]{
+        return new int[]{
                 x,      //top left
                 x + 1,  // top right
                 x + 1,  // middle right
@@ -287,7 +289,6 @@ public final class Map implements IMap {
                 x,      // bottom left
                 x       // middle left
         };
-        return xVertex;
     }
 
     /**
@@ -325,26 +326,28 @@ public final class Map implements IMap {
 
     public Field[] getAdjacentFields(Vertex vertex) {
         if (vertex == null) {
-            return null;
+            return new Field[0];
         }
 
-        Field[] fields = new Field[3];
+        Field[] fieldsAroundVertex = new Field[3];
 
         int[] x = getAdjacentFieldsCoordinateX(vertex);
         int[] y = getAdjacentFieldsCoordinateY(vertex);
 
-        fields[0] = getField(x[0], y[0]);
-        fields[1] = getField(x[1], y[1]);
-        fields[2] = getField(x[2], y[2]);
+        fieldsAroundVertex[0] = getField(x[0], y[0]);
+        fieldsAroundVertex[1] = getField(x[1], y[1]);
+        fieldsAroundVertex[2] = getField(x[2], y[2]);
 
-        return fields;
+        return fieldsAroundVertex;
     }
 
     public List<Field> getFieldsWithTriggerNumber(int triggerNumber) {
         List<Field> matches = new LinkedList<Field>();
-        for(int x = 0; x < fields.length; x++) {
+        for (int x = 0; x < fields.length; x++) {
             for (int y = 0; y < fields[x].length; y++) {
-                if (fields[x][y] != null && fields[x][y].getTriggerNumber() == triggerNumber) matches.add(fields[x][y]);
+                if (fields[x][y] != null && fields[x][y].getTriggerNumber() == triggerNumber) {
+                    matches.add(fields[x][y]);
+                }
             }
         }
         return matches;
@@ -352,9 +355,11 @@ public final class Map implements IMap {
 
     public int getFieldsCount() {
         int count = 0;
-        for(int x = 0; x < fields.length; x++) {
+        for (int x = 0; x < fields.length; x++) {
             for (int y = 0; y < fields[x].length; y++) {
-                if (fields[x][y] != null) count++;
+                if (fields[x][y] != null) {
+                    count++;
+                }
             }
         }
         return count;
@@ -435,19 +440,19 @@ public final class Map implements IMap {
 
     public Vertex[] getNeighbouringVertices(Vertex vertex) {
         if (vertex == null) {
-            return null;
+            return new Vertex[0];
         }
 
-        Vertex[] vertices = new Vertex[3];
+        Vertex[] neighbouringVertices = new Vertex[3];
 
         int[] x = getNeighbouringVerticesCoordinateX(vertex);
         int[] y = getNeighbouringVerticesCoordinateY(vertex);
 
-        vertices[0] = getVertex(x[0], y[0]);
-        vertices[1] = getVertex(x[1], y[1]);
-        vertices[2] = getVertex(x[2], y[2]);
+        neighbouringVertices[0] = getVertex(x[0], y[0]);
+        neighbouringVertices[1] = getVertex(x[1], y[1]);
+        neighbouringVertices[2] = getVertex(x[2], y[2]);
 
-        return vertices;
+        return neighbouringVertices;
     }
 
     /**
@@ -510,19 +515,19 @@ public final class Map implements IMap {
 
     public Edge[] getNeighbouringEdges(Vertex vertex) {
         if (vertex == null) {
-            return null;
+            return new Edge[0];
         }
 
-        Edge[] edges = new Edge[3];
+        Edge[] neighbouringEdges = new Edge[3];
 
         int[] x = getNeighbouringEdgesCoordinateX(vertex);
         int[] y = getNeighbouringEdgesCoordinateY(vertex);
 
-        edges[0] = getEdge(x[0], y[0]);
-        edges[1] = getEdge(x[1], y[1]);
-        edges[2] = getEdge(x[2], y[2]);
+        neighbouringEdges[0] = getEdge(x[0], y[0]);
+        neighbouringEdges[1] = getEdge(x[1], y[1]);
+        neighbouringEdges[2] = getEdge(x[2], y[2]);
 
-        return edges;
+        return neighbouringEdges;
     }
 
     /**
@@ -603,18 +608,18 @@ public final class Map implements IMap {
      */
     public Vertex[] getVerticesOfEdge(Edge edge) {
         if (edge == null) {
-            return null;
+            return new Vertex[0];
         }
 
-        Vertex[] vertices = new Vertex[2];
+        Vertex[] verticesOfEdge = new Vertex[2];
 
         int[] x = getVerticesOfEdgeCoordinateX(edge);
         int[] y = getVerticesOfEdgeCoordinateY(edge);
 
-        vertices[0] = getVertex(x[0], y[0]);
-        vertices[1] = getVertex(x[1], y[1]);
+        verticesOfEdge[0] = getVertex(x[0], y[0]);
+        verticesOfEdge[1] = getVertex(x[1], y[1]);
 
-        return vertices;
+        return verticesOfEdge;
     }
 
     private int[] getVerticesOfEdgeCoordinateX(Edge edge) {
