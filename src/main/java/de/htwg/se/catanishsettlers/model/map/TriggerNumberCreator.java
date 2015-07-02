@@ -18,8 +18,8 @@ public final class TriggerNumberCreator {
                                                               int amount6, int amount8,
                                                               int amount9, int amount10,
                                                               int amount11, int amount12) {
-        LinkedList<Integer> list = new LinkedList<Integer>();
-        LinkedList<Integer> listTemp = new LinkedList<Integer>();
+        Deque<Integer> list = new LinkedList<Integer>();
+        List<Integer> listTemp = new LinkedList<Integer>();
 
         add(amount2, 2, listTemp);
         add(amount3, 3, listTemp);
