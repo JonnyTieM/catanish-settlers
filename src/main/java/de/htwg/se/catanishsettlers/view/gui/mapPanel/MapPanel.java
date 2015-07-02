@@ -1,15 +1,11 @@
-package de.htwg.se.catanishsettlers.view.gui;
+package de.htwg.se.catanishsettlers.view.gui.mapPanel;
 
 import de.htwg.se.catanishsettlers.CatanishSettlers;
 import de.htwg.se.catanishsettlers.controller.Game;
-import de.htwg.se.catanishsettlers.model.constructions.Settlement;
 import de.htwg.se.catanishsettlers.model.map.*;
 import de.htwg.se.catanishsettlers.model.mechanic.Dice;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
-import de.htwg.se.catanishsettlers.model.mechanic.Utility;
-import de.htwg.se.catanishsettlers.view.gui.playersPanel.PlayerPanelSwitchable;
-import de.htwg.se.catanishsettlers.view.gui.preparationStateMachine.StateMachine;
-import de.htwg.se.catanishsettlers.view.gui.statusPanel.StatusPanel;
+import de.htwg.se.catanishsettlers.view.gui.GUIhelper;
 
 import javax.swing.*;
 import java.awt.*;
@@ -52,63 +48,6 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
     private int direction = 1;
     private boolean lastPlayerHasBuiltTwice = false;
 
-    public void update(Observable o, Object arg) {
-        if (o.getClass() == Dice.class) {
-            Dice dice = (Dice) o;
-            rolledNumber = dice.getValue();
-        }
-        paint(this.getGraphics());
-    }
-
-    private class VertexWithCoordinates {
-        public final Vertex vertex;
-        public final int x, y;
-
-        public VertexWithCoordinates(Vertex vertex, int x, int y) {
-            this.vertex = vertex;
-            this.x = x;
-            this.y = y;
-        }
-    }
-
-    private class FieldWithCoordinates {
-        public final Field field;
-        public final int x, y;
-        public final int[] vx, vy;
-
-        public FieldWithCoordinates(Field field, int x, int y, int[] vx, int[] vy) {
-            this.field = field;
-            this.x = x;
-            this.y = y;
-            this.vx = vx;
-            this.vy = vy;
-        }
-    }
-
-    private class EdgeWithCoordinates {
-        public final int x1, y1, x2, y2;
-        public final Edge edge;
-
-        public EdgeWithCoordinates(Edge edge, int x1, int y1, int x2, int y2) {
-            this.x1 = x1;
-            this.y1 = y1;
-            this.x2 = x2;
-            this.y2 = y2;
-            this.edge = edge;
-        }
-    }
-
-    private class ObjectWithPosition {
-        public final MapObject object;
-        public final int x, y;
-
-        public ObjectWithPosition(MapObject object, int x, int y) {
-            this.object = object;
-            this.x = x;
-            this.y = y;
-        }
-    }
-
     public MapPanel(Map map) {
         this.map = map;
         add(debugLabel);
@@ -116,6 +55,14 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
         addMouseMotionListener(this);
         addComponentListener(this);
         recalculate();
+    }
+
+    public void update(Observable o, Object arg) {
+        if (o.getClass() == Dice.class) {
+            Dice dice = (Dice) o;
+            rolledNumber = dice.getValue();
+        }
+        paint(this.getGraphics());
     }
 
     public void componentResized(ComponentEvent e) {
@@ -212,13 +159,14 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
         drawBuildings(g2, verticesForPainting);
         indicateMouseHover(g2);
 
-        if (!CatanishSettlers.game.isPreparationPhase()) return;
-        if (whatToPlace == WhatToPlace.ROAD) {
-            debugLabel.setText(players[activePlayerIndex].getName() + ": place road");
-            debugLabel.revalidate();
-        } else {
-            debugLabel.setText(players[activePlayerIndex].getName() + ": place settlement");
-            debugLabel.revalidate();
+        if (CatanishSettlers.game.isPreparationPhase()) {
+            if (whatToPlace == WhatToPlace.ROAD) {
+                debugLabel.setText(players[activePlayerIndex].getName() + ": place road");
+                debugLabel.revalidate();
+            } else {
+                debugLabel.setText(players[activePlayerIndex].getName() + ": place settlement");
+                debugLabel.revalidate();
+            }
         }
     }
 
@@ -256,7 +204,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
             int y2 = edgeWithCoord.y2;
 
             if(edge.hasRoad()) {
-                g2.setStroke(new BasicStroke(4));
+                g2.setStroke(new BasicStroke(7));
                 g2.setColor(edge.getRoad().getPlayer().getColor());
             } else {
                 g2.setStroke(new BasicStroke(1));
@@ -272,8 +220,8 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
             int x = vertexWithCoord.x;
             int y = vertexWithCoord.y;
             if (vertex.hasBuilding()) g2.setColor(vertex.getBuilding().getPlayer().getColor());
-            if (vertex.hasSettlement()) drawCircle(g2, x, y, 10, true);
-            if (vertex.hasCity()) drawSquare(g2, x, y, 10);
+            if (vertex.hasSettlement()) drawCircle(g2, x, y, 16, true);
+            if (vertex.hasCity()) drawSquare(g2, x, y, 16);
         }
     }
 
@@ -293,7 +241,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
         if (mouseHover == null) return;
         g2.setColor(players[activePlayerIndex].getColor());
         g2.setStroke(new BasicStroke(3));
-        drawCircle(g2, mouseHover.x , mouseHover.y, 10, false);
+        drawCircle(g2, mouseHover.x, mouseHover.y, 25, false);
     }
 
     public void mouseClicked(MouseEvent e) {
@@ -315,7 +263,10 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
                     }
                 }
                 activePlayerIndex += direction;
-                if (activePlayerIndex == -1) activePlayerIndex = 0;
+                if (activePlayerIndex == -1) {
+                    activePlayerIndex = 0;
+                    game.nextPhase();
+                }
             }
         }
         if (mouseHover.object.getClass().equals(Vertex.class) && whatToPlace == WhatToPlace.SETTLEMENT) {

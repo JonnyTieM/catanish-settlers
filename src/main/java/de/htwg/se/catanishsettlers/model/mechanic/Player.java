@@ -90,7 +90,10 @@ public class Player extends Observable {
         return knightCount;
     }
 
-    public void addResources(ResourceCollection res) { resources.add(res); }
+    public void addResources(ResourceCollection res) {
+        resources.add(res);
+        setChangedAndNotifyObservers();
+    }
 
     public ResourceCollection getResources() {
         return resources;

@@ -13,7 +13,7 @@ public abstract class PlayerPanelAbstract extends JPanel implements Observer {
 
     private JLabel settlementsLabel = new JLabel();
     private JLabel citiesLabel = new JLabel();
-    private Player player;
+    protected Player player;
 
     public PlayerPanelAbstract(Player player) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));

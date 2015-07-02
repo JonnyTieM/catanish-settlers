@@ -10,14 +10,17 @@ import java.util.Observable;
  */
 public class PlayerPanelCompact extends PlayerPanelAbstract {
 
+    private JLabel resLabel = new JLabel();
+
     public PlayerPanelCompact(Player player) {
         super(player);
 
-        add(new JLabel("Resources: " + player.getResources().getTotal()));
+        add(resLabel);
     }
 
     public void update(Observable o, Object arg) {
         super.updateSettlementsLabel();
         super.updateCitiesLabel();
+        resLabel.setText("Resources: " + player.getResources().getTotal());
     }
 }

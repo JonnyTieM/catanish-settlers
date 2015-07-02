@@ -2,8 +2,10 @@ package de.htwg.se.catanishsettlers;
 
 import de.htwg.se.catanishsettlers.controller.Game;
 import de.htwg.se.catanishsettlers.model.mechanic.Dice;
-import de.htwg.se.catanishsettlers.view.gui.*;
-import de.htwg.se.catanishsettlers.view.gui.preparationStateMachine.StateMachine;
+import de.htwg.se.catanishsettlers.view.gui.GUIFrame;
+import de.htwg.se.catanishsettlers.view.gui.MapAndCreateGamePanel;
+import de.htwg.se.catanishsettlers.view.gui.mapPanel.MapPanel;
+import de.htwg.se.catanishsettlers.view.gui.PlayersPanel;
 import de.htwg.se.catanishsettlers.view.gui.statusPanel.MultiDicePanel;
 import de.htwg.se.catanishsettlers.view.tui.Log;
 import de.htwg.se.catanishsettlers.view.tui.Message;
@@ -14,7 +16,6 @@ import de.htwg.se.catanishsettlers.view.tui.MessageFactory;
  */
 public class CatanishSettlers {
     public static Game game;
-    public static StateMachine stateMachine;
 
     private enum Mode {
         TUI,

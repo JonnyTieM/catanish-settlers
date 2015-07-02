@@ -116,7 +116,6 @@ public final class Game {
 
     protected void distributeResources(int diceRoll) {
         List<Field> productiveFields = map.getFieldsWithTriggerNumber(diceRoll);
-
         for (Field field : productiveFields) {
             for (Building building : map.getBuildings(field)) {
                 ResourceCollection yield = new ResourceCollection();

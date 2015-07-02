@@ -1,15 +1,12 @@
 package de.htwg.se.catanishsettlers.view.gui.statusPanel;
 
 import de.htwg.se.catanishsettlers.CatanishSettlers;
-import de.htwg.se.catanishsettlers.model.mechanic.Player;
 import de.htwg.se.catanishsettlers.view.gui.MapAndCreateGamePanel;
-import de.htwg.se.catanishsettlers.view.gui.preparationStateMachine.StateMachine;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.*;
 
 /**
  * Created by Stephan on 11.06.2015.
@@ -43,9 +40,6 @@ public class StatusPanel extends JPanel {
                 }
                 CatanishSettlers.game.nextPhase();
                 if (CatanishSettlers.game.isPreparationPhase()) {
-                    java.util.List<Player> playerList = CatanishSettlers.game.getPlayerContainer().getPlayers();
-                    Player[] players = playerList.toArray(new Player[playerList.size()]);
-                    CatanishSettlers.stateMachine = new StateMachine(players);
 
                     switchButton.setText("End Preparation");
                     switchButton.setEnabled(false);
