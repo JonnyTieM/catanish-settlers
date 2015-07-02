@@ -25,6 +25,7 @@ public class TUIPreparationPhase {
         preparePlayersAndCreateGame();
         mapTUI = new MapTUI(game.getMap());
         map = game.getMap();
+        game.nextPhase();
         placeFirstBuildings();
         game.nextPhase();
         System.out.println("Game setup is ready. First resources got distributed. Game starts now.");
