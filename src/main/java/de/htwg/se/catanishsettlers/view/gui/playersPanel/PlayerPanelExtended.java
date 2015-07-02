@@ -11,6 +11,8 @@ import java.util.Observable;
  */
 public class PlayerPanelExtended extends PlayerPanelAbstract {
 
+    private JLabel brickLabel, lumberLabel, woolLabel, grainLabel, oreLabel;
+
     public PlayerPanelExtended(Player player) {
         super(player);
 
@@ -18,11 +20,17 @@ public class PlayerPanelExtended extends PlayerPanelAbstract {
         resPanel.setLayout(new BoxLayout(resPanel, BoxLayout.Y_AXIS));
         resPanel.setBorder(new TitledBorder("Res:"));
 
-        resPanel.add(new JLabel("Brick: " + player.getResources().getBrick()));
-        resPanel.add(new JLabel("Lumber: " + player.getResources().getLumber()));
-        resPanel.add(new JLabel("Wool: " + player.getResources().getWool()));
-        resPanel.add(new JLabel("Grain: " + player.getResources().getGrain()));
-        resPanel.add(new JLabel("Ore: " + player.getResources().getOre()));
+        brickLabel = new JLabel();
+        lumberLabel = new JLabel();
+        woolLabel = new JLabel();
+        grainLabel = new JLabel();
+        oreLabel = new JLabel();
+
+        resPanel.add(brickLabel);
+        resPanel.add(lumberLabel);
+        resPanel.add(woolLabel);
+        resPanel.add(grainLabel);
+        resPanel.add(oreLabel);
 
         add(resPanel);
     }
@@ -30,5 +38,14 @@ public class PlayerPanelExtended extends PlayerPanelAbstract {
     public void update(Observable o, Object arg) {
         super.updateSettlementsLabel();
         super.updateCitiesLabel();
+        updateResLabels();
+    }
+
+    private void updateResLabels() {
+        brickLabel.setText("Brick: " + player.getResources().getBrick());
+        lumberLabel.setText("Lumber: " + player.getResources().getLumber());
+        woolLabel.setText("Wool: " + player.getResources().getWool());
+        grainLabel.setText("Grain: " + player.getResources().getGrain());
+        oreLabel.setText("Ore: " + player.getResources().getOre());
     }
 }

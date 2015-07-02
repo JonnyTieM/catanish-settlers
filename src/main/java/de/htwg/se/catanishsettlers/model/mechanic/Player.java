@@ -115,6 +115,7 @@ public class Player extends Observable {
 
     public void addResources(ResourceCollection res) {
         resources.add(res);
+        setChangedAndNotifyObservers();
     }
 
     public ResourceCollection getResources() {

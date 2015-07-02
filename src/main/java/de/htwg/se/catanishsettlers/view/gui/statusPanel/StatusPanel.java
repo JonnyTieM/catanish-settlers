@@ -40,7 +40,9 @@ public class StatusPanel extends JPanel {
                 }
                 CatanishSettlers.game.nextPhase();
                 if (CatanishSettlers.game.isPreparationPhase()) {
+
                     switchButton.setText("End Preparation");
+                    switchButton.setEnabled(false);
                     outputLabel.setText("For each player, place two settlements and two roads, then End Preparation");
                 } else if (CatanishSettlers.game.isBuildingPhase()) {
                     switchButton.setText("End turn");

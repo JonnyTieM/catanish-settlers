@@ -76,20 +76,17 @@ public final class Game {
         return ConstructionRealizer.buildFirstSettlementWithRoad(player, vertex, edge, map);
     }
 
-    public boolean buildFirstSettlement(Player player, int xVertex, int yVertex) {
+    public boolean buildFirstSettlement(Player player, Vertex vertex) {
         if (!isPreparationPhase()) {
             return false;
         }
-        Vertex vertex = map.getVertex(xVertex, yVertex);
         return ConstructionRealizer.buildFirstSettlement(player, vertex, map);
     }
 
-    public boolean buildFirstRoad(Player player, int xVertex, int yVertex, int xEdge, int yEdge) {
+    public boolean buildFirstRoad(Player player, Vertex vertex, Edge edge) {
         if (!isPreparationPhase()) {
             return false;
         }
-        Vertex vertex = map.getVertex(xVertex, yVertex);
-        Edge edge = map.getEdge(xEdge, yEdge);
         return ConstructionRealizer.buildFirstRoad(player, vertex, edge, map);
     }
 
@@ -119,7 +116,6 @@ public final class Game {
 
     protected void distributeResources(int diceRoll) {
         List<Field> productiveFields = map.getFieldsWithTriggerNumber(diceRoll);
-
         for (Field field : productiveFields) {
             for (Building building : map.getBuildings(field)) {
                 ResourceCollection yield = new ResourceCollection();
