@@ -6,7 +6,8 @@ import de.htwg.se.catanishsettlers.model.resources.ResourceCollection;
 /**
  * Created by Stephan on 01.04.2015.
  */
-public class Card extends Investment {
+public class Card {
+    public final static ResourceCollection COST = Config.CARD_COST;
 
     public enum Types {
         KNIGHT,
@@ -20,10 +21,13 @@ public class Card extends Investment {
 
     public Card(Types type) {
         this.type = type;
-        COST = Config.CARD_COST;
     }
 
     public Types getType() {
         return type;
+    }
+
+    public static ResourceCollection getCOST() {
+        return COST;
     }
 }

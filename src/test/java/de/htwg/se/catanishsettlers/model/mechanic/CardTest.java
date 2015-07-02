@@ -1,5 +1,6 @@
 package de.htwg.se.catanishsettlers.model.mechanic;
 
+import de.htwg.se.catanishsettlers.model.resources.ResourceCollection;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,5 +20,11 @@ public class CardTest {
     public void testGetType() throws Exception {
         Card card = new Card(Card.Types.KNIGHT);
         assertSame(Card.Types.KNIGHT, card.getType());
+    }
+
+    @Test
+    public void testGetCOST() throws Exception {
+        Card card = new Card(Card.Types.KNIGHT);
+        assertTrue(card.getCOST().compareTo(new ResourceCollection(0, 0, 1, 1, 1)) == 0);
     }
 }
