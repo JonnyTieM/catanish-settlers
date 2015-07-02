@@ -7,12 +7,13 @@ import de.htwg.se.catanishsettlers.view.gui.statusPanel.MultiDicePanel;
 import de.htwg.se.catanishsettlers.view.tui.Log;
 import de.htwg.se.catanishsettlers.view.tui.Message;
 import de.htwg.se.catanishsettlers.view.tui.MessageFactory;
+import de.htwg.se.catanishsettlers.view.tui.TUI;
 
 /**
  * Created by sttrube on 27.03.2015.
  */
 public class CatanishSettlers {
-    public static Game game;
+    public final static Game game = new Game();
 
     private enum Mode {
         TUI,
@@ -33,20 +34,20 @@ public class CatanishSettlers {
         susi.setColor(Color.BLUE);
         john.setColor(Color.MAGENTA);*/
 
-        game = new Game();
 
         Mode mode = Mode.GUI;
 
         if (mode == Mode.TUI) {
-            Log.categories.add(Message.Category.MAP);
-            Log.display(MessageFactory.map_overview(game.getMap()));
-            Log.categories.add(Message.Category.DICE_ROLL);
-            Dice dice = new Dice(3, 8);
-            dice.roll();
-            Log.display(MessageFactory.dice_roll(dice));
-            Log.categories.add(Message.Category.PLAYER);
-            //Log.display(MessageFactory.player(players.get(0)));
-            Log.categories.add(Message.Category.CONSTRUCTION);
+            TUI tui = new TUI();
+//            Log.categories.add(Message.Category.MAP);
+//            Log.display(MessageFactory.map_overview(game.getMap()));
+//            Log.categories.add(Message.Category.DICE_ROLL);
+//            Dice dice = new Dice(3, 8);
+//            dice.roll();
+//            Log.display(MessageFactory.dice_roll(dice));
+//            Log.categories.add(Message.Category.PLAYER);
+//            //Log.display(MessageFactory.player(players.get(0)));
+//            Log.categories.add(Message.Category.CONSTRUCTION);
             //Log.display(MessageFactory.construction(new Road(players.get(1))));
         }
 
