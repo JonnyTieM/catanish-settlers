@@ -2,9 +2,11 @@ package de.htwg.se.catanishsettlers.view.gui;
 
 import de.htwg.se.catanishsettlers.CatanishSettlers;
 import de.htwg.se.catanishsettlers.controller.Game;
+import de.htwg.se.catanishsettlers.model.constructions.Settlement;
 import de.htwg.se.catanishsettlers.model.map.*;
 import de.htwg.se.catanishsettlers.model.mechanic.Dice;
 import de.htwg.se.catanishsettlers.model.mechanic.Utility;
+import de.htwg.se.catanishsettlers.view.gui.preparationStateMachine.StateMachine;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,6 +37,8 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
     private List<VertexWithCoordinates> verticesForPainting;
     private List<EdgeWithCoordinates> edgesForPainting;
     private List<FieldWithCoordinates> fieldsForPainting;
+
+    private Vertex settlementWithoutRoad;
 
     public void update(Observable o, Object arg) {
         if (o.getClass() == Dice.class) {
@@ -294,9 +298,18 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 
         MapObject mapObject = mouseHover.object;
 
-        if (mouseHover.object.getClass().equals(Edge.class));
-        if (mouseHover.object.getClass().equals(Vertex.class))
-            game.buildFirstSettlement(game.getActivePlayer(), mapObject.getX(), mapObject.getY());
+        if (mouseHover.object.getClass().equals(Edge.class)
+                && CatanishSettlers.stateMachine.getCurrentState() == StateMachine.CurrentState.ROAD) {
+            game.buildFirstRoad(game.getActivePlayer(), settlementWithoutRoad, (Edge)mapObject);
+            game.getPlayerContainer().next();
+            CatanishSettlers.stateMachine.next();
+        }
+        if (mouseHover.object.getClass().equals(Vertex.class)
+                && CatanishSettlers.stateMachine.getCurrentState() == StateMachine.CurrentState.SETTLEMENT) {
+            game.buildFirstSettlement(game.getActivePlayer(), (Vertex)mapObject);
+            settlementWithoutRoad = (Vertex)mapObject;
+            CatanishSettlers.stateMachine.next();
+        }
     }
     public void mousePressed(MouseEvent e) {}
     public void mouseReleased(MouseEvent e) {}

@@ -3,6 +3,7 @@ package de.htwg.se.catanishsettlers;
 import de.htwg.se.catanishsettlers.controller.Game;
 import de.htwg.se.catanishsettlers.model.mechanic.Dice;
 import de.htwg.se.catanishsettlers.view.gui.*;
+import de.htwg.se.catanishsettlers.view.gui.preparationStateMachine.StateMachine;
 import de.htwg.se.catanishsettlers.view.gui.statusPanel.MultiDicePanel;
 import de.htwg.se.catanishsettlers.view.tui.Log;
 import de.htwg.se.catanishsettlers.view.tui.Message;
@@ -13,6 +14,7 @@ import de.htwg.se.catanishsettlers.view.tui.MessageFactory;
  */
 public class CatanishSettlers {
     public static Game game;
+    public static StateMachine stateMachine;
 
     private enum Mode {
         TUI,
@@ -20,19 +22,6 @@ public class CatanishSettlers {
     }
 
     public static void main(String[] args) {
-        /*List<Player> players = new ArrayList<Player>();
-        Player hans = new Player("Hans");
-        Player susi = new Player("Susi");
-        Player john = new Player("John");
-
-        players.add(hans);
-        players.add(susi);
-        players.add(john);
-
-        hans.setColor(Color.RED);
-        susi.setColor(Color.BLUE);
-        john.setColor(Color.MAGENTA);*/
-
         game = new Game();
 
         Mode mode = Mode.GUI;
