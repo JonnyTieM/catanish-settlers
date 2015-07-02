@@ -13,8 +13,14 @@ public class Edge extends MapObject {
         super(x, y);
     }
 
-    public Road getRoad() { return road; }
-    public boolean hasRoad() { return road != null; }
+    public Road getRoad() {
+        return road;
+    }
+
+    public boolean hasRoad() {
+        return road != null;
+    }
+
     public void buildRoad(Road newRoad) {
         road = newRoad;
     }

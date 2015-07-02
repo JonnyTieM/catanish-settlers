@@ -13,7 +13,9 @@ public final class Field extends MapObject {
     public Field(int x, int y, EResource resourceType, int triggerNumber) {
         super(x, y);
 
-        if (resourceType == null) throw new IllegalArgumentException("Only Brick, Lumber, Wool, Grain or Ore allowed");
+        if (resourceType == null) {
+            throw new IllegalArgumentException("Only Brick, Lumber, Wool, Grain or Ore allowed");
+        }
         this.resourceType = resourceType;
         this.triggerNumber = triggerNumber;
     }
@@ -21,6 +23,7 @@ public final class Field extends MapObject {
     public EResource getResourceType() {
         return resourceType;
     }
+
     public int getTriggerNumber() {
         return triggerNumber;
     }
