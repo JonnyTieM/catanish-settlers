@@ -1,6 +1,7 @@
 package de.htwg.se.catanishsettlers.view.gui;
 
 import de.htwg.se.catanishsettlers.view.gui.createGame.CreateGamePanel;
+import de.htwg.se.catanishsettlers.view.gui.statusPanel.StatusPanel;
 
 import javax.swing.*;
 import java.awt.*;

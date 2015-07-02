@@ -75,7 +75,6 @@ public final class ConstructionRealizer {
             Road road = new Road(player);
             edge.buildRoad(road);
             player.decreaseRoads();
-
             return true;
         }
         return false;

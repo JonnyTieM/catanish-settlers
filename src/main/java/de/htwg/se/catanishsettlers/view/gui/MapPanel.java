@@ -5,8 +5,11 @@ import de.htwg.se.catanishsettlers.controller.Game;
 import de.htwg.se.catanishsettlers.model.constructions.Settlement;
 import de.htwg.se.catanishsettlers.model.map.*;
 import de.htwg.se.catanishsettlers.model.mechanic.Dice;
+import de.htwg.se.catanishsettlers.model.mechanic.Player;
 import de.htwg.se.catanishsettlers.model.mechanic.Utility;
+import de.htwg.se.catanishsettlers.view.gui.playersPanel.PlayerPanelSwitchable;
 import de.htwg.se.catanishsettlers.view.gui.preparationStateMachine.StateMachine;
+import de.htwg.se.catanishsettlers.view.gui.statusPanel.StatusPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,17 +31,26 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
     private final int height = 2;
     private final int side = 1;
     private Label debugLabel = new Label();
-    private List<ObjectWithPosition> objects;
     private ObjectWithPosition mouseHover;
     private int rolledNumber;
     private final Font smallFont = new Font("Arial", Font.PLAIN, 14);
     private final Font bigFont = new Font("Arial", Font.BOLD, 20);
 
-    private List<VertexWithCoordinates> verticesForPainting;
-    private List<EdgeWithCoordinates> edgesForPainting;
-    private List<FieldWithCoordinates> fieldsForPainting;
+    private List<ObjectWithPosition> objects = new LinkedList<ObjectWithPosition>();
+    private List<VertexWithCoordinates> verticesForPainting = new LinkedList<VertexWithCoordinates>();
+    private List<EdgeWithCoordinates> edgesForPainting = new LinkedList<EdgeWithCoordinates>();
+    private List<FieldWithCoordinates> fieldsForPainting = new LinkedList<FieldWithCoordinates>();
 
     private Vertex settlementWithoutRoad;
+    private enum WhatToPlace {
+        SETTLEMENT,
+        ROAD
+    }
+    private WhatToPlace whatToPlace = WhatToPlace.SETTLEMENT;
+    private Player[] players;
+    private int activePlayerIndex = 0;
+    private int direction = 1;
+    private boolean lastPlayerHasBuiltTwice = false;
 
     public void update(Observable o, Object arg) {
         if (o.getClass() == Dice.class) {
@@ -112,18 +124,15 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
     public void componentMoved(ComponentEvent e) {
         recalculate();
     }
-    public void componentShown(ComponentEvent e) {
-        recalculate();
-    }
-    public void componentHidden(ComponentEvent e) {
-        recalculate();
-    }
+    public void componentShown(ComponentEvent e) { recalculate(); }
+    public void componentHidden(ComponentEvent e) { recalculate(); }
 
     private void recalculate() {
-        objects = new LinkedList<ObjectWithPosition>();
-        verticesForPainting = new LinkedList<VertexWithCoordinates>();
-        edgesForPainting = new LinkedList<EdgeWithCoordinates>();
-        fieldsForPainting = new LinkedList<FieldWithCoordinates>();
+        players = CatanishSettlers.game.getPlayerContainer().getPlayers().toArray(new Player[CatanishSettlers.game.getPlayerContainer().getPlayers().size()]);
+        objects.clear();
+        verticesForPainting.clear();
+        edgesForPainting.clear();
+        fieldsForPainting.clear();
         List<Field> fields = map.getFields();
 
         int scale = getScale(fields);
@@ -156,16 +165,16 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
                 if (i == 0) {
                     firstVertex = vertex;
                 } else {
-                    Edge mapEdge = map.getEdges(field)[i - 1];
+                    Edge edge = map.getEdges(field)[i - 1];
 
-                    edgesForPainting.add(new EdgeWithCoordinates(mapEdge, lastVertex.x, lastVertex.y, x, y));
-                    objects.add(new ObjectWithPosition(mapEdge, (lastVertex.x + x) / 2, (lastVertex.y + y) / 2));
+                    edgesForPainting.add(new EdgeWithCoordinates(edge, lastVertex.x, lastVertex.y, x, y));
+                    objects.add(new ObjectWithPosition(edge, (lastVertex.x + x) / 2, (lastVertex.y + y) / 2));
                 }
                 lastVertex = vertex;
             }
-            Edge lastMapEdge = map.getEdges(field)[0];
-            edgesForPainting.add(new EdgeWithCoordinates(lastMapEdge, lastVertex.x, lastVertex.y, firstVertex.x, firstVertex.y));
-            objects.add(new ObjectWithPosition(lastMapEdge, (lastVertex.x + firstVertex.x) / 2, (lastVertex.y + firstVertex.y) / 2));
+            Edge lastEdge = map.getEdges(field)[5];
+            edgesForPainting.add(new EdgeWithCoordinates(lastEdge, firstVertex.x, firstVertex.y, lastVertex.x, lastVertex.y));
+            objects.add(new ObjectWithPosition(lastEdge, (lastVertex.x + firstVertex.x) / 2, (lastVertex.y + firstVertex.y) / 2));
 
             fieldsForPainting.add(new FieldWithCoordinates(field, midX, midY, vx, vy));
             objects.add(new ObjectWithPosition(field, midX, midY));
@@ -190,21 +199,6 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
         }
 
         if (minDistance > 100) best = null;
-
-        String text = "Mouse @ ";
-        if (best == null) {
-            debugLabel.setText(text + "nothing.");
-        } else {
-            if (best.object.getClass().equals(Field.class)) text += "Field "
-                    + ((Field)best.object).getX() + ", " + ((Field)best.object).getY();
-            if (best.object.getClass().equals(Edge.class)) text += "Edge "
-                    + ((Edge)best.object).getX() + ", " + ((Edge)best.object).getY();
-            if (best.object.getClass().equals(Vertex.class)) text += "Vertex "
-                    + ((Vertex)best.object).getX() + ", " + ((Vertex)best.object).getY();
-            debugLabel.setText(text);
-        }
-        debugLabel.revalidate();
-
         mouseHover = best;
         repaint();
     }
@@ -217,6 +211,15 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
         drawEdges(g2, edgesForPainting);
         drawBuildings(g2, verticesForPainting);
         indicateMouseHover(g2);
+
+        if (!CatanishSettlers.game.isPreparationPhase()) return;
+        if (whatToPlace == WhatToPlace.ROAD) {
+            debugLabel.setText(players[activePlayerIndex].getName() + ": place road");
+            debugLabel.revalidate();
+        } else {
+            debugLabel.setText(players[activePlayerIndex].getName() + ": place settlement");
+            debugLabel.revalidate();
+        }
     }
 
     private void drawFields(Graphics2D g2, List<FieldWithCoordinates> fields) {
@@ -288,27 +291,39 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 
     private void indicateMouseHover(Graphics2D g2) {
         if (mouseHover == null) return;
-        g2.setColor(CatanishSettlers.game.getActivePlayer().getColor());
+        g2.setColor(players[activePlayerIndex].getColor());
         g2.setStroke(new BasicStroke(3));
         drawCircle(g2, mouseHover.x , mouseHover.y, 10, false);
     }
 
     public void mouseClicked(MouseEvent e) {
         Game game = CatanishSettlers.game;
-
         MapObject mapObject = mouseHover.object;
 
-        if (mouseHover.object.getClass().equals(Edge.class)
-                && CatanishSettlers.stateMachine.getCurrentState() == StateMachine.CurrentState.ROAD) {
-            game.buildFirstRoad(game.getActivePlayer(), settlementWithoutRoad, (Edge)mapObject);
-            game.getPlayerContainer().next();
-            CatanishSettlers.stateMachine.next();
+        if (mouseHover.object.getClass().equals(Edge.class) && whatToPlace == WhatToPlace.ROAD) {
+            if (game.buildFirstRoad(players[activePlayerIndex], settlementWithoutRoad, (Edge) mapObject)) {
+                whatToPlace = WhatToPlace.SETTLEMENT;
+                repaint();
+
+
+                if (activePlayerIndex == players.length - 1) {
+                    if (lastPlayerHasBuiltTwice) {
+                        direction = -1;
+                    } else {
+                        direction = 0;
+                        lastPlayerHasBuiltTwice = true;
+                    }
+                }
+                activePlayerIndex += direction;
+                if (activePlayerIndex == -1) activePlayerIndex = 0;
+            }
         }
-        if (mouseHover.object.getClass().equals(Vertex.class)
-                && CatanishSettlers.stateMachine.getCurrentState() == StateMachine.CurrentState.SETTLEMENT) {
-            game.buildFirstSettlement(game.getActivePlayer(), (Vertex)mapObject);
-            settlementWithoutRoad = (Vertex)mapObject;
-            CatanishSettlers.stateMachine.next();
+        if (mouseHover.object.getClass().equals(Vertex.class) && whatToPlace == WhatToPlace.SETTLEMENT) {
+            if (game.buildFirstSettlement(players[activePlayerIndex], (Vertex)mapObject)) {
+                settlementWithoutRoad = (Vertex) mapObject;
+                whatToPlace = WhatToPlace.ROAD;
+                repaint();
+            }
         }
     }
     public void mousePressed(MouseEvent e) {}
