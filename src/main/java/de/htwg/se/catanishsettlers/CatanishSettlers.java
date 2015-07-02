@@ -1,12 +1,11 @@
 package de.htwg.se.catanishsettlers;
 
 import de.htwg.se.catanishsettlers.controller.Game;
-import de.htwg.se.catanishsettlers.model.mechanic.Dice;
-import de.htwg.se.catanishsettlers.view.gui.*;
+import de.htwg.se.catanishsettlers.view.gui.GUIFrame;
+import de.htwg.se.catanishsettlers.view.gui.MapAndCreateGamePanel;
+import de.htwg.se.catanishsettlers.view.gui.MapPanel;
+import de.htwg.se.catanishsettlers.view.gui.PlayersPanel;
 import de.htwg.se.catanishsettlers.view.gui.statusPanel.MultiDicePanel;
-import de.htwg.se.catanishsettlers.view.tui.Log;
-import de.htwg.se.catanishsettlers.view.tui.Message;
-import de.htwg.se.catanishsettlers.view.tui.MessageFactory;
 import de.htwg.se.catanishsettlers.view.tui.TUI;
 
 /**
@@ -39,16 +38,6 @@ public class CatanishSettlers {
 
         if (mode == Mode.TUI) {
             TUI tui = new TUI();
-//            Log.categories.add(Message.Category.MAP);
-//            Log.display(MessageFactory.map_overview(game.getMap()));
-//            Log.categories.add(Message.Category.DICE_ROLL);
-//            Dice dice = new Dice(3, 8);
-//            dice.roll();
-//            Log.display(MessageFactory.dice_roll(dice));
-//            Log.categories.add(Message.Category.PLAYER);
-//            //Log.display(MessageFactory.player(players.get(0)));
-//            Log.categories.add(Message.Category.CONSTRUCTION);
-            //Log.display(MessageFactory.construction(new Road(players.get(1))));
         }
 
         if (mode == Mode.GUI) {
