@@ -3,6 +3,7 @@ package de.htwg.se.catanishsettlers.model.resources;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Deque;
 import java.util.LinkedList;
 
 import static org.junit.Assert.*;
@@ -19,15 +20,15 @@ public class EResourceTest {
 
     @Test
     public void testGetRandomResourceList() throws Exception {
-        LinkedList<EResource> randResources = EResource.getRandomResourceList(2,3,4,5,6);
+        Deque<EResource> randResources = EResource.getRandomResourceList(2,3,4,5,6);
         EResource res;
         int amountBrick = 0;
         int amountGrain = 0;
         int amountLumber = 0;
         int amountOre = 0;
         int amountWool = 0;
-        for(int i = 0; i < 20; i++) {
-            res = randResources.get(i);
+        while(!randResources.isEmpty()) {
+            res = randResources.pop();
             switch (res) {
                 case BRICK:
                     amountBrick++;

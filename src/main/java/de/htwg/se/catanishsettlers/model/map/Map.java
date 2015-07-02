@@ -35,7 +35,7 @@ public final class Map implements IMap {
         edges = new Edge[Config.EDGES_WIDTH][Config.EDGES_HEIGHT];
         vertices = new Vertex[Config.VERTICES_WIDTH][Config.VERTICES_HEIGHT];
 
-        LinkedList<EResource> resources = EResource.getRandomResourceList(4,4,4,3,4);
+        Deque<EResource> resources = EResource.getRandomResourceList(4,4,4,3,4);
         Deque<Integer> triggers = TriggerNumberCreator.getRandomTriggerNumbers(2,2,2,2,2,2,2,2,2,1);
 
         createField(2, 0, resources.pop(), triggers.pop());
