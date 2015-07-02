@@ -28,6 +28,7 @@ public class GameTest {
     Game game;
     Player hans;
     Player peter;
+    Map map;
 
     @Before
     public void setUp() throws Exception {
@@ -39,6 +40,7 @@ public class GameTest {
         game = new Game(players);
         hans.addResources(new ResourceCollection(5, 5, 5, 5, 5));
         peter.addResources(new ResourceCollection(5, 5, 5, 5, 5));
+        map = game.getMap();
     }
 
     @Test
@@ -60,21 +62,21 @@ public class GameTest {
     @Test
     public void testBuildFirstSettlement() throws Exception {
         game.nextPhase();
-        assertTrue(game.buildFirstSettlement(hans, 2, 3));
+        assertTrue(game.buildFirstSettlement(hans, map.getVertex(2, 3)));
         game.nextPhase();
-        assertFalse(game.buildFirstSettlement(peter, 2, 6));
+        assertFalse(game.buildFirstSettlement(peter, map.getVertex(2, 6)));
     }
 
     @Test
     public void testBuildFirstRoad() throws Exception {
         game.nextPhase();
-        assertFalse(game.buildFirstRoad(hans, 2, 3, 2, 5));
-        game.buildFirstSettlement(hans, 2, 3);
-        assertTrue(game.buildFirstRoad(hans, 2, 3, 2, 5));
+        assertFalse(game.buildFirstRoad(hans, map.getVertex(2, 3), map.getEdge(2, 5)));
+        game.buildFirstSettlement(hans, map.getVertex(2, 3));
+        assertTrue(game.buildFirstRoad(hans, map.getVertex(2, 3), map.getEdge(2, 5)));
         game.nextPhase();
-        assertFalse(game.buildFirstRoad(peter, 2, 6, 2, 9));
-        game.buildFirstSettlement(hans, 2, 6);
-        assertFalse(game.buildFirstRoad(peter, 2, 6, 2, 9));
+        assertFalse(game.buildFirstRoad(peter, map.getVertex(2, 6), map.getEdge(2, 9)));
+        game.buildFirstSettlement(hans, map.getVertex(2, 6));
+        assertFalse(game.buildFirstRoad(peter, map.getVertex(2, 6), map.getEdge(2, 9)));
     }
 
     @Test
