@@ -2,12 +2,11 @@ package de.htwg.se.catanishsettlers.model.map;
 
 import de.htwg.se.catanishsettlers.model.Config;
 import de.htwg.se.catanishsettlers.model.constructions.Building;
-import de.htwg.se.catanishsettlers.model.mechanic.Utility;
 import de.htwg.se.catanishsettlers.model.resources.EResource;
 
+import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Observable;
 
 /**
  * Map manages the fields, edges and vertices of the board. It knows to which field each vetix or edge belongs.
@@ -37,7 +36,7 @@ public final class Map implements IMap {
         vertices = new Vertex[Config.VERTICES_WIDTH][Config.VERTICES_HEIGHT];
 
         LinkedList<EResource> resources = EResource.getRandomResourceList(4,4,4,3,4);
-        LinkedList<Integer> triggers = TriggerNumberCreator.getRandomTriggerNumbers(2,2,2,2,2,2,2,2,2,1);
+        Deque<Integer> triggers = TriggerNumberCreator.getRandomTriggerNumbers(2,2,2,2,2,2,2,2,2,1);
 
         createField(2, 0, resources.pop(), triggers.pop());
         createField(1, 0, resources.pop(), triggers.pop());
