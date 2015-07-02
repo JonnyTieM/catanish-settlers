@@ -4,7 +4,9 @@ import de.htwg.se.catanishsettlers.model.constructions.City;
 import de.htwg.se.catanishsettlers.model.constructions.Road;
 import de.htwg.se.catanishsettlers.model.constructions.Settlement;
 import de.htwg.se.catanishsettlers.model.map.Field;
+import de.htwg.se.catanishsettlers.model.map.Map;
 import de.htwg.se.catanishsettlers.model.map.Vertex;
+import de.htwg.se.catanishsettlers.model.mechanic.Dice;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
 import de.htwg.se.catanishsettlers.model.resources.ResourceCollection;
 import org.junit.Before;
@@ -112,7 +114,7 @@ public class GameTest {
 
         LinkedList<Vertex> commonVertices = new LinkedList<Vertex>();
 
-        for(Vertex vertexOne : verticesOne) {
+        for (Vertex vertexOne : verticesOne) {
             for (Vertex vertexTwo : verticesTwo) {
                 if (vertexOne == vertexTwo) {
                     commonVertices.add(vertexOne);
@@ -120,7 +122,7 @@ public class GameTest {
             }
         }
 
-        for(Vertex vertexOne : verticesOne) {
+        for (Vertex vertexOne : verticesOne) {
             if (!commonVertices.contains(vertexOne)) {
                 vertexOne.placeBuilding(new Settlement(hans));
                 break;
@@ -134,7 +136,7 @@ public class GameTest {
             }
         }
 
-        ResourceCollection result = new ResourceCollection(5,5,5,5,5);
+        ResourceCollection result = new ResourceCollection(5, 5, 5, 5, 5);
         result.add(one.getResourceType(), 1);
         result.add(two.getResourceType(), 2);
 
@@ -145,66 +147,107 @@ public class GameTest {
 
     @Test
     public void testCheckVictory() throws Exception {
-
+        assertTrue(game.checkVictory().isEmpty());
+        for (int i = 0; i < 4; i++) {
+            hans.decreaseCities();
+        }
+        hans.decreaseSettlements();
+        hans.decreaseSettlements();
+        assertFalse(game.checkVictory().isEmpty());
     }
 
     @Test
     public void testBuyCard() throws Exception {
-
+        game.nextPhase();
+        game.nextPhase();
+        assertFalse(game.buyCard());
+        game.nextPhase();
+        assertTrue(game.buyCard());
     }
 
     @Test
     public void testGetLastRolledDiceNumber() throws Exception {
-
+        game.nextPhase();
+        game.nextPhase();
+        game.nextPhase();
+        assertEquals(game.getDice().getValue(), game.getLastRolledDiceNumber());
     }
 
     @Test
     public void testGetDice() throws Exception {
-
+        assertTrue(game.getDice() instanceof Dice);
     }
 
     @Test
     public void testIsThereAWinner() throws Exception {
-
+        assertFalse(game.isThereAWinner());
+        for (int i = 0; i < 4; i++) {
+            hans.decreaseCities();
+        }
+        hans.decreaseSettlements();
+        hans.decreaseSettlements();
+        assertTrue(game.isThereAWinner());
     }
 
     @Test
     public void testIsBuildingPhase() throws Exception {
-
+        assertFalse(game.isBuildingPhase());
+        game.nextPhase();
+        game.nextPhase();
+        game.nextPhase();
+        assertTrue(game.isBuildingPhase());
+        game.nextPhase();
+        assertFalse(game.isBuildingPhase());
     }
 
     @Test
     public void testIsPreparationPhase() throws Exception {
-
+        assertFalse(game.isPreparationPhase());
+        game.nextPhase();
+        assertTrue(game.isPreparationPhase());
+        game.nextPhase();
+        assertFalse(game.isPreparationPhase());
     }
 
     @Test
     public void testGetPlayer() throws Exception {
-
+        assertSame(hans, game.getPlayer(0));
+        assertSame(peter, game.getPlayer(1));
     }
 
     @Test
     public void testSetState() throws Exception {
-
+        game.setState(new PreparationState());
+        assertTrue(game.isPreparationPhase());
+        game.setState(new PostDiceRollState());
+        assertTrue(game.isBuildingPhase());
     }
 
     @Test
     public void testGetMap() throws Exception {
-
+        assertTrue(game.getMap() instanceof Map);
     }
 
     @Test
     public void testGetPlayerContainer() throws Exception {
-
+        assertTrue(game.getPlayerContainer() instanceof PlayerContainer);
     }
 
     @Test
     public void testGetActivePlayer() throws Exception {
-
+        assertSame(hans, game.getActivePlayer());
     }
 
     @Test
     public void testNextPhase() throws Exception {
-
+        game.nextPhase();
+        assertTrue(game.isPreparationPhase());
+        assertFalse(game.isBuildingPhase());
+        game.nextPhase();
+        assertFalse(game.isPreparationPhase());
+        assertFalse(game.isBuildingPhase());
+        game.nextPhase();
+        assertFalse(game.isPreparationPhase());
+        assertTrue(game.isBuildingPhase());
     }
 }

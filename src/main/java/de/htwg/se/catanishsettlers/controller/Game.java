@@ -164,6 +164,7 @@ public final class Game {
         return dice;
     }
     public boolean isThereAWinner() {
+        checkVictory();
         return isThereAWinner;
     }
     public boolean isBuildingPhase() {
