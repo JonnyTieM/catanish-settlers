@@ -12,7 +12,7 @@ import de.htwg.se.catanishsettlers.view.tui.TUI;
  * Created by sttrube on 27.03.2015.
  */
 public class CatanishSettlers {
-    public final static Game game = new Game();
+    public static final Game game = new Game();
 
     private enum Mode {
         TUI,
