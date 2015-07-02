@@ -11,7 +11,7 @@ public final class City extends Building{
     public static ResourceCollection COST = Config.CITY_COST;
     public City(Player player) {
         super(player);
-        SCORE = Config.CITY_SCORE;
+        //SCORE = Config.CITY_SCORE; //this field not needed. look it up in Config
         yield = Config.CITY_YIELD;
         owner = player;
     }

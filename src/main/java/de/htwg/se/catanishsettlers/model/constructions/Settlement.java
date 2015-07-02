@@ -11,7 +11,7 @@ public final class Settlement extends Building{
     public static ResourceCollection COST = Config.SETTLEMENT_COST;
     public Settlement(Player player) {
         super(player);
-        SCORE = Config.SETTLEMENT_SCORE;
+        //SCORE = Config.SETTLEMENT_SCORE; //this field not needed. look it up in Config
         yield = Config.SETTLEMENT_YIELD;
         owner = player;
     }

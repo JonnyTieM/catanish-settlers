@@ -7,7 +7,7 @@ import de.htwg.se.catanishsettlers.model.resources.ResourceCollection;
  * Created by Stephan on 02.04.2015.
  */
 public abstract class Building extends Construction{
-    public static int SCORE;    // how many victory points?
+    //public static int SCORE;    // how many victory points? //this field not needed. look it up in Config
     protected int yield;    // how many resources gathered?
     private ResourceCollection collectedResources;    // temporal storage for resources from fields
 
