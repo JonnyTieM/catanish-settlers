@@ -246,7 +246,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 
     private void indicateMouseHover(Graphics2D g2) {
         if (mouseHover == null) return;
-        if (game.getState() instanceof PreparationState) {       // TO DO: remove this color switch once controller fully controls player turns
+        if (game.isPreparationPhase()) {       // TO DO: remove this color switch once controller fully controls player turns
             g2.setColor(players[activePlayerIndex].getColor());
         } else {
             g2.setColor(game.getActivePlayer().getColor());
@@ -258,7 +258,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
     public void mouseClicked(MouseEvent e) {
         MapObject mapObject = mouseHover.object;
 
-        if (game.getState() instanceof PreparationState) {
+        if (game.isPreparationPhase()) {
             if (mapObject instanceof Edge && whatToPlace == WhatToPlace.ROAD) {
                 if (game.buildFirstRoad(players[activePlayerIndex], settlementWithoutRoad, (Edge) mapObject)) {
                     whatToPlace = WhatToPlace.SETTLEMENT;
@@ -275,7 +275,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
                 }
             }
 
-        } else if (game.getState() instanceof PostDiceRollState) {
+        } else if (game.isBuildingPhase()) {
             if (mouseHover.object instanceof Edge) {
                 game.buildRoad((Edge) mouseHover.object);
             } else if (mouseHover.object instanceof Vertex) {

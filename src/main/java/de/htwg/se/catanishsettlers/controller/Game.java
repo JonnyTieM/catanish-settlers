@@ -184,7 +184,6 @@ public final class Game implements IGame {
     void setState(IGameState state) {
         this.state = state;
     }
-    public IGameState getState() { return state; }
     public Map getMap() {
         return map;
     }

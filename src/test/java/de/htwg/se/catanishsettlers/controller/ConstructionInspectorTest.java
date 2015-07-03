@@ -4,14 +4,17 @@ import de.htwg.se.catanishsettlers.model.constructions.City;
 import de.htwg.se.catanishsettlers.model.constructions.Road;
 import de.htwg.se.catanishsettlers.model.constructions.Settlement;
 import de.htwg.se.catanishsettlers.model.map.Map;
+import de.htwg.se.catanishsettlers.model.map.Vertex;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
+import de.htwg.se.catanishsettlers.model.resources.ResourceCollection;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 /**
- * Created by Jonathan on 30.06.2015.
+ * Created by Stephan on 03.07.2015.
  */
 public class ConstructionInspectorTest {
     private Player player;
@@ -96,7 +99,7 @@ public class ConstructionInspectorTest {
 
         assertFalse(ConstructionInspector.canBuildRoad(player, map.getEdge(3, 10), map));
 
-        map.getEdge(3,8).buildRoad(new Road(player));
+        map.getEdge(3, 8).buildRoad(new Road(player));
         assertTrue(ConstructionInspector.canBuildRoad(player, map.getEdge(3, 10), map));
     }
 
@@ -107,5 +110,21 @@ public class ConstructionInspectorTest {
 
         map.getVertex(2,4).placeBuilding(new Settlement(player));
         assertFalse(ConstructionInspector.canBuildFirstSettlementWithRoad(map.getVertex(2, 4), map.getEdge(2, 6), map));
+    }
+
+    @Test
+    public void testCanBuildFirstSettlement() throws Exception {
+        //assertTrue(ConstructionInspector.canBuildSettlement(player, map.getVertex(2, 4), map));
+
+        map.getVertex(2,4).placeBuilding(new Settlement(player));
+        assertFalse(ConstructionInspector.canBuildSettlement(player, map.getVertex(2, 4), map));
+    }
+
+    @Test
+    public void testCanBuildFirstRoad() throws Exception {
+        assertFalse(ConstructionInspector.canBuildFirstRoad(player, map.getVertex(2, 4), map.getEdge(2, 6), map));
+
+        map.getVertex(2,4).placeBuilding(new Settlement(player));
+        assertTrue(ConstructionInspector.canBuildFirstRoad(player, map.getVertex(2, 4), map.getEdge(2, 6), map));
     }
 }
