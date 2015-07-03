@@ -1,16 +1,25 @@
 package de.htwg.se.catanishsettlers.view.gui;
 
 import de.htwg.se.catanishsettlers.controller.Game;
+import de.htwg.se.catanishsettlers.controller.PlayerContainer;
+import de.htwg.se.catanishsettlers.model.mechanic.Player;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Created by Stephan on 11.06.2015.
  */
-public class StatusPanel extends JPanel {
+public class StatusPanel extends JPanel implements Observer {
+
+    private static String activePlayerName;
+    public void update(Observable o, Object arg) {
+        if (o instanceof PlayerContainer) activePlayerName = ((PlayerContainer)o).getActivePlayer().getName();
+    }
 
     public enum States {
         SETUP,
@@ -68,14 +77,14 @@ public class StatusPanel extends JPanel {
                 switchButton.setEnabled(false);
                 break;
             case PREPARATION: switchButton.setVisible(false);
-                outputLabel.setText("Each players places one settlement and road two times.");
+                outputLabel.setText(activePlayerName + ": place a settlement and an adjacent road.");
                 break;
             case ROLL: switchButton.setText("Roll dice");
                 switchButton.setVisible(true);
-                outputLabel.setText("Roll the dice!");
+                outputLabel.setText(activePlayerName + ", roll the dice!");
                 break;
             case BUILD: switchButton.setText("End Turn");
-                outputLabel.setText("When you're done spending resources, End your turn.");
+                outputLabel.setText(activePlayerName + ", when you're done spending resources, End your turn.");
         }
         state = newState;
     }

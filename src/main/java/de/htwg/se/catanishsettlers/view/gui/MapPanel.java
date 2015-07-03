@@ -2,8 +2,6 @@ package de.htwg.se.catanishsettlers.view.gui;
 
 import de.htwg.se.catanishsettlers.controller.Game;
 import de.htwg.se.catanishsettlers.controller.PlayerContainer;
-import de.htwg.se.catanishsettlers.controller.PostDiceRollState;
-import de.htwg.se.catanishsettlers.controller.PreparationState;
 import de.htwg.se.catanishsettlers.model.map.*;
 import de.htwg.se.catanishsettlers.model.mechanic.Dice;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;

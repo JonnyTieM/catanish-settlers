@@ -14,6 +14,7 @@ public class GUIFrame extends JFrame {
     public GUIFrame(Game game, PlayersPanel playersPanel, MapAndCreateGamePanel mapAndCreateGamePanel, MultiDicePanel multiDicePanel) {
 
         statusPanel = new StatusPanel(game, multiDicePanel, mapAndCreateGamePanel);
+        game.getPlayerContainer().addObserver(statusPanel);
 
         JSplitPane sPaneStatusAndMap = initSplitPaneDefaultSettings(JSplitPane.VERTICAL_SPLIT);
         sPaneStatusAndMap.setLeftComponent(mapAndCreateGamePanel);

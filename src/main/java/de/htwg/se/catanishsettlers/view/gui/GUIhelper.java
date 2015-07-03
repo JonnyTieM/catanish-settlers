@@ -5,7 +5,7 @@ import java.awt.*;
 /**
  * Created by Stephan on 01.07.2015.
  */
-final class GUIhelper {
+public final class GUIhelper {
 
     public static Point placeTextInBox(int width, int height, String text, FontMetrics fontMetrics) {
 
