@@ -20,7 +20,6 @@ import java.util.*;
 public final class Game implements IGame {
     private PlayerContainer playerContainer;
     private Stack<Card> cardStack;
-    //private List<Card> discardPile; //not used
     private Map map;
     private boolean isThereAWinner;
 
@@ -36,7 +35,6 @@ public final class Game implements IGame {
         dice = new Dice(2, 6);
         isThereAWinner = false;
         cardStack = new Stack<Card>();
-        //discardPile = new ArrayList<Card>();
         prepareStack();
         this.playerContainer = new PlayerContainer();
         state = new GameSetupState();
@@ -99,6 +97,10 @@ public final class Game implements IGame {
         return ConstructionRealizer.buildSettlement(getActivePlayer(), vertex, map);
     }
 
+    public boolean buildSettlement(Vertex vertex) {
+        return buildSettlement(vertex.getX(), vertex.getY());
+    }
+
     public boolean buildCity(int x, int y) {
         if (!isBuildingPhase()) {
             return false;
@@ -107,12 +109,20 @@ public final class Game implements IGame {
         return ConstructionRealizer.buildCity(getActivePlayer(), vertex, map);
     }
 
+    public boolean buildCity(Vertex vertex) {
+        return buildCity(vertex.getX(), vertex.getY());
+    }
+
     public boolean buildRoad(int x, int y) {
         if (!isBuildingPhase()) {
             return false;
         }
         Edge edge = map.getEdge(x, y);
         return ConstructionRealizer.buildRoad(getActivePlayer(), edge, map);
+    }
+
+    public boolean buildRoad(Edge edge) {
+        return buildRoad(edge.getX(), edge.getY());
     }
 
     protected void distributeResources(int diceRoll) {
@@ -141,7 +151,7 @@ public final class Game implements IGame {
         if (!isBuildingPhase()) {
             return false;
         }
-        //TODO: make player pay for the card and check for resources. Also the whole card stack should be an own class.
+        //TO DO: make player pay for the card and check for resources. Also the whole card stack should be an own class.
         getActivePlayer().addCard(popTopCard());
         return true;
     }
@@ -176,6 +186,7 @@ public final class Game implements IGame {
     protected void setState(IGameState state) {
         this.state = state;
     }
+    public IGameState getState() { return state; }
     public Map getMap() {
         return map;
     }

@@ -1,11 +1,13 @@
 package de.htwg.se.catanishsettlers.view.gui.mapPanel;
 
 import de.htwg.se.catanishsettlers.CatanishSettlers;
-import de.htwg.se.catanishsettlers.controller.impl.Game;
+import de.htwg.se.catanishsettlers.controller.impl.*;
 import de.htwg.se.catanishsettlers.model.map.*;
 import de.htwg.se.catanishsettlers.model.mechanic.Dice;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
 import de.htwg.se.catanishsettlers.view.gui.GUIhelper;
+import de.htwg.se.catanishsettlers.view.gui.playersPanel.PlayerPanelSwitchable;
+import de.htwg.se.catanishsettlers.view.gui.statusPanel.StatusPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,10 +40,12 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
     private List<FieldWithCoordinates> fieldsForPainting = new LinkedList<FieldWithCoordinates>();
 
     private Vertex settlementWithoutRoad;
+
     private enum WhatToPlace {
         SETTLEMENT,
         ROAD
     }
+
     private WhatToPlace whatToPlace = WhatToPlace.SETTLEMENT;
     private Player[] players;
     private int activePlayerIndex = 0;
@@ -68,12 +72,15 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
     public void componentResized(ComponentEvent e) {
         recalculate();
     }
+
     public void componentMoved(ComponentEvent e) {
         recalculate();
     }
+
     public void componentShown(ComponentEvent e) {
         recalculate();
     }
+
     public void componentHidden(ComponentEvent e) {
         recalculate();
     }
@@ -132,14 +139,16 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
         }
     }
 
-    public void mouseDragged(MouseEvent e) {}
+    public void mouseDragged(MouseEvent e) {
+    }
+
     public void mouseMoved(MouseEvent e) {
         ObjectWithPosition best = objects.get(0);
         int x = best.x - e.getX();
         int y = best.y - e.getY();
         double minDistance = Math.sqrt(x * x + y * y);
 
-        for(ObjectWithPosition object : objects) {
+        for (ObjectWithPosition object : objects) {
             x = object.x - e.getX();
             y = object.y - e.getY();
             double distance = Math.sqrt(x * x + y * y);
@@ -155,27 +164,19 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
     }
 
     public void paint(Graphics g) {
+        g.setColor(getBackground());
+        g.fillRect(0, 0, getWidth(), getHeight());
         if (map == null) return;
-        Graphics2D g2 = (Graphics2D)g;
+        Graphics2D g2 = (Graphics2D) g;
 
         drawFields(g2, fieldsForPainting);
         drawEdges(g2, edgesForPainting);
         drawBuildings(g2, verticesForPainting);
         indicateMouseHover(g2);
-
-        if (CatanishSettlers.game.isPreparationPhase()) {
-            if (whatToPlace == WhatToPlace.ROAD) {
-                debugLabel.setText(players[activePlayerIndex].getName() + ": place road");
-                debugLabel.revalidate();
-            } else {
-                debugLabel.setText(players[activePlayerIndex].getName() + ": place settlement");
-                debugLabel.revalidate();
-            }
-        }
     }
 
     private void drawFields(Graphics2D g2, List<FieldWithCoordinates> fields) {
-        for(FieldWithCoordinates fieldWithCoords : fields) {
+        for (FieldWithCoordinates fieldWithCoords : fields) {
             Field field = fieldWithCoords.field;
             int[] vx = fieldWithCoords.vx;
             int[] vy = fieldWithCoords.vy;
@@ -207,7 +208,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
             int y1 = edgeWithCoord.y1;
             int y2 = edgeWithCoord.y2;
 
-            if(edge.hasRoad()) {
+            if (edge.hasRoad()) {
                 g2.setStroke(new BasicStroke(7));
                 g2.setColor(edge.getRoad().getPlayer().getColor());
             } else {
@@ -243,7 +244,11 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 
     private void indicateMouseHover(Graphics2D g2) {
         if (mouseHover == null) return;
-        g2.setColor(players[activePlayerIndex].getColor());
+        if (CatanishSettlers.game.getState().equals(PreparationState.class)) {
+            g2.setColor(CatanishSettlers.game.getActivePlayer().getColor());
+        } else {
+            g2.setColor(players[activePlayerIndex].getColor());
+        }
         g2.setStroke(new BasicStroke(3));
         drawCircle(g2, mouseHover.x, mouseHover.y, 25, false);
     }
@@ -252,39 +257,62 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
         Game game = CatanishSettlers.game;
         MapObject mapObject = mouseHover.object;
 
-        if (mouseHover.object.getClass().equals(Edge.class) && whatToPlace == WhatToPlace.ROAD) {
-            if (game.buildFirstRoad(players[activePlayerIndex], settlementWithoutRoad, (Edge) mapObject)) {
-                whatToPlace = WhatToPlace.SETTLEMENT;
-                repaint();
+        if (game.getState().getClass().equals(PreparationState.class)) {
+            if (mouseHover.object.getClass().equals(Edge.class) && whatToPlace == WhatToPlace.ROAD) {
+                if (game.buildFirstRoad(players[activePlayerIndex], settlementWithoutRoad, (Edge) mapObject)) {
+                    whatToPlace = WhatToPlace.SETTLEMENT;
+                    repaint();
 
-
-                if (activePlayerIndex == players.length - 1) {
-                    if (lastPlayerHasBuiltTwice) {
-                        direction = -1;
-                    } else {
-                        direction = 0;
-                        lastPlayerHasBuiltTwice = true;
+                    if (activePlayerIndex == players.length - 1) {
+                        if (lastPlayerHasBuiltTwice) {
+                            direction = -1;
+                        } else {
+                            direction = 0;
+                            lastPlayerHasBuiltTwice = true;
+                        }
+                    }
+                    activePlayerIndex += direction;
+                    if (activePlayerIndex == -1) {
+                        activePlayerIndex = 0;
+                        StatusPanel.setState(StatusPanel.States.ROLL);
+                        game.nextPhase();
                     }
                 }
-                activePlayerIndex += direction;
-                if (activePlayerIndex == -1) {
-                    activePlayerIndex = 0;
-                    game.nextPhase();
+            }
+            if (mouseHover.object.getClass().equals(Vertex.class) && whatToPlace == WhatToPlace.SETTLEMENT) {
+                if (game.buildFirstSettlement(players[activePlayerIndex], (Vertex) mapObject)) {
+                    settlementWithoutRoad = (Vertex) mapObject;
+                    whatToPlace = WhatToPlace.ROAD;
+                    repaint();
+                }
+            }
+
+        } else if (game.getState().getClass().equals(PostDiceRollState.class)) {
+            if (mouseHover.object.getClass().equals(Edge.class)) {
+                game.buildRoad((Edge)mouseHover.object);
+            } else if (mouseHover.object.getClass().equals(Vertex.class)) {
+                Vertex vertex = (Vertex)mouseHover.object;
+                if (vertex.hasSettlement()) {
+                    if (vertex.getBuilding().getPlayer().equals(game.getActivePlayer())) game.buildCity(vertex);
+                } else {
+                    game.buildSettlement(vertex);
                 }
             }
         }
-        if (mouseHover.object.getClass().equals(Vertex.class) && whatToPlace == WhatToPlace.SETTLEMENT) {
-            if (game.buildFirstSettlement(players[activePlayerIndex], (Vertex)mapObject)) {
-                settlementWithoutRoad = (Vertex) mapObject;
-                whatToPlace = WhatToPlace.ROAD;
-                repaint();
-            }
-        }
+        repaint();
     }
-    public void mousePressed(MouseEvent e) {}
-    public void mouseReleased(MouseEvent e) {}
-    public void mouseEntered(MouseEvent e) {}
-    public void mouseExited(MouseEvent e) {}
+
+    public void mousePressed(MouseEvent e) {
+    }
+
+    public void mouseReleased(MouseEvent e) {
+    }
+
+    public void mouseEntered(MouseEvent e) {
+    }
+
+    public void mouseExited(MouseEvent e) {
+    }
 
     private int getScale(List<Field> fields) {
         int maxX = 0;
