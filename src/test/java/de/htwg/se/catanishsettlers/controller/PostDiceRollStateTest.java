@@ -1,8 +1,8 @@
-package de.htwg.se.catanishsettlers.controller.impl;
+package de.htwg.se.catanishsettlers.controller;
 
-import de.htwg.se.catanishsettlers.controller.impl.Game;
-import de.htwg.se.catanishsettlers.controller.impl.IGameState;
-import de.htwg.se.catanishsettlers.controller.impl.PostDiceRollState;
+import de.htwg.se.catanishsettlers.controller.Game;
+import de.htwg.se.catanishsettlers.controller.IGameState;
+import de.htwg.se.catanishsettlers.controller.PostDiceRollState;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
 import org.junit.Before;
 import org.junit.Test;

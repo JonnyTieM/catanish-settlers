@@ -1,6 +1,5 @@
-package de.htwg.se.catanishsettlers.controller.impl;
+package de.htwg.se.catanishsettlers.controller;
 
-import de.htwg.se.catanishsettlers.controller.IGame;
 import de.htwg.se.catanishsettlers.model.Config;
 import de.htwg.se.catanishsettlers.model.constructions.Building;
 import de.htwg.se.catanishsettlers.model.map.Edge;

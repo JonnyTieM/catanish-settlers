@@ -1,6 +1,6 @@
-package de.htwg.se.catanishsettlers.controller.impl;
+package de.htwg.se.catanishsettlers.controller;
 
-import de.htwg.se.catanishsettlers.controller.impl.PlayerContainer;
+import de.htwg.se.catanishsettlers.controller.PlayerContainer;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
 import org.junit.Before;
 import org.junit.Test;

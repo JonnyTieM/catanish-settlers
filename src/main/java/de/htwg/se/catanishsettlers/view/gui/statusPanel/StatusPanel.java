@@ -1,6 +1,6 @@
 package de.htwg.se.catanishsettlers.view.gui.statusPanel;
 
-import de.htwg.se.catanishsettlers.CatanishSettlers;
+import de.htwg.se.catanishsettlers.controller.Game;
 import de.htwg.se.catanishsettlers.view.gui.MapAndCreateGamePanel;
 
 import javax.swing.*;
@@ -13,6 +13,8 @@ import java.awt.event.ActionListener;
  */
 public class StatusPanel extends JPanel {
 
+    private final Game game;
+
     public enum States {
         SETUP,
         PREPARATION,
@@ -24,7 +26,8 @@ public class StatusPanel extends JPanel {
     public final static JButton switchButton = new JButton();
     private final static JLabel outputLabel = new JLabel();
 
-    public StatusPanel(MultiDicePanel multiDicePanel, final MapAndCreateGamePanel mapAndCreateGamePanel) {
+    public StatusPanel(final Game game, MultiDicePanel multiDicePanel, final MapAndCreateGamePanel mapAndCreateGamePanel) {
+        this.game = game;
         setLayout(new GridLayout(2, 1));
 
         JPanel outputPanel = new JPanel();
@@ -46,9 +49,9 @@ public class StatusPanel extends JPanel {
 
         switchButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
-                CatanishSettlers.game.nextPhase();
+                game.nextPhase();
                 switch (state) {
-                    case SETUP: if (CatanishSettlers.game.getPlayerContainer().getPlayers().size() == 0) return;
+                    case SETUP: if (game.getPlayerContainer().getPlayers().size() == 0) return;
                         mapAndCreateGamePanel.next();
                         setState(States.PREPARATION);
                         break;
@@ -72,7 +75,7 @@ public class StatusPanel extends JPanel {
                 break;
             case ROLL: switchButton.setText("Roll dice");
                 switchButton.setVisible(true);
-                outputLabel.setText(CatanishSettlers.game.getActivePlayer().getName() + ", your turn: Roll the dice!");
+                outputLabel.setText("Roll the dice!");
                 break;
             case BUILD: switchButton.setText("End Turn");
                 outputLabel.setText("When you're done spending resources, End your turn.");

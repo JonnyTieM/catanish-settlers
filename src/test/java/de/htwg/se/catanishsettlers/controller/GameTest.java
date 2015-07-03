@@ -1,9 +1,9 @@
-package de.htwg.se.catanishsettlers.controller.impl;
+package de.htwg.se.catanishsettlers.controller;
 
-import de.htwg.se.catanishsettlers.controller.impl.Game;
-import de.htwg.se.catanishsettlers.controller.impl.PlayerContainer;
-import de.htwg.se.catanishsettlers.controller.impl.PostDiceRollState;
-import de.htwg.se.catanishsettlers.controller.impl.PreparationState;
+import de.htwg.se.catanishsettlers.controller.Game;
+import de.htwg.se.catanishsettlers.controller.PlayerContainer;
+import de.htwg.se.catanishsettlers.controller.PostDiceRollState;
+import de.htwg.se.catanishsettlers.controller.PreparationState;
 import de.htwg.se.catanishsettlers.model.constructions.City;
 import de.htwg.se.catanishsettlers.model.constructions.Road;
 import de.htwg.se.catanishsettlers.model.constructions.Settlement;

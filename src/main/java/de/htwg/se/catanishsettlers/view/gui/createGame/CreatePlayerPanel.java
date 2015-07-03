@@ -1,7 +1,7 @@
 package de.htwg.se.catanishsettlers.view.gui.createGame;
 
-import de.htwg.se.catanishsettlers.CatanishSettlers;
-import de.htwg.se.catanishsettlers.controller.impl.PlayerContainer;
+import de.htwg.se.catanishsettlers.controller.Game;
+import de.htwg.se.catanishsettlers.controller.PlayerContainer;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
 import de.htwg.se.catanishsettlers.view.gui.statusPanel.StatusPanel;
 
@@ -23,9 +23,11 @@ public class CreatePlayerPanel extends JPanel {
     private final ColorChoosePanel colorChoosePanel;
     private Player player;
     private final Color defaultColor = Color.BLACK;
+    private final Game game;
 
-    public CreatePlayerPanel(final CreateGamePanel createGamePanel) {
+    public CreatePlayerPanel(final Game game, final CreateGamePanel createGamePanel) {
         thisPanel = this;
+        this.game = game;
 
         setLayout(new FlowLayout());
         textField = new JTextField();
@@ -76,7 +78,7 @@ public class CreatePlayerPanel extends JPanel {
 
                 player = new Player(textField.getText());
                 player.setColor(changeColorButton.getBackground());
-                CatanishSettlers.game.getPlayerContainer().add(player);
+                game.getPlayerContainer().add(player);
                 textField.setEnabled(false);
 
                 createGamePanel.revalidate();
@@ -86,7 +88,7 @@ public class CreatePlayerPanel extends JPanel {
 
         removeButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                PlayerContainer pc = CatanishSettlers.game.getPlayerContainer();
+                PlayerContainer pc = game.getPlayerContainer();
                 pc.remove(player);
                 if(pc.getPlayers().size() == 0) StatusPanel.switchButton.setEnabled(false);
 
@@ -114,7 +116,7 @@ public class CreatePlayerPanel extends JPanel {
     }
 
     private boolean nameIsAlreadyInUse(String name) {
-        for (Player player : CatanishSettlers.game.getPlayerContainer().getPlayers()) {
+        for (Player player : game.getPlayerContainer().getPlayers()) {
             if (player.getName().equals(name)) return true;
         }
         return false;

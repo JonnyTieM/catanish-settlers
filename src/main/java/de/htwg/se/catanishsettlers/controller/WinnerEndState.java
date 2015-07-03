@@ -1,4 +1,4 @@
-package de.htwg.se.catanishsettlers.controller.impl;
+package de.htwg.se.catanishsettlers.controller;
 
 /**
  * Created by Jonathan on 19.06.2015.
@@ -6,6 +6,6 @@ package de.htwg.se.catanishsettlers.controller.impl;
 public class WinnerEndState implements IGameState {
 
     public void nextState(Game game) {
-        //Do nothing because someone has one and the game ended
+        //Do nothing because someone has won and the game ended
     }
 }

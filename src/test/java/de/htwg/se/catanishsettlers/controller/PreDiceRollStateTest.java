@@ -1,6 +1,8 @@
-package de.htwg.se.catanishsettlers.controller.impl;
+package de.htwg.se.catanishsettlers.controller;
 
-import de.htwg.se.catanishsettlers.controller.impl.Game;
+import de.htwg.se.catanishsettlers.controller.Game;
+import de.htwg.se.catanishsettlers.controller.IGameState;
+import de.htwg.se.catanishsettlers.controller.PreDiceRollState;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +14,7 @@ import static org.junit.Assert.*;
 /**
  * Created by Jonathan on 02.07.2015.
  */
-public class GameSetupStateTest {
+public class PreDiceRollStateTest {
     Game game;
 
     @Before
@@ -25,8 +27,11 @@ public class GameSetupStateTest {
 
     @Test
     public void testNextState() throws Exception {
-        assertFalse(game.isPreparationPhase());
         game.nextPhase();
-        assertTrue(game.isPreparationPhase());
+        game.nextPhase();
+        assertFalse(game.isBuildingPhase());
+        IGameState state = new PreDiceRollState();
+        state.nextState(game);
+        assertTrue(game.isBuildingPhase());
     }
 }

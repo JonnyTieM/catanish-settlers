@@ -1,6 +1,6 @@
-package de.htwg.se.catanishsettlers.controller.impl;
+package de.htwg.se.catanishsettlers.controller;
 
-import de.htwg.se.catanishsettlers.controller.impl.PlayerInspector;
+import de.htwg.se.catanishsettlers.controller.PlayerInspector;
 import de.htwg.se.catanishsettlers.model.Config;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
 import de.htwg.se.catanishsettlers.model.resources.ResourceCollection;

@@ -1,12 +1,13 @@
 package de.htwg.se.catanishsettlers.view.gui.mapPanel;
 
-import de.htwg.se.catanishsettlers.CatanishSettlers;
-import de.htwg.se.catanishsettlers.controller.impl.*;
+import de.htwg.se.catanishsettlers.controller.Game;
+import de.htwg.se.catanishsettlers.controller.PlayerContainer;
+import de.htwg.se.catanishsettlers.controller.PostDiceRollState;
+import de.htwg.se.catanishsettlers.controller.PreparationState;
 import de.htwg.se.catanishsettlers.model.map.*;
 import de.htwg.se.catanishsettlers.model.mechanic.Dice;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
 import de.htwg.se.catanishsettlers.view.gui.GUIhelper;
-import de.htwg.se.catanishsettlers.view.gui.playersPanel.PlayerPanelSwitchable;
 import de.htwg.se.catanishsettlers.view.gui.statusPanel.StatusPanel;
 
 import javax.swing.*;
@@ -24,7 +25,9 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 
     //private final double scale = 20;
     private final int padding = 190;
-    private Map map;
+    private final Map map;
+    private final PlayerContainer playerContainer;
+    private Game game;
     private final int width = 2;
     private final int height = 2;
     private final int side = 1;
@@ -52,8 +55,10 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
     private int direction = 1;
     private boolean lastPlayerHasBuiltTwice = false;
 
-    public MapPanel(Map map) {
-        this.map = map;
+    public MapPanel(Game game) {
+        this.map = game.getMap();
+        this.game = game;
+        this.playerContainer = game.getPlayerContainer();
         add(debugLabel);
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -62,7 +67,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
     }
 
     public void update(Observable o, Object arg) {
-        if (o.getClass() == Dice.class) {
+        if (o instanceof Dice) {
             Dice dice = (Dice) o;
             rolledNumber = dice.getValue();
         }
@@ -86,7 +91,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
     }
 
     private void recalculate() {
-        players = CatanishSettlers.game.getPlayerContainer().getPlayers().toArray(new Player[CatanishSettlers.game.getPlayerContainer().getPlayers().size()]);
+        players = playerContainer.getPlayers().toArray(new Player[playerContainer.getPlayers().size()]);
         objects.clear();
         verticesForPainting.clear();
         edgesForPainting.clear();
@@ -244,42 +249,28 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
 
     private void indicateMouseHover(Graphics2D g2) {
         if (mouseHover == null) return;
-        if (CatanishSettlers.game.getState().equals(PreparationState.class)) {
-            g2.setColor(CatanishSettlers.game.getActivePlayer().getColor());
-        } else {
+        if (game.getState() instanceof PreparationState) {       // TO DO: remove this color switch once controller fully controls player turns
             g2.setColor(players[activePlayerIndex].getColor());
+        } else {
+            g2.setColor(game.getActivePlayer().getColor());
         }
         g2.setStroke(new BasicStroke(3));
         drawCircle(g2, mouseHover.x, mouseHover.y, 25, false);
     }
 
     public void mouseClicked(MouseEvent e) {
-        Game game = CatanishSettlers.game;
         MapObject mapObject = mouseHover.object;
 
-        if (game.getState().getClass().equals(PreparationState.class)) {
-            if (mouseHover.object.getClass().equals(Edge.class) && whatToPlace == WhatToPlace.ROAD) {
+        if (game.getState() instanceof PreparationState) {
+            if (mouseHover.object instanceof Edge && whatToPlace == WhatToPlace.ROAD) {
                 if (game.buildFirstRoad(players[activePlayerIndex], settlementWithoutRoad, (Edge) mapObject)) {
                     whatToPlace = WhatToPlace.SETTLEMENT;
                     repaint();
 
-                    if (activePlayerIndex == players.length - 1) {
-                        if (lastPlayerHasBuiltTwice) {
-                            direction = -1;
-                        } else {
-                            direction = 0;
-                            lastPlayerHasBuiltTwice = true;
-                        }
-                    }
-                    activePlayerIndex += direction;
-                    if (activePlayerIndex == -1) {
-                        activePlayerIndex = 0;
-                        StatusPanel.setState(StatusPanel.States.ROLL);
-                        game.nextPhase();
-                    }
+                    cyclePlayers();
                 }
             }
-            if (mouseHover.object.getClass().equals(Vertex.class) && whatToPlace == WhatToPlace.SETTLEMENT) {
+            if (mouseHover.object instanceof Vertex && whatToPlace == WhatToPlace.SETTLEMENT) {
                 if (game.buildFirstSettlement(players[activePlayerIndex], (Vertex) mapObject)) {
                     settlementWithoutRoad = (Vertex) mapObject;
                     whatToPlace = WhatToPlace.ROAD;
@@ -287,11 +278,11 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
                 }
             }
 
-        } else if (game.getState().getClass().equals(PostDiceRollState.class)) {
-            if (mouseHover.object.getClass().equals(Edge.class)) {
-                game.buildRoad((Edge)mouseHover.object);
-            } else if (mouseHover.object.getClass().equals(Vertex.class)) {
-                Vertex vertex = (Vertex)mouseHover.object;
+        } else if (game.getState() instanceof PostDiceRollState) {
+            if (mouseHover.object instanceof Edge) {
+                game.buildRoad((Edge) mouseHover.object);
+            } else if (mouseHover.object instanceof Vertex) {
+                Vertex vertex = (Vertex) mouseHover.object;
                 if (vertex.hasSettlement()) {
                     if (vertex.getBuilding().getPlayer().equals(game.getActivePlayer())) game.buildCity(vertex);
                 } else {
@@ -300,6 +291,23 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
             }
         }
         repaint();
+    }
+
+    private void cyclePlayers() {       // TO DO: move this logic to controller
+        if (activePlayerIndex == players.length - 1) {
+            if (lastPlayerHasBuiltTwice) {
+                direction = -1;
+            } else {
+                direction = 0;
+                lastPlayerHasBuiltTwice = true;
+            }
+        }
+        activePlayerIndex += direction;
+        if (activePlayerIndex == -1) {
+            activePlayerIndex = 0;
+            StatusPanel.setState(StatusPanel.States.ROLL);
+            game.nextPhase();
+        }
     }
 
     public void mousePressed(MouseEvent e) {

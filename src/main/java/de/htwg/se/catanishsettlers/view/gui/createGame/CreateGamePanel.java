@@ -1,5 +1,7 @@
 package de.htwg.se.catanishsettlers.view.gui.createGame;
 
+import de.htwg.se.catanishsettlers.controller.Game;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -8,17 +10,19 @@ import java.awt.*;
  */
 public class CreateGamePanel extends JPanel {
 
+    private final Game game;
     private final JPanel addPlayersPanel = new JPanel();
     private CreatePlayerPanel youngestCreatePlayerPanel;
 
-    public CreateGamePanel() {
+    public CreateGamePanel(Game game) {
+        this.game = game;
         addPlayersPanel.setLayout(new GridLayout(0, 1));
         add(addPlayersPanel);
         addCreatePlayerPanel();
     }
 
     public CreatePlayerPanel addCreatePlayerPanel() {
-        CreatePlayerPanel createPlayerPanel = new CreatePlayerPanel(this);
+        CreatePlayerPanel createPlayerPanel = new CreatePlayerPanel(game, this);
         youngestCreatePlayerPanel = createPlayerPanel;
         addPlayersPanel.add(createPlayerPanel);
         return createPlayerPanel;
