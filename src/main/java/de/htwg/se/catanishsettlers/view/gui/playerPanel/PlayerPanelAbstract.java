@@ -1,4 +1,4 @@
-package de.htwg.se.catanishsettlers.view.gui.playersPanel;
+package de.htwg.se.catanishsettlers.view.gui.playerPanel;
 
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
 
@@ -9,14 +9,14 @@ import java.util.Observer;
 /**
  * Created by Stephan on 13.06.2015.
  */
-public abstract class PlayerPanelAbstract extends JPanel implements Observer {
+abstract class PlayerPanelAbstract extends JPanel implements Observer {
 
-    private JLabel settlementsLabel = new JLabel();
-    private JLabel citiesLabel = new JLabel();
-    private JLabel victoryPointsLabel = new JLabel();
-    protected Player player;
+    private final JLabel settlementsLabel = new JLabel();
+    private final JLabel citiesLabel = new JLabel();
+    private final JLabel victoryPointsLabel = new JLabel();
+    final Player player;
 
-    public PlayerPanelAbstract(Player player) {
+    PlayerPanelAbstract(Player player) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.player = player;
 
@@ -35,15 +35,15 @@ public abstract class PlayerPanelAbstract extends JPanel implements Observer {
         add(victoryPointsLabel);
     }
 
-    protected void updateSettlementsLabel() {
+    void updateSettlementsLabel() {
         settlementsLabel.setText("Settlements: " + player.getAvailableSettlements());
     }
 
-    protected void updateCitiesLabel() {
+    void updateCitiesLabel() {
         citiesLabel.setText("Cities: " + player.getAvailableCities());
     }
 
-    protected void updateVictoryPointsLabel() {
+    void updateVictoryPointsLabel() {
         victoryPointsLabel.setText("Victory Points: " + player.getScore());
     }
 }

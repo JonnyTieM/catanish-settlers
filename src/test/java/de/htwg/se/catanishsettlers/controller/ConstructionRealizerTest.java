@@ -15,8 +15,8 @@ import static org.junit.Assert.*;
  * Created by Jonathan on 30.06.2015.
  */
 public class ConstructionRealizerTest {
-    Map map;
-    Player player;
+    private Map map;
+    private Player player;
 
     @Before
     public void setUp() throws Exception {

@@ -5,6 +5,7 @@ import java.util.Observable;
 /**
  * Created by Stephan on 09.04.2015.
  */
+@SuppressWarnings("AccessStaticViaInstance")
 public class Dice extends Observable {
     private int value;
     private final int[] singleValues;

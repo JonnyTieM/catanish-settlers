@@ -3,9 +3,9 @@ package de.htwg.se.catanishsettlers;
 import de.htwg.se.catanishsettlers.controller.Game;
 import de.htwg.se.catanishsettlers.view.gui.GUIFrame;
 import de.htwg.se.catanishsettlers.view.gui.MapAndCreateGamePanel;
-import de.htwg.se.catanishsettlers.view.gui.mapPanel.MapPanel;
+import de.htwg.se.catanishsettlers.view.gui.MapPanel;
 import de.htwg.se.catanishsettlers.view.gui.PlayersPanel;
-import de.htwg.se.catanishsettlers.view.gui.statusPanel.MultiDicePanel;
+import de.htwg.se.catanishsettlers.view.gui.MultiDicePanel;
 import de.htwg.se.catanishsettlers.view.tui.TUI;
 
 /**

@@ -14,7 +14,7 @@ public class ResourceCollection {
         this(0);    // initializes fields
     }
 
-    public ResourceCollection(int initialAmount) {
+    private ResourceCollection(int initialAmount) {
         brick = initialAmount;
         lumber = initialAmount;
         wool = initialAmount;
@@ -90,25 +90,8 @@ public class ResourceCollection {
         }
     }
 
-    private void add(ResourceCollection resources) {  // logic to add a collection
-        this.brick += resources.getBrick();
-        this.lumber += resources.getLumber();
-        this.wool += resources.getWool();
-        this.grain += resources.getGrain();
-        this.ore += resources.getOre();
-    }
-
-    private void subtract(ResourceCollection resources) {   // logic to subtract a collection
-        this.brick -= resources.getBrick();
-        this.lumber -= resources.getLumber();
-        this.wool -= resources.getWool();
-        this.grain -= resources.getGrain();
-        this.ore -= resources.getOre();
-    }
-
-    public ResourceCollection add(EResource... resources) {                  // add resource(s)
+    public void add(EResource... resources) {                  // add resource(s)
         for (EResource resource : resources) add(resource);
-        return this;
     }
 
     public ResourceCollection add(EResource resource, int amount) {                  // add resource with amount
@@ -116,7 +99,7 @@ public class ResourceCollection {
         return this;
     }
 
-    public ResourceCollection add(ResourceCollection... resourceCollections) {
+    public void add(ResourceCollection... resourceCollections) {
         for (ResourceCollection resourceCollection : resourceCollections) {
             brick += resourceCollection.getBrick();
             lumber += resourceCollection.getLumber();
@@ -124,7 +107,6 @@ public class ResourceCollection {
             grain += resourceCollection.getGrain();
             ore += resourceCollection.getOre();
         }
-        return this;
     }
 
     public ResourceCollection subtract(EResource... resources) {                  // subtract resource(s)
@@ -132,9 +114,8 @@ public class ResourceCollection {
         return this;
     }
 
-    public ResourceCollection subtract(EResource resource, int amount) {
+    public void subtract(EResource resource, int amount) {
         for (int n = 0; n < amount; n++) subtract(resource);
-        return this;
     }
 
     public ResourceCollection subtract(ResourceCollection... resourceCollections) {
@@ -194,28 +175,7 @@ public class ResourceCollection {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
 
-        sb.append("Brick: ");
-        sb.append(brick);
-        sb.append(System.lineSeparator());
-
-        sb.append("Lumber: ");
-        sb.append(lumber);
-        sb.append(System.lineSeparator());
-
-        sb.append("Wool: ");
-        sb.append(wool);
-        sb.append(System.lineSeparator());
-
-        sb.append("Grain: ");
-        sb.append(grain);
-        sb.append(System.lineSeparator());
-
-        sb.append("Ore: ");
-        sb.append(ore);
-        sb.append(System.lineSeparator());
-
-        return sb.toString();
+        return "Brick: " + brick + System.lineSeparator() + "Lumber: " + lumber + System.lineSeparator() + "Wool: " + wool + System.lineSeparator() + "Grain: " + grain + System.lineSeparator() + "Ore: " + ore + System.lineSeparator();
     }
 }

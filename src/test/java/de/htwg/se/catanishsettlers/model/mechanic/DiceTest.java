@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
  * Created by Jonathan on 29.06.2015.
  */
 public class DiceTest {
-    Dice dice;
+    private Dice dice;
 
     @Before
     public void setUp() throws Exception {

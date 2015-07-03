@@ -13,9 +13,9 @@ import static org.junit.Assert.*;
  * Created by Jonathan on 30.06.2015.
  */
 public class PlayerContainerTest {
-    PlayerContainer playerContainer;
-    Player hans;
-    Player peter;
+    private PlayerContainer playerContainer;
+    private Player hans;
+    private Player peter;
 
     @Before
     public void setUp() throws Exception {

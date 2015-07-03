@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
  * Created by Jonathan on 26.06.2015.
  */
 public class BuildingTest {
-    Building building;
+    private Building building;
 
     @Before
     public void setUp() throws Exception {

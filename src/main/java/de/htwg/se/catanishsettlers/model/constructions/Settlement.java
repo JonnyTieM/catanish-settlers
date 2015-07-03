@@ -15,7 +15,4 @@ public final class Settlement extends Building{
         yield = Config.SETTLEMENT_YIELD;
         owner = player;
     }
-    public static ResourceCollection getCOST() {
-        return COST;
-    }
 }

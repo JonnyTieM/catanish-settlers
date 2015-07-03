@@ -1,9 +1,8 @@
-package de.htwg.se.catanishsettlers.view.gui.createGame;
+package de.htwg.se.catanishsettlers.view.gui;
 
 import de.htwg.se.catanishsettlers.controller.Game;
 import de.htwg.se.catanishsettlers.controller.PlayerContainer;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
-import de.htwg.se.catanishsettlers.view.gui.statusPanel.StatusPanel;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -20,9 +19,7 @@ public class CreatePlayerPanel extends JPanel {
     private final JButton addButton, removeButton;
     private final CreatePlayerPanel thisPanel;
     private final JTextField textField;
-    private final ColorChoosePanel colorChoosePanel;
     private Player player;
-    private final Color defaultColor = Color.BLACK;
     private final Game game;
 
     public CreatePlayerPanel(final Game game, final CreateGamePanel createGamePanel) {
@@ -34,6 +31,7 @@ public class CreatePlayerPanel extends JPanel {
         textField.setPreferredSize(new Dimension(130, 25));
 
         final JButton changeColorButton = new JButton("change Color");
+        Color defaultColor = Color.BLACK;
         changeColorButton.setBackground(defaultColor);
         final JPanel openColorPanelCardPanel = new JPanel();
         final CardLayout cardLayout = new CardLayout();
@@ -46,7 +44,7 @@ public class CreatePlayerPanel extends JPanel {
         openColorPanelCardPanel.setLayout(cardLayout);
 
         openColorPanelCardPanel.add(changeColorButton);
-        colorChoosePanel = new ColorChoosePanel(changeColorButton, cardLayout);
+        ColorChoosePanel colorChoosePanel = new ColorChoosePanel(changeColorButton, cardLayout);
         openColorPanelCardPanel.add(colorChoosePanel);
 
         changeColorButton.addActionListener(new ActionListener() {
@@ -122,7 +120,7 @@ public class CreatePlayerPanel extends JPanel {
         return false;
     }
 
-    public JTextField getTextField() {
+    private JTextField getTextField() {
         return textField;
     }
 }

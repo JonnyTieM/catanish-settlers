@@ -11,19 +11,19 @@ import de.htwg.se.catanishsettlers.model.mechanic.Player;
  * This class can convert a map to a printable text output.
  * Created by Jonathan on 22.05.2015.
  */
-public class MapTUI {
+class MapTUI {
 
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BLACK = "\u001B[30m";
     public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_GREEN = "\u001B[32m";
+    private static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_YELLOW = "\u001B[33m";
     public static final String ANSI_BLUE = "\u001B[34m";
     public static final String ANSI_PURPLE = "\u001B[35m";
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
 
-    private Map map;
+    private final Map map;
     private Vertex markedVertex;
     private Edge markedEdge;
     private Player activePlayer;
@@ -41,7 +41,7 @@ public class MapTUI {
         m.printMap();
     }
 
-    public String printMap() {
+    public void printMap() {
         String s = "";
         for (int i = 0; i < Config.FIELDS_HEIGHT; i++) {
             s += printFirstLine(i);
@@ -51,7 +51,6 @@ public class MapTUI {
         }
         s += printFirstLine(Config.FIELDS_HEIGHT);
         System.out.println(s);
-        return s;
     }
 
     private String printFirstLine(int depth) {
@@ -124,14 +123,9 @@ public class MapTUI {
         return s;
     }
 
-    public boolean markVertex(int x, int y) {
+    public void markVertex(int x, int y) {
         Vertex vertex = map.getVertex(x, y);
-        if (vertex == null) {
-            return false;
-        } else {
-            markedVertex = vertex;
-            return true;
-        }
+        if (vertex != null) markedVertex = vertex;
     }
 
     public void unmarkVertex() {
@@ -157,7 +151,7 @@ public class MapTUI {
     }
 
     private String printVertex(int x, int y) {
-        String s = "";
+        String s;
         Vertex vertex = map.getVertex(x, y);
         if (vertex == null) {
             return " ";
@@ -184,7 +178,7 @@ public class MapTUI {
     }
 
     private String printEdge(int x, int y) {
-        String s = "";
+        String s;
         Edge edge = map.getEdge(x, y);
         if (edge == null) {
             return " ";

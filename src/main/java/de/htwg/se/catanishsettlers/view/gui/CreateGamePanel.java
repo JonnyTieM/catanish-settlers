@@ -1,4 +1,4 @@
-package de.htwg.se.catanishsettlers.view.gui.createGame;
+package de.htwg.se.catanishsettlers.view.gui;
 
 import de.htwg.se.catanishsettlers.controller.Game;
 
@@ -8,7 +8,7 @@ import java.awt.*;
 /**
  * Created by Stephan on 25.06.2015.
  */
-public class CreateGamePanel extends JPanel {
+class CreateGamePanel extends JPanel {
 
     private final Game game;
     private final JPanel addPlayersPanel = new JPanel();

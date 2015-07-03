@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
  * Created by Jonathan on 01.07.2015.
  */
 public class PlayerInspectorTest {
-    Player player;
+    private Player player;
 
     @Before
     public void setUp() throws Exception {

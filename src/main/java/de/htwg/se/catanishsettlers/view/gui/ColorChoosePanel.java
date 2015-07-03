@@ -1,7 +1,4 @@
-package de.htwg.se.catanishsettlers.view.gui.createGame;
-
-import de.htwg.se.catanishsettlers.CatanishSettlers;
-import de.htwg.se.catanishsettlers.model.mechanic.Player;
+package de.htwg.se.catanishsettlers.view.gui;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,9 +9,9 @@ import java.util.LinkedList;
 /**
  * Created by Stephan on 26.06.2015.
  */
-public class ColorChoosePanel extends JPanel {
+class ColorChoosePanel extends JPanel {
 
-    java.util.List<JRadioButton> radioButtonList = new LinkedList<JRadioButton>();
+    private final java.util.List<JRadioButton> radioButtonList = new LinkedList<JRadioButton>();
 
     public ColorChoosePanel(final JButton button, final CardLayout cardLayout) {
 

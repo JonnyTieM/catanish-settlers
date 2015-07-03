@@ -12,7 +12,7 @@ import java.util.List;
  * This is the Game Catanish Settlers. You can control and play the game with this class.
  * Created by Jonathan on 02.07.2015.
  */
-public interface IGame {
+interface IGame {
 
     /**
      * You can build your First Settlement combined with a Road during the Preparation Phase with this method.
@@ -70,7 +70,7 @@ public interface IGame {
      *
      * @param x x-position of the edge, where the road will be build
      * @param y y-position of the edge, where the road will be build
-     * @return
+     * @return true if road can be built, otherwise false.
      */
     boolean buildRoad(int x, int y);
 

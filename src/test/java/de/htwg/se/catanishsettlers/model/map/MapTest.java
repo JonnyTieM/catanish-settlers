@@ -7,7 +7,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Deque;
-import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -16,9 +15,9 @@ import static org.junit.Assert.*;
  * Created by JonnyTieM on 20.05.2015.
  */
 public class MapTest {
-    Map map;
-    Player hans;
-    Player kurt;
+    private Map map;
+    private Player hans;
+    private Player kurt;
 
     @Before
     public void setUp() throws Exception {
@@ -236,6 +235,6 @@ public class MapTest {
 
     @Test
     public void testGetFieldsCount() throws Exception {
-
+        assertEquals(map.getFields().size(), map.getFieldsCount());
     }
 }

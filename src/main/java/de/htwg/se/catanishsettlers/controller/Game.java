@@ -18,8 +18,8 @@ import java.util.*;
  */
 public final class Game implements IGame {
     private PlayerContainer playerContainer;
-    private Stack<Card> cardStack;
-    private Map map;
+    private final Stack<Card> cardStack;
+    private final Map map;
     private boolean isThereAWinner;
 
     private final Dice dice;
@@ -59,10 +59,9 @@ public final class Game implements IGame {
         Collections.shuffle(cardStack);
     }
 
-    protected Player switchPlayer() {
+    void switchPlayer() {
         checkVictory();
         playerContainer.next();
-        return getActivePlayer();
     }
 
     public boolean buildFirstSettlementWithRoad(Player player, int xVertex, int yVertex, int xEdge, int yEdge) {
@@ -96,8 +95,8 @@ public final class Game implements IGame {
         return ConstructionRealizer.buildSettlement(getActivePlayer(), vertex, map);
     }
 
-    public boolean buildSettlement(Vertex vertex) {
-        return buildSettlement(vertex.getX(), vertex.getY());
+    public void buildSettlement(Vertex vertex) {
+        buildSettlement(vertex.getX(), vertex.getY());
     }
 
     public boolean buildCity(int x, int y) {
@@ -108,8 +107,8 @@ public final class Game implements IGame {
         return ConstructionRealizer.buildCity(getActivePlayer(), vertex, map);
     }
 
-    public boolean buildCity(Vertex vertex) {
-        return buildCity(vertex.getX(), vertex.getY());
+    public void buildCity(Vertex vertex) {
+        buildCity(vertex.getX(), vertex.getY());
     }
 
     public boolean buildRoad(int x, int y) {
@@ -120,11 +119,11 @@ public final class Game implements IGame {
         return ConstructionRealizer.buildRoad(getActivePlayer(), edge, map);
     }
 
-    public boolean buildRoad(Edge edge) {
-        return buildRoad(edge.getX(), edge.getY());
+    public void buildRoad(Edge edge) {
+        buildRoad(edge.getX(), edge.getY());
     }
 
-    protected void distributeResources(int diceRoll) {
+    void distributeResources(int diceRoll) {
         List<Field> productiveFields = map.getFieldsWithTriggerNumber(diceRoll);
         for (Field field : productiveFields) {
             for (Building building : map.getBuildings(field)) {
@@ -182,7 +181,7 @@ public final class Game implements IGame {
     public Player getPlayer(int i) {
         return playerContainer.getPlayer(i);
     }
-    protected void setState(IGameState state) {
+    void setState(IGameState state) {
         this.state = state;
     }
     public IGameState getState() { return state; }

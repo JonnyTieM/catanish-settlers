@@ -7,7 +7,7 @@ public abstract class MapObject {
     private final int x;
     private final int y;
 
-    public MapObject(int x, int y) {
+    MapObject(int x, int y) {
         this.x = x;
         this.y = y;
     }

@@ -9,7 +9,7 @@ import de.htwg.se.catanishsettlers.model.resources.ResourceCollection;
 /**
  * Created by Stephan on 15.05.2015.
  */
-public class PlayerInspector {
+class PlayerInspector {
 
     private PlayerInspector() {}    // cannot be instantiated.
 

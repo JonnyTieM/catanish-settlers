@@ -1,6 +1,5 @@
 package de.htwg.se.catanishsettlers.controller;
 
-import de.htwg.se.catanishsettlers.controller.ConstructionInspector;
 import de.htwg.se.catanishsettlers.model.constructions.City;
 import de.htwg.se.catanishsettlers.model.constructions.Road;
 import de.htwg.se.catanishsettlers.model.constructions.Settlement;
@@ -15,8 +14,8 @@ import static org.junit.Assert.*;
  * Created by Jonathan on 30.06.2015.
  */
 public class ConstructionInspectorTest {
-    Player player;
-    Map map;
+    private Player player;
+    private Map map;
 
     @Before
     public void setUp() throws Exception {
@@ -85,10 +84,10 @@ public class ConstructionInspectorTest {
 
     @Test
     public void testCanBuildCity() throws Exception {
-        assertFalse(ConstructionInspector.canBuildCity(player, map.getVertex(2, 4), map));
+        assertFalse(ConstructionInspector.canBuildCity(player, map.getVertex(2, 4)));
 
         map.getVertex(2, 4).placeBuilding(new Settlement(player));
-        assertTrue(ConstructionInspector.canBuildCity(player, map.getVertex(2, 4), map));
+        assertTrue(ConstructionInspector.canBuildCity(player, map.getVertex(2, 4)));
     }
 
     @Test
@@ -103,10 +102,10 @@ public class ConstructionInspectorTest {
 
     @Test
     public void testCanBuildFirstSettlementWithRoad() throws Exception {
-        assertTrue(ConstructionInspector.canBuildFirstSettlementWithRoad(player, map.getVertex(2, 4), map.getEdge(2, 6),map));
-        assertFalse(ConstructionInspector.canBuildFirstSettlementWithRoad(player, map.getVertex(2, 4), map.getEdge(3, 7), map));
+        assertTrue(ConstructionInspector.canBuildFirstSettlementWithRoad(map.getVertex(2, 4), map.getEdge(2, 6),map));
+        assertFalse(ConstructionInspector.canBuildFirstSettlementWithRoad(map.getVertex(2, 4), map.getEdge(3, 7), map));
 
         map.getVertex(2,4).placeBuilding(new Settlement(player));
-        assertFalse(ConstructionInspector.canBuildFirstSettlementWithRoad(player, map.getVertex(2, 4), map.getEdge(2, 6), map));
+        assertFalse(ConstructionInspector.canBuildFirstSettlementWithRoad(map.getVertex(2, 4), map.getEdge(2, 6), map));
     }
 }

@@ -5,7 +5,7 @@ import java.util.Scanner;
 /**
  * Created by Stephan on 10.04.2015.
  */
-public class Input {
+class Input {
     private static Scanner singleton;
 
     private Input() {

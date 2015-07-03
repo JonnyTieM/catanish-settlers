@@ -25,10 +25,10 @@ import static org.junit.Assert.*;
  * Created by Jonathan on 01.07.2015.
  */
 public class GameTest {
-    Game game;
-    Player hans;
-    Player peter;
-    Map map;
+    private Game game;
+    private Player hans;
+    private Player peter;
+    private Map map;
 
     @Before
     public void setUp() throws Exception {

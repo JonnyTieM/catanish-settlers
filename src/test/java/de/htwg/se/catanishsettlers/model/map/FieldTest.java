@@ -7,7 +7,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class FieldTest {
-    Field field;
+    private Field field;
 
     @Before
     public void setUp() throws Exception {

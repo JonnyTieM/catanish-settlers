@@ -1,7 +1,6 @@
-package de.htwg.se.catanishsettlers.view.gui.statusPanel;
+package de.htwg.se.catanishsettlers.view.gui;
 
 import de.htwg.se.catanishsettlers.controller.Game;
-import de.htwg.se.catanishsettlers.view.gui.MapAndCreateGamePanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,8 +11,6 @@ import java.awt.event.ActionListener;
  * Created by Stephan on 11.06.2015.
  */
 public class StatusPanel extends JPanel {
-
-    private final Game game;
 
     public enum States {
         SETUP,
@@ -27,7 +24,7 @@ public class StatusPanel extends JPanel {
     private final static JLabel outputLabel = new JLabel();
 
     public StatusPanel(final Game game, MultiDicePanel multiDicePanel, final MapAndCreateGamePanel mapAndCreateGamePanel) {
-        this.game = game;
+        Game game1 = game;
         setLayout(new GridLayout(2, 1));
 
         JPanel outputPanel = new JPanel();

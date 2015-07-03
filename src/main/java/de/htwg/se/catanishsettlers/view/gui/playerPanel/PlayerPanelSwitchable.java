@@ -1,4 +1,4 @@
-package de.htwg.se.catanishsettlers.view.gui.playersPanel;
+package de.htwg.se.catanishsettlers.view.gui.playerPanel;
 
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
 
@@ -10,11 +10,9 @@ import java.awt.*;
  */
 public class PlayerPanelSwitchable extends JPanel {
 
-    final static String compact = "COMPACT";
-    final static String extended = "EXTENDED";
+    private final static String compact = "COMPACT";
+    private final static String extended = "EXTENDED";
 
-    private PlayerPanelCompact compactPanel;
-    private PlayerPanelExtended extendedPanel;
     private final String name;
 
     public enum Status {
@@ -24,8 +22,8 @@ public class PlayerPanelSwitchable extends JPanel {
 
     public PlayerPanelSwitchable(Player player) {
         name = player.getName();
-        compactPanel = new PlayerPanelCompact(player);
-        extendedPanel = new PlayerPanelExtended(player);
+        PlayerPanelCompact compactPanel = new PlayerPanelCompact(player);
+        PlayerPanelExtended extendedPanel = new PlayerPanelExtended(player);
 
         player.addObserver(compactPanel);
         player.addObserver(extendedPanel);

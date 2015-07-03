@@ -1,4 +1,4 @@
-package de.htwg.se.catanishsettlers.view.gui.mapPanel;
+package de.htwg.se.catanishsettlers.view.gui;
 
 import de.htwg.se.catanishsettlers.model.map.Field;
 
@@ -7,13 +7,10 @@ import de.htwg.se.catanishsettlers.model.map.Field;
  */
 class FieldWithCoordinates {
     public final Field field;
-    public final int x, y;
     public final int[] vx, vy;
 
-    public FieldWithCoordinates(Field field, int x, int y, int[] vx, int[] vy) {
+    public FieldWithCoordinates(Field field, int[] vx, int[] vy) {
         this.field = field;
-        this.x = x;
-        this.y = y;
         this.vx = vx;
         this.vy = vy;
     }

@@ -2,7 +2,7 @@ package de.htwg.se.catanishsettlers.view.gui;
 
 import de.htwg.se.catanishsettlers.controller.PlayerContainer;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
-import de.htwg.se.catanishsettlers.view.gui.playersPanel.PlayerPanelSwitchable;
+import de.htwg.se.catanishsettlers.view.gui.playerPanel.PlayerPanelSwitchable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,10 +14,10 @@ import java.util.List;
  */
 public class PlayersPanel extends JPanel implements Observer {
 
-    private GridLayout gridLayout = new GridLayout(0, 1);
-    private java.util.List<PlayerPanelSwitchable> panels = new LinkedList<PlayerPanelSwitchable>();
+    private final java.util.List<PlayerPanelSwitchable> panels = new LinkedList<PlayerPanelSwitchable>();
 
     public PlayersPanel(List<Player> players) {
+        GridLayout gridLayout = new GridLayout(0, 1);
         setLayout(gridLayout);
 
         for(Player player : players) {

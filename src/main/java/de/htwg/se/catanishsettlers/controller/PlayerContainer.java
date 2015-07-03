@@ -2,7 +2,6 @@ package de.htwg.se.catanishsettlers.controller;
 
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
 
-import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;

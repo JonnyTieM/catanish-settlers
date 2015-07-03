@@ -1,4 +1,4 @@
-package de.htwg.se.catanishsettlers.view.gui.playersPanel;
+package de.htwg.se.catanishsettlers.view.gui.playerPanel;
 
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
 
@@ -8,9 +8,9 @@ import java.util.Observable;
 /**
  * Created by Stephan on 13.06.2015.
  */
-public class PlayerPanelCompact extends PlayerPanelAbstract {
+class PlayerPanelCompact extends PlayerPanelAbstract {
 
-    private JLabel resLabel = new JLabel();
+    private final JLabel resLabel = new JLabel();
 
     public PlayerPanelCompact(Player player) {
         super(player);

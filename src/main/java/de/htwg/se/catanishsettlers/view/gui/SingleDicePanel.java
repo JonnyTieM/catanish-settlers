@@ -1,7 +1,4 @@
-package de.htwg.se.catanishsettlers.view.gui.statusPanel;
-
-import de.htwg.se.catanishsettlers.model.mechanic.Utility;
-import de.htwg.se.catanishsettlers.view.gui.GUIhelper;
+package de.htwg.se.catanishsettlers.view.gui;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,11 +6,8 @@ import java.awt.*;
 /**
  * Created by Stephan on 23.06.2015.
  */
-public class SingleDicePanel extends JPanel {
+class SingleDicePanel extends JPanel {
     private int value;
-    private final int cubeLength = 50;
-    private final int padding = 5;
-    private final int height3D = 20;
 
     public SingleDicePanel() {
         setPreferredSize(new Dimension(100, 100));
@@ -31,6 +25,9 @@ public class SingleDicePanel extends JPanel {
         g.setFont(new Font("Arial", Font.PLAIN, 20));
         String text = String.valueOf(value);
 
+        int cubeLength = 50;
+        int padding = 5;
+        int height3D = 20;
         g.drawRect(padding, padding + height3D,
                 cubeLength, cubeLength);
         g.drawLine(padding, padding + height3D,

@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
  * Created by Jonathan on 02.07.2015.
  */
 public class PreDiceRollStateTest {
-    Game game;
+    private Game game;
 
     @Before
     public void setUp() throws Exception {

@@ -1,4 +1,4 @@
-package de.htwg.se.catanishsettlers.view.gui.mapPanel;
+package de.htwg.se.catanishsettlers.view.gui;
 
 import de.htwg.se.catanishsettlers.controller.Game;
 import de.htwg.se.catanishsettlers.controller.PlayerContainer;
@@ -7,8 +7,6 @@ import de.htwg.se.catanishsettlers.controller.PreparationState;
 import de.htwg.se.catanishsettlers.model.map.*;
 import de.htwg.se.catanishsettlers.model.mechanic.Dice;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
-import de.htwg.se.catanishsettlers.view.gui.GUIhelper;
-import de.htwg.se.catanishsettlers.view.gui.statusPanel.StatusPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,24 +21,21 @@ import java.util.Observer;
  */
 public class MapPanel extends JPanel implements MouseListener, MouseMotionListener, ComponentListener, Observer {
 
-    //private final double scale = 20;
-    private final int padding = 190;
     private final Map map;
     private final PlayerContainer playerContainer;
-    private Game game;
+    private final Game game;
     private final int width = 2;
     private final int height = 2;
     private final int side = 1;
-    private Label debugLabel = new Label();
     private ObjectWithPosition mouseHover;
     private int rolledNumber;
     private final Font smallFont = new Font("Arial", Font.PLAIN, 14);
     private final Font bigFont = new Font("Arial", Font.BOLD, 20);
 
-    private List<ObjectWithPosition> objects = new LinkedList<ObjectWithPosition>();
-    private List<VertexWithCoordinates> verticesForPainting = new LinkedList<VertexWithCoordinates>();
-    private List<EdgeWithCoordinates> edgesForPainting = new LinkedList<EdgeWithCoordinates>();
-    private List<FieldWithCoordinates> fieldsForPainting = new LinkedList<FieldWithCoordinates>();
+    private final List<ObjectWithPosition> objects = new LinkedList<ObjectWithPosition>();
+    private final List<VertexWithCoordinates> verticesForPainting = new LinkedList<VertexWithCoordinates>();
+    private final List<EdgeWithCoordinates> edgesForPainting = new LinkedList<EdgeWithCoordinates>();
+    private final List<FieldWithCoordinates> fieldsForPainting = new LinkedList<FieldWithCoordinates>();
 
     private Vertex settlementWithoutRoad;
 
@@ -59,6 +54,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
         this.map = game.getMap();
         this.game = game;
         this.playerContainer = game.getPlayerContainer();
+        Label debugLabel = new Label();
         add(debugLabel);
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -101,8 +97,9 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
         int scale = getScale(fields);
 
         for (Field field : fields) {
+            int padding = 190;
             int midX = padding + field.getX() * (width + side) * scale;
-            int midY = padding + field.getY() * (height * 1) * scale;
+            int midY = padding + field.getY() * height * scale;
             if (field.getX() % 2 == 1) midY += (height / 2) * scale;
 
             int[] vx = new int[6];
@@ -139,7 +136,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
             edgesForPainting.add(new EdgeWithCoordinates(lastEdge, firstVertex.x, firstVertex.y, lastVertex.x, lastVertex.y));
             objects.add(new ObjectWithPosition(lastEdge, (lastVertex.x + firstVertex.x) / 2, (lastVertex.y + firstVertex.y) / 2));
 
-            fieldsForPainting.add(new FieldWithCoordinates(field, midX, midY, vx, vy));
+            fieldsForPainting.add(new FieldWithCoordinates(field, vx, vy));
             objects.add(new ObjectWithPosition(field, midX, midY));
         }
     }
@@ -262,7 +259,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
         MapObject mapObject = mouseHover.object;
 
         if (game.getState() instanceof PreparationState) {
-            if (mouseHover.object instanceof Edge && whatToPlace == WhatToPlace.ROAD) {
+            if (mapObject instanceof Edge && whatToPlace == WhatToPlace.ROAD) {
                 if (game.buildFirstRoad(players[activePlayerIndex], settlementWithoutRoad, (Edge) mapObject)) {
                     whatToPlace = WhatToPlace.SETTLEMENT;
                     repaint();
@@ -270,7 +267,7 @@ public class MapPanel extends JPanel implements MouseListener, MouseMotionListen
                     cyclePlayers();
                 }
             }
-            if (mouseHover.object instanceof Vertex && whatToPlace == WhatToPlace.SETTLEMENT) {
+            if (mapObject instanceof Vertex && whatToPlace == WhatToPlace.SETTLEMENT) {
                 if (game.buildFirstSettlement(players[activePlayerIndex], (Vertex) mapObject)) {
                     settlementWithoutRoad = (Vertex) mapObject;
                     whatToPlace = WhatToPlace.ROAD;

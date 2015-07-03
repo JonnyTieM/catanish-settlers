@@ -14,7 +14,4 @@ public final class Road extends Construction {
         super(player);
         owner = player;
     }
-    public static ResourceCollection getCOST() {
-        return COST;
-    }
 }

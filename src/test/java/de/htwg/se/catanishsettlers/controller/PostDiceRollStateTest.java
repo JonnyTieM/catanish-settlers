@@ -12,7 +12,7 @@ import java.util.LinkedList;
 import static org.junit.Assert.*;
 
 public class PostDiceRollStateTest {
-    Game game;
+    private Game game;
 
     @Before
     public void setUp() throws Exception {

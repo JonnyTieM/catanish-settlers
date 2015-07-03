@@ -12,7 +12,7 @@ import de.htwg.se.catanishsettlers.model.resources.ResourceCollection;
 /**
  * Created by Stephan on 15.05.2015.
  */
-public final class ConstructionRealizer {
+final class ConstructionRealizer {
 
     private ConstructionRealizer() {
     }   // cannot be initialized
@@ -31,7 +31,7 @@ public final class ConstructionRealizer {
 
     public static boolean buildCity(Player player, Vertex vertex, Map map) {
         ResourceCollection cost = City.COST;
-        if (ConstructionInspector.canBuildCity(player, vertex, map) && PlayerInspector.canBuildCity(player)) {
+        if (ConstructionInspector.canBuildCity(player, vertex) && PlayerInspector.canBuildCity(player)) {
             City city = new City(player);
             vertex.placeBuilding(city);
             player.payCost(cost);
@@ -55,7 +55,7 @@ public final class ConstructionRealizer {
     }
 
     public static boolean buildFirstSettlementWithRoad(Player player, Vertex vertex, Edge edge, Map map) {
-        if (ConstructionInspector.canBuildFirstSettlementWithRoad(player, vertex, edge, map)) {
+        if (ConstructionInspector.canBuildFirstSettlementWithRoad(vertex, edge, map)) {
             return buildFirstSettlement(player, vertex, map) && buildFirstRoad(player, vertex, edge, map);
         }
         return false;

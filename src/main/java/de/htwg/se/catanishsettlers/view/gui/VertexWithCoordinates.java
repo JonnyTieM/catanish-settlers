@@ -1,4 +1,4 @@
-package de.htwg.se.catanishsettlers.view.gui.mapPanel;
+package de.htwg.se.catanishsettlers.view.gui;
 
 import de.htwg.se.catanishsettlers.model.map.Vertex;
 

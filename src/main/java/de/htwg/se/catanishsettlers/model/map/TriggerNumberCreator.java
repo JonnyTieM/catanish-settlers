@@ -8,7 +8,7 @@ import java.util.Random;
 /**
  * Created by Jonathan on 22.05.2015.
  */
-public final class TriggerNumberCreator {
+final class TriggerNumberCreator {
     private TriggerNumberCreator() {
 
     }
