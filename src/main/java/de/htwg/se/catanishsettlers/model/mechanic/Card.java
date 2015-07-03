@@ -7,7 +7,7 @@ import de.htwg.se.catanishsettlers.model.resources.ResourceCollection;
  * Created by Stephan on 01.04.2015.
  */
 public class Card {
-    public final static ResourceCollection COST = Config.CARD_COST;
+    private final static ResourceCollection COST = Config.CARD_COST;
 
     public enum Types {
         KNIGHT,
@@ -17,7 +17,7 @@ public class Card {
         VICTORYPOINT
     }
 
-    private Types type;
+    private final Types type;
 
     public Card(Types type) {
         this.type = type;

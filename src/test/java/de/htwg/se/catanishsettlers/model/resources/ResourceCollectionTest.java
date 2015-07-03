@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
  * Created by Jonathan on 26.06.2015.
  */
 public class ResourceCollectionTest {
-    ResourceCollection rc;
+    private ResourceCollection rc;
 
     @Before
     public void setUp() throws Exception {

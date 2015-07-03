@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
  * Created by Jonathan on 29.06.2015.
  */
 public class UtilityTest {
-    Utility utility;
+    private Utility utility;
 
     @Before
     public void setUp() throws Exception {
@@ -26,11 +26,6 @@ public class UtilityTest {
 
     @Test
     public void testGetRandom() throws Exception {
-        assertTrue(utility.getRandom() instanceof Random);
-    }
-
-    @Test
-    public void testPlaceTextInBox() throws Exception {
-        //TODO: write test for this one
+        assertTrue(Utility.getRandom() instanceof Random);
     }
 }

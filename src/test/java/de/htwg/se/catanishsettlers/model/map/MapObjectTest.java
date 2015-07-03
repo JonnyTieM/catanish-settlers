@@ -9,7 +9,7 @@ import static org.junit.Assert.assertEquals;
  * Created by JonnyTieM on 29.03.2015.
  */
 public class MapObjectTest {
-    MapObject mapObj;
+    private MapObject mapObj;
 
     @Before
     public void setUp() throws Exception {

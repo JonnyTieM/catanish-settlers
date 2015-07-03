@@ -25,6 +25,6 @@ public class CardTest {
     @Test
     public void testGetCOST() throws Exception {
         Card card = new Card(Card.Types.KNIGHT);
-        assertTrue(card.getCOST().compareTo(new ResourceCollection(0, 0, 1, 1, 1)) == 0);
+        assertTrue(Card.getCOST().compareTo(new ResourceCollection(0, 0, 1, 1, 1)) == 0);
     }
 }

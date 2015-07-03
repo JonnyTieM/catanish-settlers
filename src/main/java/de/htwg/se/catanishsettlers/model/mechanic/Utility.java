@@ -1,6 +1,5 @@
 package de.htwg.se.catanishsettlers.model.mechanic;
 
-import java.awt.*;
 import java.util.Random;
 
 /**
@@ -11,7 +10,7 @@ import java.util.Random;
 public final class Utility {
     private static Utility singleton;
 
-    private Random random;
+    private final Random random;
 
     private Utility() {
         singleton = this;

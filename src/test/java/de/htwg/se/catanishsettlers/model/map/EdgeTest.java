@@ -8,7 +8,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class EdgeTest {
-    Edge edge;
+    private Edge edge;
 
     @Before
     public void setUp() throws Exception {

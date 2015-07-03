@@ -7,9 +7,9 @@ import de.htwg.se.catanishsettlers.model.mechanic.Player;
  */
 public abstract class Building extends Construction {
     //public static int SCORE;    // how many victory points? //this field not needed. look it up in Config
-    protected int yield;    // how many resources gathered?
+    int yield;    // how many resources gathered?
 
-    public Building(Player player) {
+    Building(Player player) {
         super(player);
     }
 

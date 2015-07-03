@@ -190,8 +190,8 @@ public final class Map implements IMap {
     /**
      * returns the x coordinates of each Edge of the field in following order: top, top right, bottom right, bottom, bottom left, top left.
      *
-     * @param field
-     * @return
+     * @param field the field
+     * @return array of x-coordinates
      */
     private int[] getEdgesCoordinateX(Field field) {
         int x = field.getX();
@@ -209,8 +209,8 @@ public final class Map implements IMap {
     /**
      * returns the y coordinates of each Edge of the field in following order: top, top right, bottom right, bottom, bottom left, top left.
      *
-     * @param field
-     * @return
+     * @param field the field
+     * @return array of y-coordinates
      */
     private int[] getEdgesCoordinateY(Field field) {
         int x = field.getX();
@@ -275,8 +275,8 @@ public final class Map implements IMap {
     /**
      * returns the x coordinates of each Vertex of the field in following order: top left, top right, middle right, bottom right, bottom left, middle left.
      *
-     * @param field
-     * @return
+     * @param field the field
+     * @return array of x-coordinates
      */
     private int[] getVerticesCoordinateX(Field field) {
         int x = field.getX();
@@ -294,8 +294,8 @@ public final class Map implements IMap {
     /**
      * returns the y coordinates of each Vertex of the field in following order: top left, top right, middle right, bottom right, bottom left, middle left.
      *
-     * @param field
-     * @return
+     * @param field the field
+     * @return array of y-coordinates
      */
     private int[] getVerticesCoordinateY(Field field) {
         int x = field.getX();
@@ -343,10 +343,10 @@ public final class Map implements IMap {
 
     public List<Field> getFieldsWithTriggerNumber(int triggerNumber) {
         List<Field> matches = new LinkedList<Field>();
-        for (int x = 0; x < fields.length; x++) {
-            for (int y = 0; y < fields[x].length; y++) {
-                if (fields[x][y] != null && fields[x][y].getTriggerNumber() == triggerNumber) {
-                    matches.add(fields[x][y]);
+        for (Field[] row : fields) {
+            for (Field field : row) {
+                if (field != null && field.getTriggerNumber() == triggerNumber) {
+                    matches.add(field);
                 }
             }
         }
@@ -355,11 +355,9 @@ public final class Map implements IMap {
 
     public int getFieldsCount() {
         int count = 0;
-        for (int x = 0; x < fields.length; x++) {
-            for (int y = 0; y < fields[x].length; y++) {
-                if (fields[x][y] != null) {
-                    count++;
-                }
+        for (Field[] row : fields) {
+            for (Field field : row) {
+                if (field != null) count++;
             }
         }
         return count;

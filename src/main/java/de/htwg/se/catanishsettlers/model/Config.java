@@ -13,8 +13,6 @@ public final class Config {
     public static final int MAX_ROADS = 15;
 
     // map config
-    public static final int STANDARD_MAP_EDGE_LENGTH = 3;
-
     public static final int FIELDS_WIDTH = 5;
     public static final int FIELDS_HEIGHT = 5;
 

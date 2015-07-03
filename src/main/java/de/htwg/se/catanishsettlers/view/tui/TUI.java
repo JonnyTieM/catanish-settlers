@@ -1,7 +1,7 @@
 package de.htwg.se.catanishsettlers.view.tui;
 
-import de.htwg.se.catanishsettlers.controller.impl.ConstructionInspector;
-import de.htwg.se.catanishsettlers.controller.impl.Game;
+import de.htwg.se.catanishsettlers.controller.ConstructionInspector;
+import de.htwg.se.catanishsettlers.controller.Game;
 import de.htwg.se.catanishsettlers.model.map.Edge;
 import de.htwg.se.catanishsettlers.model.map.Vertex;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
@@ -14,9 +14,9 @@ import java.util.Scanner;
  * Created by Jonathan on 19.06.2015.
  */
 public class TUI {
-    Game game;
-    Scanner input;
-    MapTUI mapTUI;
+    private final Game game;
+    private final Scanner input;
+    private final MapTUI mapTUI;
 
     public TUI() {
         input = Input.getInstance();
@@ -173,12 +173,12 @@ public class TUI {
     private void announceWinner() {
         System.out.println("The game has come to an end. There is a winner.");
         List<Player> winners = game.checkVictory();
-        for (int i = 0; i < winners.size(); i++) {
-            System.out.println(winners.get(i).getName() + " has won the game with " + winners.get(i).getScore() + " points");
+        for (Player winner : winners) {
+            System.out.println(winner.getName() + " has won the game with " + winner.getScore() + " points");
         }
     }
 
     public static void main(String[] args) {
-        TUI tui = new TUI();
+        new TUI();
     }
 }

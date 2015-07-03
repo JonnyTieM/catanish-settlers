@@ -13,13 +13,11 @@ import java.util.Observable;
  */
 public class Player extends Observable {
     private String name = "unnamed";
-    private List<Card> cards;
+    private final List<Card> cards;
     private int knightCount, victoryCardsCount;
-    private ResourceCollection resources;
+    private final ResourceCollection resources;
     private Color color;
     private int settlements, cities, roads;
-
-    private boolean hasLargestKnightArmy, hasLongestTradeRoute;
 
     public Player(String name) {
         this.name = name;
@@ -88,8 +86,6 @@ public class Player extends Observable {
 
     public int getScore() {
         int score = scoreBuildings();
-        if (hasLargestKnightArmy) score += Config.LARGEST_KNIGHT_ARMY;
-        if (hasLongestTradeRoute) score += Config.LONGEST_TRADE_ROUTE;
         for (Card card : cards) {
             if (card.getType() == Card.Types.VICTORYPOINT) score++;     // victory cards count in hand ...
         }
@@ -134,14 +130,6 @@ public class Player extends Observable {
         return false;
     }
 
-    private boolean tryToPay(ResourceCollection cost) {
-        if (hasEnoughResources(cost)) {
-            resources.subtract(cost);
-            return true;
-        }
-        return false;
-    }
-
     public int getAvailableRoads() {
         return roads;
     }
@@ -159,11 +147,6 @@ public class Player extends Observable {
         notifyObservers();
     }
 
-    public void increaseRoads() {
-        roads++;
-        setChangedAndNotifyObservers();
-    }
-
     public void decreaseRoads() {
         roads--;
         setChangedAndNotifyObservers();
@@ -176,11 +159,6 @@ public class Player extends Observable {
 
     public void decreaseSettlements() {
         settlements--;
-        setChangedAndNotifyObservers();
-    }
-
-    public void increaseCities() {
-        cities++;
         setChangedAndNotifyObservers();
     }
 

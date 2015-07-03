@@ -28,16 +28,10 @@ public class Vertex extends MapObject {
     }
 
     public boolean hasSettlement() {
-        if (building != null && building instanceof Settlement) {
-            return true;
-        }
-        return false;
+        return building != null && building instanceof Settlement;
     }
 
     public boolean hasCity() {
-        if (building != null && building instanceof City) {
-            return true;
-        }
-        return false;
+        return building != null && building instanceof City;
     }
 }

@@ -1,6 +1,6 @@
 package de.htwg.se.catanishsettlers.view.tui;
 
-import de.htwg.se.catanishsettlers.controller.impl.Game;
+import de.htwg.se.catanishsettlers.controller.Game;
 import de.htwg.se.catanishsettlers.model.map.Edge;
 import de.htwg.se.catanishsettlers.model.map.Map;
 import de.htwg.se.catanishsettlers.model.mechanic.Player;
@@ -13,12 +13,12 @@ import java.util.Scanner;
 /**
  * Created by Jonathan on 19.06.2015.
  */
-public class TUIPreparationPhase {
-    Game game;
-    Scanner input;
-    int amountPlayers;
-    MapTUI mapTUI;
-    Map map;
+class TUIPreparationPhase {
+    private Game game;
+    private final Scanner input;
+    private int amountPlayers;
+    private final MapTUI mapTUI;
+    private final Map map;
 
     public TUIPreparationPhase() {
         input = Input.getInstance();
@@ -43,7 +43,7 @@ public class TUIPreparationPhase {
         game = new Game(players);
     }
 
-    private int getAmountPlayers() {
+    private void getAmountPlayers() {
         boolean rightInput = false;
         amountPlayers = 0;
         while (!rightInput) {
@@ -56,7 +56,6 @@ public class TUIPreparationPhase {
                 rightInput = true;
             }
         }
-        return amountPlayers;
     }
 
     private List<Player> createPlayers(int amountPlayers) {
@@ -109,7 +108,7 @@ public class TUIPreparationPhase {
 
     private Point chooseRoad(Point vertex, Player player) {
         Point edge = new Point(2,2);
-        String s = "";
+        String s;
         boolean choseStreet = false;
         Edge[] edges = map.getNeighbouringEdges(map.getVertex(vertex.x, vertex.y));
         int cnt = nextEdge(edges, 0);

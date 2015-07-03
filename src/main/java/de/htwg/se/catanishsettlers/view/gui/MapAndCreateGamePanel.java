@@ -1,7 +1,6 @@
 package de.htwg.se.catanishsettlers.view.gui;
 
-import de.htwg.se.catanishsettlers.view.gui.createGame.CreateGamePanel;
-import de.htwg.se.catanishsettlers.view.gui.mapPanel.MapPanel;
+import de.htwg.se.catanishsettlers.controller.Game;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,11 +10,9 @@ import java.awt.*;
  */
 public class MapAndCreateGamePanel extends JPanel {
 
-    private GUIFrame guiFrame;
-
-    public MapAndCreateGamePanel(MapPanel mapPanel) {
+    public MapAndCreateGamePanel(Game game, MapPanel mapPanel) {
         setLayout(new CardLayout());
-        add(new CreateGamePanel());
+        add(new CreateGamePanel(game));
         add(mapPanel);
     }
 
@@ -23,10 +20,5 @@ public class MapAndCreateGamePanel extends JPanel {
         CardLayout cardLayout = (CardLayout)getLayout();
         cardLayout.next(this);
         repaint();
-        guiFrame.repaint();
-    }
-
-    public void registerGUI(GUIFrame guiFrame) {
-        this.guiFrame = guiFrame;
     }
 }

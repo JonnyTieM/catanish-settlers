@@ -10,7 +10,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class VertexTest {
-    Vertex vertex;
+    private Vertex vertex;
 
     @Before
     public void setUp() throws Exception {
