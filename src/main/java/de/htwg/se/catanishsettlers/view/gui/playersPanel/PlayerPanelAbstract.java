@@ -13,6 +13,7 @@ public abstract class PlayerPanelAbstract extends JPanel implements Observer {
 
     private JLabel settlementsLabel = new JLabel();
     private JLabel citiesLabel = new JLabel();
+    private JLabel victoryPointsLabel = new JLabel();
     protected Player player;
 
     public PlayerPanelAbstract(Player player) {
@@ -27,10 +28,11 @@ public abstract class PlayerPanelAbstract extends JPanel implements Observer {
 
         updateSettlementsLabel();
         updateCitiesLabel();
+        updateVictoryPointsLabel();
 
         add(settlementsLabel);
         add(citiesLabel);
-        add(new JLabel("Victory Points: " + player.getScore()));
+        add(victoryPointsLabel);
     }
 
     protected void updateSettlementsLabel() {
@@ -39,5 +41,9 @@ public abstract class PlayerPanelAbstract extends JPanel implements Observer {
 
     protected void updateCitiesLabel() {
         citiesLabel.setText("Cities: " + player.getAvailableCities());
+    }
+
+    protected void updateVictoryPointsLabel() {
+        victoryPointsLabel.setText("Victory Points: " + player.getScore());
     }
 }

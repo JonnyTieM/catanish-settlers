@@ -22,7 +22,7 @@ public class MapAndCreateGamePanel extends JPanel {
     public void next() {
         CardLayout cardLayout = (CardLayout)getLayout();
         cardLayout.next(this);
-
+        repaint();
         guiFrame.repaint();
     }
 

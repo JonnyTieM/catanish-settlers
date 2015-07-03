@@ -10,10 +10,11 @@ import javax.swing.*;
  */
 public class GUIFrame extends JFrame {
 
-    private final StatusPanel statusPanel;
+    public static StatusPanel statusPanel;
     private final JSplitPane sPaneStatusAndMap, sPaneStatusMapAndPlayers;
 
     public GUIFrame(PlayersPanel playersPanel, MapAndCreateGamePanel mapAndCreateGamePanel, MultiDicePanel multiDicePanel) {
+
         statusPanel = new StatusPanel(multiDicePanel, mapAndCreateGamePanel);
 
         mapAndCreateGamePanel.registerGUI(this);

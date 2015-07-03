@@ -21,6 +21,7 @@ public class PlayerPanelCompact extends PlayerPanelAbstract {
     public void update(Observable o, Object arg) {
         super.updateSettlementsLabel();
         super.updateCitiesLabel();
+        super.updateVictoryPointsLabel();
         resLabel.setText("Resources: " + player.getResources().getTotal());
     }
 }

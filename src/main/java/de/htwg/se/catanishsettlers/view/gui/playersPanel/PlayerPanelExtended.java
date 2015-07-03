@@ -38,6 +38,7 @@ public class PlayerPanelExtended extends PlayerPanelAbstract {
     public void update(Observable o, Object arg) {
         super.updateSettlementsLabel();
         super.updateCitiesLabel();
+        super.updateVictoryPointsLabel();
         updateResLabels();
     }
 

@@ -13,47 +13,70 @@ import java.awt.event.ActionListener;
  */
 public class StatusPanel extends JPanel {
 
-    public final static JButton switchButton = new JButton("End Setup");
+    public enum States {
+        SETUP,
+        PREPARATION,
+        ROLL,
+        BUILD
+    }
+    private static States state = States.SETUP;
+
+    public final static JButton switchButton = new JButton();
+    private final static JLabel outputLabel = new JLabel();
 
     public StatusPanel(MultiDicePanel multiDicePanel, final MapAndCreateGamePanel mapAndCreateGamePanel) {
-        GridLayout gridLayout = new GridLayout(2, 1);
-        setLayout(gridLayout);
-        JPanel outputPanel = new JPanel();
-        JPanel controlsPanel = new JPanel();
-        add(controlsPanel);
-        add(outputPanel);
+        setLayout(new GridLayout(2, 1));
 
-        final JLabel outputLabel = new JLabel("Add players to the game, End Setup when you're finished");
+        JPanel outputPanel = new JPanel();
         outputPanel.add(outputLabel);
         outputPanel.setPreferredSize(new Dimension(300, 30));
+
+        JPanel controlsPanel = new JPanel();
+        controlsPanel.add(switchButton);
+        controlsPanel.add(multiDicePanel);
+        controlsPanel.setLayout(new FlowLayout());
+
         controlsPanel.setPreferredSize(new Dimension(300, 120));
         setPreferredSize(new Dimension(300, 150));
 
-        controlsPanel.setLayout(new FlowLayout());
-        switchButton.setEnabled(false);
+        add(controlsPanel);
+        add(outputPanel);
+
+        setState(States.SETUP);
 
         switchButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
-                if (switchButton.getText() == "End Setup") {
-                    if (CatanishSettlers.game.getPlayerContainer().getPlayers().size() == 0) return;
-                    mapAndCreateGamePanel.next();
-                }
                 CatanishSettlers.game.nextPhase();
-                if (CatanishSettlers.game.isPreparationPhase()) {
-
-                    switchButton.setText("End Preparation");
-                    switchButton.setEnabled(false);
-                    outputLabel.setText("For each player, place two settlements and two roads, then End Preparation");
-                } else if (CatanishSettlers.game.isBuildingPhase()) {
-                    switchButton.setText("End turn");
-                    outputLabel.setText("When you're done spending resources, End your turn.");
-                } else {
-                    switchButton.setText("Roll dice");
-                    outputLabel.setText("Roll the dice!");
+                switch (state) {
+                    case SETUP: if (CatanishSettlers.game.getPlayerContainer().getPlayers().size() == 0) return;
+                        mapAndCreateGamePanel.next();
+                        setState(States.PREPARATION);
+                        break;
+                    case ROLL: setState(States.BUILD);
+                        break;
+                    case BUILD: setState(States.ROLL);
+                        break;
                 }
             }
         });
-        controlsPanel.add(switchButton);
-        controlsPanel.add(multiDicePanel);
+    }
+
+    public static void setState(States newState) {
+        switch(newState) {
+            case SETUP: switchButton.setText("End Setup");
+                outputLabel.setText("Add players to the game, then click on 'End Setup'.");
+                switchButton.setEnabled(false);
+                break;
+            case PREPARATION: switchButton.setVisible(false);
+                outputLabel.setText("Each players places one settlement and road two times.");
+                break;
+            case ROLL: switchButton.setText("Roll dice");
+                switchButton.setVisible(true);
+                outputLabel.setText(CatanishSettlers.game.getActivePlayer().getName() + ", your turn: Roll the dice!");
+                break;
+            case BUILD: switchButton.setText("End Turn");
+                outputLabel.setText("When you're done spending resources, End your turn.");
+        }
+        state = newState;
     }
 }
